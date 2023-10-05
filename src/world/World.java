@@ -3,6 +3,7 @@ package world;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class World {
   private static World instance;
@@ -20,47 +21,35 @@ public class World {
     return instance;
   }
 
-  public void setUp(String input, boolean isFilePath) throws FileNotFoundException {
-    if (isFilePath) {
-      readFile(input);
-    } else {
-      readString(input);
+  public void setUp(Readable input) throws IOException {
+    BufferedReader bufferedReader = new BufferedReader((Reader) input);
+    StringBuffer stringBuffer = new StringBuffer();
+    String line;
+
+    while ((line = bufferedReader.readLine()) != null) {
+      stringBuffer.append(line);
+      stringBuffer.append('\n');
     }
-  }
 
-  private void readFile(String pathToFile) throws IllegalStateException, FileNotFoundException {
-    try (FileReader fileReader = new FileReader(pathToFile)) {
-      BufferedReader bufferedReader = new BufferedReader(fileReader);
-      StringBuffer stringBuffer = new StringBuffer();
-      String line;
-
-      while ((line = bufferedReader.readLine()) != null) {
-        stringBuffer.append(line);
-        stringBuffer.append('\n');
-      }
-
-      parseString(new String(stringBuffer));
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    parseString(new String(stringBuffer));
   }
 
   private void parseString(String information) {
     String[] parts = information.split("\n");
 
     String[] tmp = (parts[0]).split(" ");
-//    System.out.println(parts[0].substring(parts[0].lastIndexOf(tmp[2])));
     mansion = new Mansion(
         Integer.parseInt(parts[0].split(" ")[0]),
         Integer.parseInt(parts[0].split(" ")[1]),
         parts[0].substring(parts[0].lastIndexOf(tmp[2])));
 
+    int roomNum = Integer.parseInt(parts[2]);
+
     tmp = (parts[1]).split(" ");
     target = new Target(Integer.parseInt(tmp[0]),
-        parts[1].substring(parts[1].lastIndexOf(tmp[1])));
+        parts[1].substring(parts[1].lastIndexOf(tmp[1])),
+        roomNum);
 
-    int roomNum = Integer.parseInt(parts[2]);
     List<Room> roomList = new ArrayList<Room>();
 
     for (int i = 0; i < roomNum; i++) {
@@ -77,6 +66,8 @@ public class World {
     }
 
     mansion.setRoomList(roomList);
+
+    calculateNeighbor(roomList);
 
     int itemNum = Integer.parseInt(parts[3 + roomNum]);
     int roomNumber;
@@ -98,16 +89,38 @@ public class World {
 
   }
 
-  private void readString(String inputString) throws IllegalStateException {
-    try (StringReader stringReader = new StringReader(inputString)) {
-      int character;
-
-      while ((character = stringReader.read()) != -1) {
-        System.out.print((char) character);
+  private void calculateNeighbor(List<Room> roomList) {
+    for (int i=0; i<roomList.size(); i++) {
+      for (int j=i+1; j<roomList.size(); j++) {
+        Room a = roomList.get(i);
+        Room b = roomList.get(j);
+        if (isNeighbor(a, b)) {
+          a.addNeighbor(b);
+          b.addNeighbor(a);
+        }
       }
-    } catch (IOException e) {
-      e.printStackTrace();
     }
+  }
 
+  private boolean isNeighbor(Room a, Room b) {
+    int[] location_a = a.getLocation();
+    int[] location_b = b.getLocation();
+    if (location_a[0] == location_b[2] + 1
+      || location_a[2] == location_b[0] - 1) {
+      if (location_a[1] >= location_b[3] + 1
+        || location_a[3] <= location_b[1] - 1) {
+        return false;
+      }
+      return true;
+    } else if (location_a[1] == location_b[3] + 1
+      || location_a[3] == location_b[1] - 1) {
+      if (location_a[0] >= location_b[2] + 1
+      || location_a[2] <= location_b[0] - 1) {
+        return false;
+      }
+      return true;
+    } else {
+      return false;
+    }
   }
 }

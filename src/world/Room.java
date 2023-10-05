@@ -25,6 +25,7 @@ public class Room {
     this.location = location;
     this.name = name.trim();
     this.itemList = new ArrayList<Item>();
+    this.neighbors = new ArrayList<Room>();
   }
 
   public void addItem(Item item) {
@@ -34,7 +35,9 @@ public class Room {
   public void addNeighbor(Room room) {
     neighbors.add(room);
   }
-
+  public String getName() {
+    return name;
+  }
   public int[] getLocation() {
     return location;
   }
@@ -57,6 +60,11 @@ public class Room {
         .append("\t\titems: ");
     for (Item item: itemList) {
       sb.append(item.toString());
+    }
+    sb.append("neighbors: ");
+    for (Room room: neighbors) {
+      sb.append(room.getName());
+      sb.append(", ");
     }
     sb.append("\n");
     return new String(sb);
