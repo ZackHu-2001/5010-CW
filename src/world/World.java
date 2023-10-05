@@ -1,27 +1,28 @@
 package world;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import javax.imageio.ImageIO;
 
+/**
+ * The {@code World} class represents a virtual game world containing a mansion, a target, and various rooms.
+ * It provides functionality to set up the world from input data, calculate neighbors between rooms, and draw a map of the world.
+ */
 public class World {
-  private static World instance;
   private Target target;
   private Mansion mansion;
 
-  private World() {
-
-  }
-
-  public static World getInstance() {
-    if (instance == null) {
-      instance = new World();
-    }
-    return instance;
-  }
-
-  public void setUp(Readable input) throws IOException {
+  /**
+   * Sets up the world based on input data from a Readable source.
+   *
+   * @param input The Readable input source containing world configuration data.
+   * @throws IOException if an I/O error occurs while reading the input.
+   */
+  public World(Readable input) throws IOException {
     BufferedReader bufferedReader = new BufferedReader((Reader) input);
     StringBuffer stringBuffer = new StringBuffer();
     String line;
@@ -34,8 +35,14 @@ public class World {
     parseString(new String(stringBuffer));
   }
 
+  /**
+   * Parses the input information to create the mansion, target, rooms, and items in the world.
+   *
+   * @param information The input information containing world configuration data.
+   */
   private void parseString(String information) {
     String[] parts = information.split("\n");
+    // TODO: check if the input follow the format required
 
     String[] tmp = (parts[0]).split(" ");
     mansion = new Mansion(
@@ -86,9 +93,13 @@ public class World {
     }
 
     System.out.println(mansion.toString());
-
   }
 
+  /**
+   * Calculates neighbor relationships between rooms and updates their neighbor lists accordingly.
+   *
+   * @param roomList The list of rooms in the world.
+   */
   private void calculateNeighbor(List<Room> roomList) {
     for (int i=0; i<roomList.size(); i++) {
       for (int j=i+1; j<roomList.size(); j++) {
@@ -102,6 +113,13 @@ public class World {
     }
   }
 
+  /**
+   * Checks if two rooms are neighbors based on their locations.
+   *
+   * @param a The first room.
+   * @param b The second room.
+   * @return {@code true} if the rooms are neighbors; {@code false} otherwise.
+   */
   private boolean isNeighbor(Room a, Room b) {
     int[] location_a = a.getLocation();
     int[] location_b = b.getLocation();
@@ -122,5 +140,40 @@ public class World {
     } else {
       return false;
     }
+  }
+
+  /**
+   * Draws a map of the game world and saves it to an image file.
+   *
+   * @param outputFilePath The path and filename where the map image should be saved.
+   */
+  public BufferedImage draw(String outputFilePath) {
+    BufferedImage bufferedImage = new BufferedImage(
+        (mansion.getColumn() + 2) * 30, (mansion.getRow() + 2) * 30,
+        BufferedImage.TYPE_INT_RGB);
+
+    Graphics2D graphics2D = bufferedImage.createGraphics();
+
+    graphics2D.setColor(Color.white);
+    graphics2D.fillRect(0,0, (mansion.getColumn() + 2) * 30, (mansion.getRow() + 2) * 30);
+
+    BasicStroke stroke = new BasicStroke(3.0f);
+    Font font = new Font("Arial", Font.BOLD, 15);
+
+    graphics2D.setStroke(stroke);
+    graphics2D.setFont(font);
+    graphics2D.setColor(Color.black);
+
+    for (Room room: mansion.getRoomList()) {
+      int[] location = room.getLocation();
+      int height = (location[2] - location[0] + 1) * 30;
+      int width = (location[3] - location[1] + 1) * 30;
+
+      graphics2D.drawRect((location[1] + 1) * 30, (location[0] + 1) * 30, width, height);
+      graphics2D.drawString(room.getName(), (location[1] + 2) * 30 , (location[0] + 2) * 30 + 10);
+    }
+    graphics2D.dispose();
+
+    return bufferedImage;
   }
 }

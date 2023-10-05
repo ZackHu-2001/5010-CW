@@ -6,6 +6,7 @@ out/
 ### IDEA configuration file
 .idea/
 KillDoctorLucky.iml
+tmp.png
 
 ### Eclipse ###
 .apt_generated

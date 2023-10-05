@@ -54,9 +54,8 @@ public class Driver {
 
     Reader fileReader = new FileReader(pathToFile);
     Reader stringReader = new StringReader(content);
-    World world = World.getInstance();
-//    world.setUp(fileReader);
-    world.setUp(stringReader);
+    World world = new World(stringReader);
+    world.draw("tmp.png");
 
   }
 }
