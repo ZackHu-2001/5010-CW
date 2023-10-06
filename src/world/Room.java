@@ -93,25 +93,25 @@ public class Room {
    */
   public String toString() {
     StringBuilder sb = new StringBuilder()
-        .append(name)
-        .append(" ")
+        .append("[" + name + "]")
+        .append(": ")
         .append(location[0])
         .append(" ")
         .append(location[1])
-        .append(" ")
+        .append(", ")
         .append(location[2])
         .append(" ")
         .append(location[3])
-        .append("\t\titems: ");
+        .append("\n\t\tItems within: ");
     for (Item item: itemList) {
       sb.append(item.toString());
     }
-    sb.append("neighbors: ");
+    sb.append("\n\t\tNeighbors: ");
     for (Room room: neighbors) {
       sb.append(room.getName());
       sb.append(", ");
     }
-    sb.append("\n");
+    sb.append("\n\n");
     return new String(sb);
   }
 

@@ -47,8 +47,9 @@ public class Mansion {
         .append("\n")
         .append("Room List:\n");
 
-    for (Room room: roomList) {
-      sb.append(room.toString());
+    for (int i = 0; i < roomList.size(); i++) {
+      sb.append("\t" + String.valueOf(i)+" ");
+      sb.append(roomList.get(i).toString());
     }
 
     return new String(sb);

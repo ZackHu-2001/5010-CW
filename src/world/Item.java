@@ -46,6 +46,6 @@ public class Item {
    * @return A string containing item information.
    */
   public String toString() {
-    return String.format("%s: %d, %d# room ", name, value, roomWithin);
+    return String.format("[%s]: %d, in %d# room; ", name, value, roomWithin);
   }
 }
