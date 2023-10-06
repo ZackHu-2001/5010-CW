@@ -36,6 +36,24 @@ public class World {
   }
 
   /**
+   * Gets the mansion included in the world.
+   *
+   * @return The mansion object.
+   */
+  public Mansion getMansion() {
+    return mansion;
+  }
+
+  /**
+   * Gets the target of the world.
+   *
+   * @return The target object.
+   */
+  public Target getTarget() {
+    return target;
+  }
+
+  /**
    * Parses the input information to create the mansion, target, rooms, and items in the world.
    *
    * @param information The input information containing world configuration data.
@@ -91,8 +109,6 @@ public class World {
           Integer.parseInt(tmp[1]),
           roomNumber));
     }
-
-    System.out.println(mansion.toString());
   }
 
   /**
@@ -177,3 +193,5 @@ public class World {
     return bufferedImage;
   }
 }
+
+
