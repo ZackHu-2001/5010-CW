@@ -1,33 +1,38 @@
 package world;
 
+import java.util.Objects;
+
 /**
  * The {@code Target} class represents a target object that can move between rooms in a game.
  * Each target has a name, health, and can move between rooms within a specified range.
  * The target's health must be positive when created.
  */
 public class Target {
-  int currentRoom;
-  int roomNum;
-  int health;
-  String name;
+  private int currentRoom;
+  private final int maxRoomNum;
+  private int health;
+  private final String name;
 
   /**
    * Constructs a new target with the specified health, name, and room range.
    *
    * @param health   The initial health of the target. Must be a positive integer.
    * @param name     The name of the target.
-   * @param roomNum  The total number of rooms that the target can move between.
+   * @param maxRoomNum  The total number of rooms that the target can move between.
    * @throws IllegalArgumentException if the health is not positive.
    */
-  public Target(int health, String name, int roomNum) {
+  public Target(int health, String name, int maxRoomNum) {
     if (health <= 0) {
       throw new IllegalArgumentException("Target's health should be positive.");
+    }
+    if (maxRoomNum <= 0) {
+      throw new IllegalArgumentException("Max room count should be positive.");
     }
 
     currentRoom = 0;
     this.health = health;
     this.name = name;
-    this.roomNum = roomNum;
+    this.maxRoomNum = maxRoomNum;
   }
 
   /**
@@ -35,11 +40,20 @@ public class Target {
    * it wraps around to the first room.
    */
   public void move() {
-    if (currentRoom == roomNum) {
+    if (currentRoom == maxRoomNum - 1) {
       currentRoom = 0;
     } else {
       currentRoom += 1;
     }
+  }
+
+  /**
+   * Returns the current room that the target in.
+   *
+   * @return Number of room that the target in.
+   */
+  public int getCurrentRoom() {
+    return currentRoom;
   }
 
   /**
@@ -53,5 +67,40 @@ public class Target {
         name,
         health,
         currentRoom);
+  }
+
+  /**
+   * Indicates whether some other object is "equal to" this one. The equality is
+   * determined based on comparing the attributes of two Target objects.
+   *
+   * @param o The object to compare with this Target.
+   * @return {@code true} if the specified object is equal to this Target; {@code false}
+   *         otherwise.
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+
+    if (! (o instanceof Target)) {
+      return false;
+    }
+
+    Target tmp = (Target) o;
+    return currentRoom == tmp.currentRoom
+        && maxRoomNum == tmp.maxRoomNum
+        && health == tmp.health
+        && name.equals(tmp.name);
+  }
+
+  /**
+   * Returns a hash code value for this Target object.
+   *
+   * @return A hash code value for this Target object.
+   */
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, currentRoom, maxRoomNum, health);
   }
 }

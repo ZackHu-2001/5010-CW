@@ -2,6 +2,7 @@ package world;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The {@code Room} class represents a room within a game world, characterized
@@ -91,6 +92,14 @@ public class Room {
   }
 
   /**
+   * Gets the list of neighbor room.
+   *
+   * @return The list of neighbor room.
+   */
+  public List<Room> getNeightborList() {
+    return neighbors;
+  }
+  /**
    * Returns a string representation of the room, including its name,
    * location, items, and neighboring rooms.
    *
@@ -120,13 +129,55 @@ public class Room {
     return new String(sb);
   }
 
+  /**
+   * Indicates whether some other object is "equal to" this one. The equality is
+   * determined based on comparing the attributes of two Room objects.
+   *
+   * @param o The object to compare with this Room.
+   * @return {@code true} if the specified object is equal to this Room; {@code false}
+   *         otherwise.
+   */
   @Override
   public boolean equals(Object o) {
-    return false;
+    if (o == this) {
+      return true;
+    }
+
+    if (!(o instanceof Room)) {
+      return false;
+    }
+
+    Room tmp = (Room) o;
+    if (tmp.name.equals(this.name)) {
+      return false;
+    }
+
+    for (int i = 0; i < 4; i++) {
+      if (tmp.location[i] != location[i]) {
+        return false;
+      }
+    }
+
+    if (tmp.itemList.size() != itemList.size()) {
+      return false;
+    }
+
+    for (int i = 0; i < itemList.size(); i++) {
+      if (!(tmp.itemList.get(i).equals(itemList.get(i)))) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
+  /**
+   * Return the hashcode for room object.
+   *
+   * @return Hashcode for room object.
+   */
   @Override
   public int hashCode() {
-    return 0;
+    return Objects.hash(name, location, itemList, neighbors);
   }
 }

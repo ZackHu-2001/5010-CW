@@ -1,6 +1,7 @@
 package world;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The {@code Mansion} class represents a mansion with a grid layout of rooms.
@@ -12,10 +13,10 @@ import java.util.List;
  *
  */
 public class Mansion {
-  private List<Room> roomList;
-  private int row;
-  private int column;
-  private String name;
+  private final List<Room> roomList;
+  private final int row;
+  private final int column;
+  private final String name;
 
   /**
    * Constructs a new Mansion object with the specified dimensions and name.
@@ -25,21 +26,13 @@ public class Mansion {
    * @param name   The name of the mansion.
    * @throws IllegalArgumentException if the column or row is negative.
    */
-  Mansion(int row, int column, String name) {
+  Mansion(int row, int column, String name, List<Room> roomList) {
     if (column < 0 || row < 0) {
       throw new IllegalArgumentException("Size of mansion should not be negative.");
     }
     this.column = column;
     this.row = row;
     this.name = name;
-  }
-
-  /**
-   * Sets the list of rooms within the mansion.
-   *
-   * @param roomList The list of rooms to set.
-   */
-  void setRoomList(List<Room> roomList) {
     this.roomList = roomList;
   }
 
@@ -79,6 +72,41 @@ public class Mansion {
     return name;
   }
 
+
+  /**
+   * Indicates whether some other object is "equal to" this one. The equality is
+   * determined based on comparing the attributes of two Mansion objects.
+   *
+   * @param o The object to compare with this Mansion.
+   * @return {@code true} if the specified object is equal to this Mansion; {@code false}
+   *         otherwise.
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+
+    Mansion otherMansion = (Mansion) o;
+    if (otherMansion.roomList.size() != roomList.size()) {
+      return false;
+    }
+
+    for (int i = 0; i < roomList.size(); i++) {
+      if (!(otherMansion.roomList.get(i).equals(roomList.get(i)))) {
+        return false;
+      }
+    }
+
+    return name.equals(otherMansion.name)
+        && row == otherMansion.row
+        && column == otherMansion.column;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, roomList, row, column);
+  }
   /**
    * Returns a string representation of the mansion, including its name, dimensions,
    * and a list of rooms.
@@ -102,4 +130,5 @@ public class Mansion {
 
     return new String(sb);
   }
+
 }

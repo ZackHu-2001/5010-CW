@@ -1,5 +1,7 @@
 package world;
 
+import java.util.Objects;
+
 import static java.lang.System.exit;
 
 /**
@@ -8,10 +10,10 @@ import static java.lang.System.exit;
  * located within a particular room.
  */
 public class Item {
-  private String name;
-  private int value;
+  private final String name;
+  private final int value;
   private int roomWithin;
-
+  private final int maxRoomNum;
   /**
    * Constructs a new item with the specified name, value, and room location.
    *
@@ -19,16 +21,18 @@ public class Item {
    * @param value      The value of the item.
    * @param roomWithin The room number where the item is located.
    */
-  Item(String name, int value, int roomWithin) {
+  Item(String name, int value, int roomWithin, int maxRoomNum) {
     if (value <= 0) {
       throw new IllegalArgumentException("Item should have positive attack.");
     }
-    if (roomWithin < 0) {
+    if (roomWithin < 0 || roomWithin >= maxRoomNum) {
       throw new IllegalArgumentException("Illegal room for item.");
     }
+
     this.name = name;
     this.value = value;
     this.roomWithin = roomWithin;
+    this.maxRoomNum = maxRoomNum;
   }
 
   /**
@@ -57,6 +61,7 @@ public class Item {
     return roomWithin;
   }
 
+
   /**
    * Returns a string representation of the item, including its name, value, and room location.
    *
@@ -64,5 +69,40 @@ public class Item {
    */
   public String toString() {
     return String.format("[%s]: %d, in %d# room; ", name, value, roomWithin);
+  }
+
+  /**
+   * Compares the input object with this object and
+   * returns true if they are equal.
+   *
+   * @param o Object to compare.
+   * @return  Whether two objects equals.
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (! (o instanceof Item)) {
+      return false;
+    }
+
+    Item item = (Item) o;
+    return this.name.equals(item.name)
+        && this.value == item.value
+        && this.roomWithin == item.roomWithin
+        && this.maxRoomNum == item.maxRoomNum;
+  }
+
+  /**
+   * Return the hashcode for item object based on
+   * its name, value, room within, and max room number.
+   *
+   * @return Hashcode of this item object.
+   */
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, value, roomWithin, maxRoomNum);
   }
 }
