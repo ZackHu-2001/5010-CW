@@ -1,61 +1,82 @@
 package world;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Scanner;
+import javax.imageio.ImageIO;
+
+import static java.lang.System.exit;
+import static java.lang.System.out;
 
 public class Driver {
   public static void main(String[] args) throws IOException {
     // read user input: the mansion file, or direct string input
-    String pathToFile = "/Users/zackhu/IdeaProjects/killDoctorLucky/res/mansion.txt";
-    String content = "36 30 Doctor Lucky's world.Mansion\n" +
-        "50 Doctor Lucky\n" +
-        "21\n" +
-        "22 19 23 26 Armory\n" +
-        "16 21 21 28 Billiard world.Room\n" +
-        "28  0 35  5 Carriage House\n" +
-        "12 11 21 20 Dining Hall\n" +
-        "22 13 25 18 Drawing world.Room\n" +
-        "26 13 27 18 Foyer\n" +
-        "28 26 35 29 Green House\n" +
-        "30 20 35 25 Hedge Maze\n" +
-        "16  3 21 10 Kitchen\n" +
-        " 0  3  5  8 Lancaster world.Room\n" +
-        " 4 23  9 28 Library\n" +
-        " 2  9  7 14 Lilac world.Room\n" +
-        " 2 15  7 22 Master Suite\n" +
-        " 0 23  3 28 Nursery\n" +
-        "10  5 15 10 Parlor\n" +
-        "28 12 35 19 Piazza\n" +
-        " 6  3  9  8 Servants' Quarters\n" +
-        " 8 11 11 20 Tennessee world.Room\n" +
-        "10 21 15 26 Trophy world.Room\n" +
-        "22  5 23 12 Wine Cellar\n" +
-        "30  6 35 11 Winter Garden\n" +
-        "20\n" +
-        "8 3 Crepe Pan\n" +
-        "4 2 Letter Opener\n" +
-        "12 2 Shoe Horn\n" +
-        "8 3 Sharp Knife\n" +
-        "0 3 Revolver\n" +
-        "15 3 Civil War Cannon\n" +
-        "2 4 Chain Saw\n" +
-        "16 2 Broom Stick\n" +
-        "1 2 Billiard Cue\n" +
-        "19 2 Rat Poison\n" +
-        "6 2 Trowel\n" +
-        "2 4 Big Red Hammer\n" +
-        "6 2 Pinking Shears\n" +
-        "18 3 Duck Decoy\n" +
-        "13 2 Bad Cream\n" +
-        "18 2 Monkey Hand\n" +
-        "11 2 Tight Hat\n" +
-        "19 2 Piece of Rope\n" +
-        "9 3 Silken Cord\n" +
-        "7 2 Loud Noise";
+    Reader fileReader = null;
+    World world = null;
+    Scanner scanner = new Scanner(System.in);
+    String pathToFile;
 
-    Reader fileReader = new FileReader(pathToFile);
-    Reader stringReader = new StringReader(content);
-    World world = new World(stringReader);
-    world.draw("tmp.png");
+    System.out.println("Please provide the path to the world file:");
+
+    pathToFile = scanner.nextLine();
+
+    try {
+      fileReader = new FileReader(pathToFile);
+      world = new World(fileReader);
+    } catch (FileNotFoundException e) {
+//      e.printStackTrace();
+      System.out.println("There are problems with path to file, exit.");
+      exit(1);
+    }
+
+    System.out.println("Successfully read in the file!\n\n"
+         + "Here are detailed information:");
+    System.out.println(world.getMansion().toString());
+
+
+
+    String hint = String.format("Select Option:\n"
+        + "\t1: Move target\n"
+        + "\t2: Output image\n"
+        + "\t3: Display room by index\n"
+        + "\t4: Exit\n"
+    );
+    int option = 0;
+    while(true) {
+      System.out.print(hint);
+      option = scanner.nextInt();
+      switch (option) {
+        case (1):
+          world.getTarget().move();
+          System.out.println(
+              String.format("Currently the target locates in room %d.\n",
+                  world.getTarget().currentRoom));
+          break;
+        case (2):
+          BufferedImage bufferedImage = world.draw("example.png");
+
+          try {
+            File output = new File("example.png");
+            ImageIO.write(bufferedImage, "png", output);
+            System.out.println("The image is output to \'example.png\'.\n");
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          break;
+        case (3):
+          int index = scanner.nextInt();
+          if (index < 0 ||
+          index >= world.getMansion().getRoomList().size()) {
+            System.out.println("Invalid index.\n");
+            break;
+          }
+          String roomInfo = world.getMansion().getRoomList().get(index).toString();
+          System.out.println("Room "+ String.valueOf(index) + " " + roomInfo);
+          break;
+        case (4):
+          exit(1);
+      }
+    }
 
   }
 }
