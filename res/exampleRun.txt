@@ -1,0 +1,286 @@
+/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home/bin/java -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=58717:/Applications/IntelliJ IDEA.app/Contents/bin -Dfile.encoding=UTF-8 -classpath /Users/zackhu/IdeaProjects/KillDoctorLucky/out/production/KillDoctorLucky world.Driver
+Please provide the path to the world file:
+/Users/zackhu/IdeaProjects/killDoctorLucky/res/mansion.txt
+Successfully read in the file!
+
+Here are detailed information:
+Doctor Lucky's world.Mansion
+Row: 36 Column: 30
+Room List:
+	0 [Armory]: 22 19, 23 26
+		Items within: [Revolver]: 3, in 0# room;
+		Neighbors: Billiard world.Room, Dining Hall, Drawing world.Room,
+
+	1 [Billiard world.Room]: 16 21, 21 28
+		Items within: [Billiard Cue]: 2, in 1# room;
+		Neighbors: Armory, Dining Hall, Trophy world.Room,
+
+	2 [Carriage House]: 28 0, 35 5
+		Items within: [Chain Saw]: 4, in 2# room; [Big Red Hammer]: 4, in 2# room;
+		Neighbors: Winter Garden,
+
+	3 [Dining Hall]: 12 11, 21 20
+		Items within:
+		Neighbors: Armory, Billiard world.Room, Drawing world.Room, Kitchen, Parlor, Tennessee world.Room, Trophy world.Room, Wine Cellar,
+
+	4 [Drawing world.Room]: 22 13, 25 18
+		Items within: [Letter Opener]: 2, in 4# room;
+		Neighbors: Armory, Dining Hall, Foyer, Wine Cellar,
+
+	5 [Foyer]: 26 13, 27 18
+		Items within:
+		Neighbors: Drawing world.Room, Piazza,
+
+	6 [Green House]: 28 26, 35 29
+		Items within: [Trowel]: 2, in 6# room; [Pinking Shears]: 2, in 6# room;
+		Neighbors: Hedge Maze,
+
+	7 [Hedge Maze]: 30 20, 35 25
+		Items within: [Loud Noise]: 2, in 7# room;
+		Neighbors: Green House, Piazza,
+
+	8 [Kitchen]: 16 3, 21 10
+		Items within: [Crepe Pan]: 3, in 8# room; [Sharp Knife]: 3, in 8# room;
+		Neighbors: Dining Hall, Parlor, Wine Cellar,
+
+	9 [Lancaster world.Room]: 0 3, 5 8
+		Items within: [Silken Cord]: 3, in 9# room;
+		Neighbors: Lilac world.Room, Servants' Quarters,
+
+	10 [Library]: 4 23, 9 28
+		Items within:
+		Neighbors: Master Suite, Nursery, Trophy world.Room,
+
+	11 [Lilac world.Room]: 2 9, 7 14
+		Items within: [Tight Hat]: 2, in 11# room;
+		Neighbors: Lancaster world.Room, Master Suite, Servants' Quarters, Tennessee world.Room,
+
+	12 [Master Suite]: 2 15, 7 22
+		Items within: [Shoe Horn]: 2, in 12# room;
+		Neighbors: Library, Lilac world.Room, Nursery, Tennessee world.Room,
+
+	13 [Nursery]: 0 23, 3 28
+		Items within: [Bad Cream]: 2, in 13# room;
+		Neighbors: Library, Master Suite,
+
+	14 [Parlor]: 10 5, 15 10
+		Items within:
+		Neighbors: Dining Hall, Kitchen, Servants' Quarters, Tennessee world.Room,
+
+	15 [Piazza]: 28 12, 35 19
+		Items within: [Civil War Cannon]: 3, in 15# room;
+		Neighbors: Foyer, Hedge Maze, Winter Garden,
+
+	16 [Servants' Quarters]: 6 3, 9 8
+		Items within: [Broom Stick]: 2, in 16# room;
+		Neighbors: Lancaster world.Room, Lilac world.Room, Parlor,
+
+	17 [Tennessee world.Room]: 8 11, 11 20
+		Items within:
+		Neighbors: Dining Hall, Lilac world.Room, Master Suite, Parlor, Trophy world.Room,
+
+	18 [Trophy world.Room]: 10 21, 15 26
+		Items within: [Duck Decoy]: 3, in 18# room; [Monkey Hand]: 2, in 18# room;
+		Neighbors: Billiard world.Room, Dining Hall, Library, Tennessee world.Room,
+
+	19 [Wine Cellar]: 22 5, 23 12
+		Items within: [Rat Poison]: 2, in 19# room; [Piece of Rope]: 2, in 19# room;
+		Neighbors: Dining Hall, Drawing world.Room, Kitchen,
+
+	20 [Winter Garden]: 30 6, 35 11
+		Items within:
+		Neighbors: Carriage House, Piazza,
+
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 1.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 2.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 3.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 4.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 5.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 6.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 7.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 8.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 9.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 10.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 11.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 12.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 13.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 14.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 15.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 16.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 17.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 18.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 19.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 20.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 21.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 0.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+1
+Currently the target locates in room 1.
+
+Select Option:
+	1: Move target
+	2: Output image
+	3: Display room by index
+	4: Exit
+4
+
+Process finished with exit code 1
