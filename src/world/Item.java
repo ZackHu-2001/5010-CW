@@ -1,8 +1,11 @@
 package world;
 
+import static java.lang.System.exit;
+
 /**
- * The {@code Item} class represents an item that can be found within a specific room in a game world.
- * Each item has a name, a value, and is located within a particular room.
+ * The {@code Item} class represents an item that can be found within a
+ * specific room in a game world. Each item has a name, a value, and is
+ * located within a particular room.
  */
 public class Item {
   private String name;
@@ -17,6 +20,12 @@ public class Item {
    * @param roomWithin The room number where the item is located.
    */
   Item(String name, int value, int roomWithin) {
+    if (value <= 0) {
+      throw new IllegalArgumentException("Item should have positive attack.");
+    }
+    if (roomWithin < 0) {
+      throw new IllegalArgumentException("Illegal room for item.");
+    }
     this.name = name;
     this.value = value;
     this.roomWithin = roomWithin;
@@ -29,6 +38,14 @@ public class Item {
    */
   public int getValue() {
     return value;
+  }
+
+  /**
+   * Gets the name of the item.
+   * @return The name of the item.
+   */
+  public String getName() {
+    return name;
   }
 
   /**

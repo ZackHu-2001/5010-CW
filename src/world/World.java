@@ -1,16 +1,20 @@
 package world;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import javax.imageio.ImageIO;
 
 /**
- * The {@code World} class represents a virtual game world containing a mansion, a target, and various rooms.
- * It provides functionality to set up the world from input data, calculate neighbors between rooms, and draw a map of the world.
+ * The {@code World} class represents a virtual game world containing a mansion, 
+ * a target, and various rooms. It provides functionality to set up the world 
+ * from input data, calculate neighbors between rooms, and draw a map of the world.
  */
 public class World {
   private Target target;
@@ -99,7 +103,6 @@ public class World {
 
     for (int i = 0; i < itemNum; i++) {
       tmp = parts[4 + roomNum + i].split("\\s+");
-      int[] location = new int[2];
 
       roomNumber = Integer.parseInt(tmp[0]);
 
@@ -117,8 +120,8 @@ public class World {
    * @param roomList The list of rooms in the world.
    */
   private void calculateNeighbor(List<Room> roomList) {
-    for (int i=0; i<roomList.size(); i++) {
-      for (int j=i+1; j<roomList.size(); j++) {
+    for (int i = 0; i < roomList.size(); i++) {
+      for (int j = i + 1; j < roomList.size(); j++) {
         Room a = roomList.get(i);
         Room b = roomList.get(j);
         if (isNeighbor(a, b)) {
@@ -137,19 +140,19 @@ public class World {
    * @return {@code true} if the rooms are neighbors; {@code false} otherwise.
    */
   private boolean isNeighbor(Room a, Room b) {
-    int[] location_a = a.getLocation();
-    int[] location_b = b.getLocation();
-    if (location_a[0] == location_b[2] + 1
-      || location_a[2] == location_b[0] - 1) {
-      if (location_a[1] >= location_b[3] + 1
-        || location_a[3] <= location_b[1] - 1) {
+    int[] locationA = a.getLocation();
+    int[] locationB = b.getLocation();
+    if (locationA[0] == locationB[2] + 1 
+        || locationA[2] == locationB[0] - 1) {
+      if (locationA[1] >= locationB[3] + 1 
+          || locationA[3] <= locationB[1] - 1) {
         return false;
       }
       return true;
-    } else if (location_a[1] == location_b[3] + 1
-      || location_a[3] == location_b[1] - 1) {
-      if (location_a[0] >= location_b[2] + 1
-      || location_a[2] <= location_b[0] - 1) {
+    } else if (locationA[1] == locationB[3] + 1
+        || locationA[3] == locationB[1] - 1) {
+      if (locationA[0] >= locationB[2] + 1
+          || locationA[2] <= locationB[0] - 1) {
         return false;
       }
       return true;
@@ -162,6 +165,7 @@ public class World {
    * Draws a map of the game world and saves it to an image file.
    *
    * @param outputFilePath The path and filename where the map image should be saved.
+   * @return bufferedImage The buffered image that could be stored in file.
    */
   public BufferedImage draw(String outputFilePath) {
     BufferedImage bufferedImage = new BufferedImage(
@@ -171,22 +175,24 @@ public class World {
     Graphics2D graphics2D = bufferedImage.createGraphics();
 
     graphics2D.setColor(Color.white);
-    graphics2D.fillRect(0,0, (mansion.getColumn() + 2) * 30, (mansion.getRow() + 2) * 30);
+    graphics2D.fillRect(0, 0, (mansion.getColumn() + 2) * 30, (mansion.getRow() + 2) * 30);
 
     BasicStroke stroke = new BasicStroke(3.0f);
     Font font = new Font("Arial", Font.BOLD, 15);
 
+    graphics2D.setColor(Color.black);
     graphics2D.setStroke(stroke);
     graphics2D.setFont(font);
-    graphics2D.setColor(Color.black);
 
-    for (Room room: mansion.getRoomList()) {
+    graphics2D.drawRect(30, 30, mansion.getColumn() * 30, mansion.getRow() * 30);
+
+    for (Room room : mansion.getRoomList()) {
       int[] location = room.getLocation();
       int height = (location[2] - location[0] + 1) * 30;
       int width = (location[3] - location[1] + 1) * 30;
 
       graphics2D.drawRect((location[1] + 1) * 30, (location[0] + 1) * 30, width, height);
-      graphics2D.drawString(room.getName(), (location[1] + 2) * 30 , (location[0] + 2) * 30 + 10);
+      graphics2D.drawString(room.getName(), (location[1] + 2) * 30, (location[0] + 2) * 30 + 10);
     }
     graphics2D.dispose();
 

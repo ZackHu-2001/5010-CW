@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@code Room} class represents a room within a game world, characterized by its name, location, items, and neighbors.
- * Each room has a name, a rectangular location within the world grid, a list of items found in the room, and neighboring rooms.
+ * The {@code Room} class represents a room within a game world, characterized
+ * by its name, location, items, and neighbors. Each room has a name, a rectangular
+ * location within the world grid, a list of items found in the room, and neighboring rooms.
  */
 public class Room {
   private final String name;
@@ -18,9 +19,11 @@ public class Room {
    *
    * @param name     The name of the room.
    * @param location An array of four integers specifying the room's location within the world grid.
-   *                 The array should contain four elements in the order [rowStart, colStart, rowEnd, colEnd].
+   *                 The array should contain four elements in the order
+   *                 [rowStart, colStart, rowEnd, colEnd].
    * @throws IllegalArgumentException if the location array does not contain exactly four elements.
-   * @throws IllegalStateException    if the location coordinates are invalid (e.g., end coordinates are less than start coordinates).
+   * @throws IllegalStateException    if the location coordinates are invalid
+   *                                  (e.g., end coordinates are less than start coordinates).
    */
   public Room(String name, int[] location) {
     // room location check
@@ -69,7 +72,8 @@ public class Room {
   }
 
   /**
-   * Gets the location of the room as an array of four integers representing [rowStart, colStart, rowEnd, colEnd].
+   * Gets the location of the room as an array of four integers representing
+   * [rowStart, colStart, rowEnd, colEnd].
    *
    * @return An array of four integers representing the room's location.
    */
@@ -87,7 +91,8 @@ public class Room {
   }
 
   /**
-   * Returns a string representation of the room, including its name, location, items, and neighboring rooms.
+   * Returns a string representation of the room, including its name,
+   * location, items, and neighboring rooms.
    *
    * @return A string containing room information.
    */
@@ -103,11 +108,11 @@ public class Room {
         .append(" ")
         .append(location[3])
         .append("\n\t\tItems within: ");
-    for (Item item: itemList) {
+    for (Item item : itemList) {
       sb.append(item.toString());
     }
     sb.append("\n\t\tNeighbors: ");
-    for (Room room: neighbors) {
+    for (Room room : neighbors) {
       sb.append(room.getName());
       sb.append(", ");
     }
