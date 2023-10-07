@@ -66,11 +66,7 @@ public class World {
     String[] parts = information.split("\n");
     // TODO: check if the input follow the format required
 
-    String[] tmp = (parts[0]).split(" ");
-    mansion = new Mansion(
-        Integer.parseInt(parts[0].split(" ")[0]),
-        Integer.parseInt(parts[0].split(" ")[1]),
-        parts[0].substring(parts[0].lastIndexOf(tmp[2])));
+    String[] tmp;
 
     int roomNum = Integer.parseInt(parts[2]);
 
@@ -80,6 +76,13 @@ public class World {
         roomNum);
 
     List<Room> roomList = new ArrayList<Room>();
+
+    tmp = (parts[0]).split(" ");
+    mansion = new Mansion(
+        Integer.parseInt(parts[0].split(" ")[0]),
+        Integer.parseInt(parts[0].split(" ")[1]),
+        parts[0].substring(parts[0].lastIndexOf(tmp[2])),
+        roomList);
 
     for (int i = 0; i < roomNum; i++) {
       tmp = parts[3 + i].trim().split("\\s+");
@@ -93,8 +96,6 @@ public class World {
           parts[3 + i].substring(11),
           location));
     }
-
-    mansion.setRoomList(roomList);
 
     calculateNeighbor(roomList);
 
@@ -110,7 +111,8 @@ public class World {
       tmpRoom.addItem(new Item(
           parts[4 + roomNum + i].substring(parts[4 + roomNum + i].lastIndexOf(tmp[2])),
           Integer.parseInt(tmp[1]),
-          roomNumber));
+          roomNumber,
+          roomNum));
     }
   }
 
@@ -139,7 +141,7 @@ public class World {
    * @param b The second room.
    * @return {@code true} if the rooms are neighbors; {@code false} otherwise.
    */
-  private boolean isNeighbor(Room a, Room b) {
+  public static boolean isNeighbor(Room a, Room b) {
     int[] locationA = a.getLocation();
     int[] locationB = b.getLocation();
     if (locationA[0] == locationB[2] + 1 

@@ -2,8 +2,6 @@ package world;
 
 import java.util.Objects;
 
-import static java.lang.System.exit;
-
 /**
  * The {@code Item} class represents an item that can be found within a
  * specific room in a game world. Each item has a name, a value, and is
@@ -20,8 +18,10 @@ public class Item {
    * @param name       The name of the item.
    * @param value      The value of the item.
    * @param roomWithin The room number where the item is located.
+   * @param maxRoomNum The maximum number of room in the mansion.
    */
-  Item(String name, int value, int roomWithin, int maxRoomNum) {
+
+  public Item(String name, int value, int roomWithin, int maxRoomNum) {
     if (value <= 0) {
       throw new IllegalArgumentException("Item should have positive attack.");
     }

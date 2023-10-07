@@ -24,9 +24,10 @@ public class Mansion {
    * @param row    The number of rows in the mansion grid.
    * @param column The number of columns in the mansion grid.
    * @param name   The name of the mansion.
+   * @param roomList The list of room it contains.
    * @throws IllegalArgumentException if the column or row is negative.
    */
-  Mansion(int row, int column, String name, List<Room> roomList) {
+  public Mansion(int row, int column, String name, List<Room> roomList) {
     if (column < 0 || row < 0) {
       throw new IllegalArgumentException("Size of mansion should not be negative.");
     }
@@ -72,7 +73,6 @@ public class Mansion {
     return name;
   }
 
-
   /**
    * Indicates whether some other object is "equal to" this one. The equality is
    * determined based on comparing the attributes of two Mansion objects.
@@ -85,6 +85,10 @@ public class Mansion {
   public boolean equals(Object o) {
     if (o == this) {
       return true;
+    }
+
+    if (! (o instanceof Mansion)) {
+      return false;
     }
 
     Mansion otherMansion = (Mansion) o;
@@ -107,6 +111,7 @@ public class Mansion {
   public int hashCode() {
     return Objects.hash(name, roomList, row, column);
   }
+
   /**
    * Returns a string representation of the mansion, including its name, dimensions,
    * and a list of rooms.
@@ -117,18 +122,17 @@ public class Mansion {
     StringBuilder sb = new StringBuilder()
         .append(new String(name))
         .append("\nRow: ")
-        .append(String.valueOf(row))
+        .append(row)
         .append(" Column: ")
-        .append(String.valueOf(column))
+        .append(column)
         .append("\n")
         .append("Room List:\n");
 
     for (int i = 0; i < roomList.size(); i++) {
-      sb.append("\t" + String.valueOf(i) + " ");
+      sb.append("\t" + i + " ");
       sb.append(roomList.get(i).toString());
     }
 
     return new String(sb);
   }
-
 }

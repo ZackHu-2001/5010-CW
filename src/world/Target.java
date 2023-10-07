@@ -57,6 +57,24 @@ public class Target {
   }
 
   /**
+   * Returns the name of the Target.
+   *
+   * @return Name of the Target.
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * Returns the name of the Target.
+   *
+   * @return Name of the Target.
+   */
+  public int getHealth() {
+    return health;
+  }
+
+  /**
    * Returns a string representation of the target, including its name, health, and current room.
    *
    * @return A string containing target information.

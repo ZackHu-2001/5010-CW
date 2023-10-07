@@ -36,13 +36,13 @@ public class Room {
       throw new IllegalStateException("Incorrect format for room position.");
     }
 
-    if (location[0] < 0 || location[2] < 0 || location[1] < 0 || location[3] < 0) {
-      throw new IllegalStateException("Room position should be possitive.");
+    if (location[0] < 0 || location[1] < 0) {
+      throw new IllegalStateException("Room position should be positive.");
     }
     this.location = location;
     this.name = name.trim();
-    this.itemList = new ArrayList<Item>();
-    this.neighbors = new ArrayList<Room>();
+    this.itemList = new ArrayList<>();
+    this.neighbors = new ArrayList<>();
   }
 
   /**
@@ -99,6 +99,7 @@ public class Room {
   public List<Room> getNeightborList() {
     return neighbors;
   }
+
   /**
    * Returns a string representation of the room, including its name,
    * location, items, and neighboring rooms.
@@ -107,7 +108,9 @@ public class Room {
    */
   public String toString() {
     StringBuilder sb = new StringBuilder()
-        .append("[" + name + "]")
+        .append("[")
+        .append(name)
+        .append("]")
         .append(": ")
         .append(location[0])
         .append(" ")
@@ -148,7 +151,7 @@ public class Room {
     }
 
     Room tmp = (Room) o;
-    if (tmp.name.equals(this.name)) {
+    if (!(tmp.name.equals(this.name))) {
       return false;
     }
 
