@@ -66,7 +66,7 @@ public class Driver {
           world.getTarget().move();
           System.out.println(
               String.format("Currently the target locates in room %d.\n",
-                  world.getTarget().currentRoom));
+                  world.getTarget().getCurrentRoom()));
           break;
 
         case (2):
