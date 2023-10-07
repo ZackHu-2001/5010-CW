@@ -1,0 +1,49 @@
+30 26 Zack's Head
+50 Zombie Zack
+25
+0 0 3 3     Left Eyebrow One
+1 4 4 7     Left Eyebrow Two
+2 8 5 11    Left Eyebrow Three
+2 13 5 16   Right Eyebrow One
+1 17 4 20   Right Eyebrow Two
+0 21 3 24   Right Eyebrow Three
+6 4 7 20    Fore Head
+8 0 9 5     FOO Left
+8 17 9 24   FOO Right
+8 6 13 7    BAR Left
+8 17 13 18  BAR Right
+10 8 11 11  QUA Left
+10 13 13 16 QUA Right
+14 9 14 10  Left EYE
+14 14 14 15 Right EYE
+8 12 22 12  Nose
+10 2 21 4   Cheek Left One
+16 5 17 10  Cheek Left Two
+10 20 21 22 Cheek Right One
+16 14 17 19 Cheek Right
+25 5 26 7   Mouse Left
+25 17 26 19 Mouse Right
+25 8 25 16  Lip Up
+26 8 26 16  Lip Down
+24 6 24 18  Moustache
+20
+8 3 Crepe Pan
+4 2 Letter Opener
+12 2 Shoe Horn
+8 3 Sharp Knife
+0 3 Revolver
+15 3 Civil War Cannon
+2 4 Chain Saw
+16 2 Broom Stick
+1 2 Billiard Cue
+19 2 Rat Poison
+6 2 Trowel
+2 4 Big Red Hammer
+6 2 Pinking Shears
+18 3 Duck Decoy
+13 2 Bad Cream
+18 2 Monkey Hand
+11 2 Tight Hat
+19 2 Piece of Rope
+9 3 Silken Cord
+7 2 Loud Noise
