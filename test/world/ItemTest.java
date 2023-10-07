@@ -1,14 +1,26 @@
 package world;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Objects;
 import java.util.Random;
-import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
+/**
+ * This class contains JUnit test cases for the {@link Item} class.
+ * It covers various scenarios to test the behavior of the Item class methods.
+ */
 public class ItemTest {
   private Item item;
+
+  /**
+   * Test case for invalid values provided to the {@link Item} constructor.
+   * It ensures that the constructor correctly throws exceptions when
+   * invalid parameters are given.
+   */
   @Test
   public void testInvalidValueForConstructor() {
     try {
@@ -40,6 +52,10 @@ public class ItemTest {
     }
   }
 
+  /**
+   * Test case for valid values provided to the {@link Item} constructor.
+   * It ensures that the constructor accepts valid parameters without exceptions.
+   */
   @Test
   public void testValidValueForConstructor() {
     try {
@@ -53,76 +69,105 @@ public class ItemTest {
     }
   }
 
+  /**
+   * Test the {@link Item#getValue()} method to ensure it returns the correct value.
+   */
   @Test
   public void testGetValue() {
     // Fuzz test
     Random random = new Random();
-    for (int i=0; i<20; i++) {
-      int value = random.nextInt(100)+1;
+    for (int i = 0; i < 20; i++) {
+      int value = random.nextInt(100) + 1;
       int roomWithin = random.nextInt(100);
-      Item item = new Item("Foo" + String.valueOf(value), value, roomWithin, roomWithin + 1);
+      Item item = new Item("Foo" + String.valueOf(value), value,
+          roomWithin, roomWithin + 1);
       assertEquals(value, item.getValue());
     }
   }
 
+  /**
+   * Test the {@link Item#getName()} method to ensure it returns the correct name.
+   */
   @Test
   public void testGetName() {
     // Fuzz test
     Random random = new Random();
-    for (int i=0; i<20; i++) {
-      int value = random.nextInt(100)+1;
+    for (int i = 0; i < 20; i++) {
+      int value = random.nextInt(100) + 1;
       int roomWithin = random.nextInt(100);
-      Item item = new Item("Foo" + String.valueOf(value), value, roomWithin, roomWithin + 1);
+      Item item = new Item("Foo" + String.valueOf(value), value,
+          roomWithin, roomWithin + 1);
       assertEquals("Foo" + String.valueOf(value), item.getName());
     }
   }
 
+  /**
+   * Test the {@link Item#getRoomWithin()} method to ensure it returns the correct room within.
+   */
   @Test
   public void testGetRoomWithin() {
     // Fuzz test
     Random random = new Random();
-    for (int i=0; i<20; i++) {
-      int value = random.nextInt(100)+1;
+    for (int i = 0; i < 20; i++) {
+      int value = random.nextInt(100) + 1;
       int roomWithin = random.nextInt(100);
-      Item item = new Item("Foo" + String.valueOf(value), value, roomWithin, roomWithin + 1);
+      Item item = new Item("Foo" + String.valueOf(value), value,
+          roomWithin, roomWithin + 1);
       assertEquals(roomWithin, item.getRoomWithin());
     }
   }
 
+  /**
+   * Test the {@link Item#toString()} method to ensure it generates
+   * the expected string representation.
+   */
   @Test
   public void testToString() {
     // Fuzz test
     Random random = new Random();
-    for (int i=0; i<20; i++) {
-      int value = random.nextInt(100)+1;
+    for (int i = 0; i < 20; i++) {
+      int value = random.nextInt(100) + 1;
       int roomWithin = random.nextInt(100);
-      Item item = new Item("Foo" + String.valueOf(value), value, roomWithin, roomWithin + 1);
+      Item item = new Item("Foo" + String.valueOf(value), value,
+          roomWithin, roomWithin + 1);
       String expected = String.format("[%s]: %d, in %d# room; ",
           "Foo" + String.valueOf(value), value, roomWithin);
       assertEquals(expected, item.toString());
     }
   }
 
+  /**
+   * Test the {@link Item#equals(Object)} method to ensure it correctly
+   * compares Item objects for equality.
+   */
   @Test
   public void testEquals() {
-    Item a = new Item("A" , 3, 15, 20);
-    Item b = new Item("B" , 3, 15, 20);
-    Item c = new Item("A" , 1, 15, 20);
-    Item d = new Item("A" , 3, 12, 20);
-    Item e = new Item("A" , 3, 15, 18);
-    Item f = new Item("A" , 3, 15, 20);
-
+    Item a = new Item("A", 3, 15, 20);
     assertTrue(a.equals(a));
+
+    Item b = new Item("B", 3, 15, 20);
     assertFalse(a.equals(b));
+
+    Item c = new Item("A", 1, 15, 20);
     assertFalse(a.equals(c));
+
+    Item d = new Item("A", 3, 12, 20);
     assertFalse(a.equals(d));
+
+    Item e = new Item("A", 3, 15, 18);
     assertFalse(a.equals(e));
+
+    Item f = new Item("A", 3, 15, 20);
     assertTrue(a.equals(f));
   }
 
+  /**
+   * Test the {@link Item#hashCode()} method to ensure it generates the
+   * correct hash code for Item objects.
+   */
   @Test
   public void testHashCode() {
-    Item a = new Item("A" , 3, 15, 20);
+    Item a = new Item("A", 3, 15, 20);
     assertEquals(Objects.hash("A", 3, 15, 20), a.hashCode());
   }
 }

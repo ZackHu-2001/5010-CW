@@ -1,11 +1,18 @@
 package world;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Objects;
 import java.util.Random;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
+/**
+ * This class contains JUnit test cases for the {@link Room} class.
+ * It covers various scenarios to test the behavior of the Room class methods.
+ */
 public class RoomTest {
 
   @Test
@@ -57,13 +64,13 @@ public class RoomTest {
   public void testValidInputForConstructor() {
     Random random = new Random();
 
-    for (int i=0; i<20; i++) {
+    for (int i = 0; i < 20; i++) {
       int a = random.nextInt(10);
       int b = a + random.nextInt(10);
       int c = b + random.nextInt(10);
       int d = c + random.nextInt(10);
       try {
-        new Room("FOO" + String.valueOf(random.nextInt()), new int[]{a, b, c, d});
+        new Room("FOO" + String.valueOf(random.nextInt()), new int[]{ a, b, c, d});
       } catch (IllegalArgumentException e) {
         fail("No exception should be caught for legal input.");
       }
@@ -74,9 +81,10 @@ public class RoomTest {
   public void addItem() {
     Random random = new Random();
 
-    Room room = new Room("Foo", new int[] {1, 2, 3, 4});
+    Room room = new Room("Foo", new int[] { 1, 2, 3, 4});
     for (int i = 0; i < 20; i++) {
-      room.addItem(new Item("Pen", random.nextInt(10) + 1, random.nextInt(30), 31));
+      room.addItem(new Item("Pen", random.nextInt(10) + 1,
+          random.nextInt(30), 31));
       assertEquals(i + 1, room.getItemList().size());
     }
   }
@@ -100,7 +108,7 @@ public class RoomTest {
   public void getName() {
     Random random = new Random();
 
-    for (int i=0; i<20; i++) {
+    for (int i = 0; i < 20; i++) {
       int randomInt = random.nextInt();
       Room room = new Room("FOO" + String.valueOf(randomInt), new int[]{1, 2, 3, 4});
       assertEquals(randomInt, room.getName());
@@ -111,7 +119,7 @@ public class RoomTest {
   public void getLocation() {
     Random random = new Random();
 
-    for (int i=0; i<20; i++) {
+    for (int i = 0; i < 20; i++) {
       int a = random.nextInt(10);
       int b = a + random.nextInt(10);
       int c = b + random.nextInt(10);
@@ -131,7 +139,8 @@ public class RoomTest {
 
     Room room = new Room("Foo", new int[] {1, 2, 3, 4});
     for (int i = 0; i < 20; i++) {
-      Item item = new Item("Pen", random.nextInt(10) + 1, random.nextInt(30), 31);
+      Item item = new Item("Pen", random.nextInt(10) + 1,
+          random.nextInt(30), 31);
       room.addItem(item);
       assertEquals(i + 1, room.getItemList().size());
     }
@@ -145,12 +154,13 @@ public class RoomTest {
     
     Room room = new Room(name, location);
     for (int i = 0; i < 20; i++) {
-      Item item = new Item("Pen", random.nextInt(10) + 1, random.nextInt(30), 31);
+      Item item = new Item("Pen", random.nextInt(10) + 1,
+          random.nextInt(30), 31);
       room.addItem(item);
       assertEquals(i + 1, room.getItemList().size());
     }
     
-    Room neighbor =new Room("bar", new int[] {2, 3, 4, 5});
+    Room neighbor = new Room("bar", new int[] {2, 3, 4, 5});
     room.addNeighbor(neighbor);
     
     StringBuilder expectedString = new StringBuilder()
@@ -166,7 +176,7 @@ public class RoomTest {
         .append(" ")
         .append(location[3])
         .append("\n\t\tItems within: ");
-    for (Item item : room.getItemList()){
+    for (Item item : room.getItemList()) {
       expectedString.append(item.toString());
     }
     expectedString.append("\n\t\tNeighbors: ");
@@ -188,7 +198,8 @@ public class RoomTest {
     Room d = new Room("Kitchen", new int[] {1, 2, 3, 4});
 
     for (int i = 0; i < 3; i++) {
-      Item item = new Item("Pen", random.nextInt(10) + 1, random.nextInt(30), 31);
+      Item item = new Item("Pen", random.nextInt(10) + 1,
+          random.nextInt(30), 31);
       a.addItem(item);
       b.addItem(item);
       c.addItem(item);
@@ -209,13 +220,15 @@ public class RoomTest {
 
     Room room = new Room(name, location);
     for (int i = 0; i < 20; i++) {
-      Item item = new Item("Pen", random.nextInt(10) + 1, random.nextInt(30), 31);
+      Item item = new Item("Pen", random.nextInt(10) + 1,
+          random.nextInt(30), 31);
       room.addItem(item);
       assertEquals(i + 1, room.getItemList().size());
     }
 
-    Room neighbor =new Room("bar", new int[] {2, 3, 4, 5});
+    Room neighbor = new Room("bar", new int[] {2, 3, 4, 5});
     room.addNeighbor(neighbor);
-    assertEquals(Objects.hash(name, location, room.getItemList(), room.getNeightborList()), room.hashCode());
+    assertEquals(Objects.hash(name, location, room.getItemList(),
+        room.getNeightborList()), room.hashCode());
   }
 }
