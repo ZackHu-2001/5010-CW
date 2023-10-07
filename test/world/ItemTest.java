@@ -1,5 +1,6 @@
 package world;
 
+import java.util.Objects;
 import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
@@ -100,5 +101,28 @@ public class ItemTest {
           "Foo" + String.valueOf(value), value, roomWithin);
       assertEquals(expected, item.toString());
     }
+  }
+
+  @Test
+  public void testEquals() {
+    Item a = new Item("A" , 3, 15, 20);
+    Item b = new Item("B" , 3, 15, 20);
+    Item c = new Item("A" , 1, 15, 20);
+    Item d = new Item("A" , 3, 12, 20);
+    Item e = new Item("A" , 3, 15, 18);
+    Item f = new Item("A" , 3, 15, 20);
+
+    assertTrue(a.equals(a));
+    assertFalse(a.equals(b));
+    assertFalse(a.equals(c));
+    assertFalse(a.equals(d));
+    assertFalse(a.equals(e));
+    assertTrue(a.equals(f));
+  }
+
+  @Test
+  public void testHashCode() {
+    Item a = new Item("A" , 3, 15, 20);
+    assertEquals(Objects.hash("A", 3, 15, 20), a.hashCode());
   }
 }
