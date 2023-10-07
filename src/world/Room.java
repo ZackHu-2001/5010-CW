@@ -101,6 +101,15 @@ public class Room {
   }
 
   /**
+   * Gets the list of visible room.
+   *
+   * @return The list of visible room.
+   */
+  public List<Room> getVisibleRoom() {
+    return neighbors;
+  }
+
+  /**
    * Returns a string representation of the room, including its name,
    * location, items, and neighboring rooms.
    *

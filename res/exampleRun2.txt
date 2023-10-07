@@ -1,110 +1,125 @@
-/Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home/bin/java -javaagent:/Applications/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=58739:/Applications/IntelliJ IDEA.app/Contents/bin -Dfile.encoding=UTF-8 -classpath /Users/zackhu/IdeaProjects/KillDoctorLucky/out/production/KillDoctorLucky world.Driver
-Please provide the path to the world file:
-/Users/zackhu/IdeaProjects/killDoctorLucky/res/mansion.txt
+(base) zackhu@ZackHudeMacBook-Pro KillDoctorLucky % java -jar out/artifacts/KillDoctorLucky_jar/KillDoctorLucky.jar res/myMansion.txt
 Successfully read in the file!
 
 Here are detailed information:
-Doctor Lucky's world.Mansion
-Row: 36 Column: 30
+Zack's Head
+Row: 40 Column: 30
 Room List:
-	0 [Armory]: 22 19, 23 26
-		Items within: [Revolver]: 3, in 0# room;
-		Neighbors: Billiard world.Room, Dining Hall, Drawing world.Room,
+0 [Left Eyebrow One]: 0 0, 3 3
+Items within: [Revolver]: 3, in 0# room;
+Neighbors: Left Eyebrow Two,
 
-	1 [Billiard world.Room]: 16 21, 21 28
-		Items within: [Billiard Cue]: 2, in 1# room;
-		Neighbors: Armory, Dining Hall, Trophy world.Room,
+        1 [Left Eyebrow Two]: 1 4, 4 7
+                Items within: [Billiard Cue]: 2, in 1# room; 
+                Neighbors: Left Eyebrow One, Left Eyebrow Three, 
 
-	2 [Carriage House]: 28 0, 35 5
-		Items within: [Chain Saw]: 4, in 2# room; [Big Red Hammer]: 4, in 2# room;
-		Neighbors: Winter Garden,
+        2 [Left Eyebrow Three]: 2 8, 5 11
+                Items within: [Chain Saw]: 4, in 2# room; [Big Red Hammer]: 4, in 2# room; 
+                Neighbors: Left Eyebrow Two, Fore Head, 
 
-	3 [Dining Hall]: 12 11, 21 20
-		Items within:
-		Neighbors: Armory, Billiard world.Room, Drawing world.Room, Kitchen, Parlor, Tennessee world.Room, Trophy world.Room, Wine Cellar,
+        3 [Right Eyebrow One]: 2 13, 5 16
+                Items within: 
+                Neighbors: Right Eyebrow Two, Fore Head, 
 
-	4 [Drawing world.Room]: 22 13, 25 18
-		Items within: [Letter Opener]: 2, in 4# room;
-		Neighbors: Armory, Dining Hall, Foyer, Wine Cellar,
+        4 [Right Eyebrow Two]: 1 17, 4 20
+                Items within: [Letter Opener]: 2, in 4# room; 
+                Neighbors: Right Eyebrow One, Right Eyebrow Three, 
 
-	5 [Foyer]: 26 13, 27 18
-		Items within:
-		Neighbors: Drawing world.Room, Piazza,
+        5 [Right Eyebrow Three]: 0 21, 3 24
+                Items within: 
+                Neighbors: Right Eyebrow Two, 
 
-	6 [Green House]: 28 26, 35 29
-		Items within: [Trowel]: 2, in 6# room; [Pinking Shears]: 2, in 6# room;
-		Neighbors: Hedge Maze,
+        6 [Fore Head]: 6 4, 7 20
+                Items within: [Trowel]: 2, in 6# room; [Pinking Shears]: 2, in 6# room; 
+                Neighbors: Left Eyebrow Three, Right Eyebrow One, FOO Left, FOO Right, BAR Left, BAR Right, Nose, 
 
-	7 [Hedge Maze]: 30 20, 35 25
-		Items within: [Loud Noise]: 2, in 7# room;
-		Neighbors: Green House, Piazza,
+        7 [FOO Left]: 8 0, 9 5
+                Items within: [Loud Noise]: 2, in 7# room; 
+                Neighbors: Fore Head, BAR Left, Cheek Left One, 
 
-	8 [Kitchen]: 16 3, 21 10
-		Items within: [Crepe Pan]: 3, in 8# room; [Sharp Knife]: 3, in 8# room;
-		Neighbors: Dining Hall, Parlor, Wine Cellar,
+        8 [FOO Right]: 8 17, 9 24
+                Items within: [Crepe Pan]: 3, in 8# room; [Sharp Knife]: 3, in 8# room; 
+                Neighbors: Fore Head, Cheek Right One, 
 
-	9 [Lancaster world.Room]: 0 3, 5 8
-		Items within: [Silken Cord]: 3, in 9# room;
-		Neighbors: Lilac world.Room, Servants' Quarters,
+        9 [BAR Left]: 8 6, 13 7
+                Items within: [Silken Cord]: 3, in 9# room; 
+                Neighbors: Fore Head, FOO Left, QUA Left, 
 
-	10 [Library]: 4 23, 9 28
-		Items within:
-		Neighbors: Master Suite, Nursery, Trophy world.Room,
+        10 [BAR Right]: 8 17, 13 18
+                Items within: 
+                Neighbors: Fore Head, QUA Right, 
 
-	11 [Lilac world.Room]: 2 9, 7 14
-		Items within: [Tight Hat]: 2, in 11# room;
-		Neighbors: Lancaster world.Room, Master Suite, Servants' Quarters, Tennessee world.Room,
+        11 [QUA Left]: 10 8, 11 11
+                Items within: [Tight Hat]: 2, in 11# room; 
+                Neighbors: BAR Left, Nose, 
 
-	12 [Master Suite]: 2 15, 7 22
-		Items within: [Shoe Horn]: 2, in 12# room;
-		Neighbors: Library, Lilac world.Room, Nursery, Tennessee world.Room,
+        12 [QUA Right]: 10 13, 13 16
+                Items within: [Shoe Horn]: 2, in 12# room; 
+                Neighbors: BAR Right, Right EYE, Nose, 
 
-	13 [Nursery]: 0 23, 3 28
-		Items within: [Bad Cream]: 2, in 13# room;
-		Neighbors: Library, Master Suite,
+        13 [Left EYE]: 14 9, 14 10
+                Items within: [Bad Cream]: 2, in 13# room; 
+                Neighbors: 
 
-	14 [Parlor]: 10 5, 15 10
-		Items within:
-		Neighbors: Dining Hall, Kitchen, Servants' Quarters, Tennessee world.Room,
+        14 [Right EYE]: 14 14, 14 15
+                Items within: 
+                Neighbors: QUA Right, 
 
-	15 [Piazza]: 28 12, 35 19
-		Items within: [Civil War Cannon]: 3, in 15# room;
-		Neighbors: Foyer, Hedge Maze, Winter Garden,
+        15 [Nose]: 8 12, 22 12
+                Items within: [Civil War Cannon]: 3, in 15# room; 
+                Neighbors: Fore Head, QUA Left, QUA Right, 
 
-	16 [Servants' Quarters]: 6 3, 9 8
-		Items within: [Broom Stick]: 2, in 16# room;
-		Neighbors: Lancaster world.Room, Lilac world.Room, Parlor,
+        16 [Cheek Left One]: 10 2, 21 4
+                Items within: [Broom Stick]: 2, in 16# room; 
+                Neighbors: FOO Left, Cheek Left Two, 
 
-	17 [Tennessee world.Room]: 8 11, 11 20
-		Items within:
-		Neighbors: Dining Hall, Lilac world.Room, Master Suite, Parlor, Trophy world.Room,
+        17 [Cheek Left Two]: 16 5, 17 10
+                Items within: 
+                Neighbors: Cheek Left One, 
 
-	18 [Trophy world.Room]: 10 21, 15 26
-		Items within: [Duck Decoy]: 3, in 18# room; [Monkey Hand]: 2, in 18# room;
-		Neighbors: Billiard world.Room, Dining Hall, Library, Tennessee world.Room,
+        18 [Cheek Right One]: 10 20, 21 22
+                Items within: [Duck Decoy]: 3, in 18# room; [Monkey Hand]: 2, in 18# room; 
+                Neighbors: FOO Right, Cheek Right, 
 
-	19 [Wine Cellar]: 22 5, 23 12
-		Items within: [Rat Poison]: 2, in 19# room; [Piece of Rope]: 2, in 19# room;
-		Neighbors: Dining Hall, Drawing world.Room, Kitchen,
+        19 [Cheek Right]: 16 14, 17 19
+                Items within: [Rat Poison]: 2, in 19# room; [Piece of Rope]: 2, in 19# room; 
+                Neighbors: Cheek Right One, 
 
-	20 [Winter Garden]: 30 6, 35 11
-		Items within:
-		Neighbors: Carriage House, Piazza,
+        20 [Mouse Left]: 25 5, 26 7
+                Items within: 
+                Neighbors: Lip Up, Lip Down, Moustache, 
+
+        21 [Mouse Right]: 25 17, 26 19
+                Items within: 
+                Neighbors: Lip Up, Lip Down, Moustache, 
+
+        22 [Lip Up]: 25 8, 25 16
+                Items within: 
+                Neighbors: Mouse Left, Mouse Right, Lip Down, Moustache, 
+
+        23 [Lip Down]: 26 8, 26 16
+                Items within: 
+                Neighbors: Mouse Left, Mouse Right, Lip Up, 
+
+        24 [Moustache]: 24 6, 24 18
+                Items within: 
+                Neighbors: Mouse Left, Mouse Right, Lip Up, 
 
 
 Select Option:
-	1: Move target
-	2: Output image
-	3: Display room by index
-	4: Exit
+1: Move target
+2: Output image
+3: Display room by index
+4: Display room's visibility by index
+5: Exit
 2
 The image is output to 'example.png'.
 
 Select Option:
-	1: Move target
-	2: Output image
-	3: Display room by index
-	4: Exit
-4
-
-Process finished with exit code 1
+1: Move target
+2: Output image
+3: Display room by index
+4: Display room's visibility by index
+5: Exit
+5
+(base) zackhu@ZackHudeMacBook-Pro KillDoctorLucky % 

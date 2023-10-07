@@ -194,7 +194,7 @@ public class World {
       int width = (location[3] - location[1] + 1) * 30;
 
       graphics2D.drawRect((location[1] + 1) * 30, (location[0] + 1) * 30, width, height);
-      graphics2D.drawString(room.getName(), (location[1] + 2) * 30, (location[0] + 2) * 30 + 10);
+      graphics2D.drawString(room.getName(), (location[1] + 1) * 30 + 15, (location[0] + 1) * 30 + 20);
     }
     graphics2D.dispose();
 
