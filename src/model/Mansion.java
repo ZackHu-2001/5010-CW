@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,7 +44,7 @@ public class Mansion {
    * @return The list of rooms.
    */
   public List<Room> getRoomList() {
-    return roomList;
+    return new ArrayList<>(roomList);
   }
 
   /**
