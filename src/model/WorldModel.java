@@ -1,10 +1,12 @@
 package model;
 
-import java.io.IOException;
-
 public interface WorldModel {
-  public void setUp(Readable readable) throws IOException;
 
+  /**
+   * Get the player for this turn.
+   *
+   * @return The player of this turn.
+   */
   public Player getTurn();
 
   /**
@@ -40,5 +42,36 @@ public interface WorldModel {
    */
   public String showItems(Player player);
 
+  /**
+   * Allow the player to pick up item from the room they currently stay in.
+   *
+   * @param player  The player that choose to pick up item.
+   * @param itemName    Name of the item to take.
+   */
   public void pickUpItem(Player player, String itemName);
+
+
+  /**
+   * Displaying information about where a specific player is in the world including
+   * what spaces that can be seen from where they are.
+   *
+   * @param player The player whose turn it is.
+   * @return The information to display.
+   */
+  public String lookAround(Player player);
+
+  /**
+   * Display information of this world.
+   *
+   * @return Information of this world.
+   */
+  public String toString();
+
+  /**
+   * Return whether game ends.
+   *
+   * @return Whether game ends.
+   */
+  public boolean isGameOver();
+
 }
