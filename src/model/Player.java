@@ -32,10 +32,6 @@ public abstract class Player {
     itemList.add(item);
   }
 
-  public void lookAround() {
-
-  }
-
   public String toString() {
 //    return a description of a specific player including where they are in the world and what they are carrying.
     StringBuilder stringBuilder = new StringBuilder("Player ").append(name);
