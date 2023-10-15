@@ -150,9 +150,10 @@ public class RoomTest {
   public void testToString() {
     Random random = new Random();
     String name = "Foo";
+    int roomId = 1;
     int[] location = new int[] {1, 2, 3, 4};
     
-    Room room = new Room(name, location);
+    Room room = new Room(name, location, roomId);
     for (int i = 0; i < 20; i++) {
       Item item = new Item("Pen", random.nextInt(10) + 1,
           random.nextInt(30), 31);

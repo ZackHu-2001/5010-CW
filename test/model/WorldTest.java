@@ -15,8 +15,8 @@ public class WorldTest {
 
   @Test
   public void testGetMansion() throws IOException {
-    World world = new World();
-    world.setUp(new FileReader("res/mansion.txt"));
+    World world = new World(new FileReader("res/mansion.txt"), 100);
+
     assertEquals(36, world.getMansion().getRow());
     assertEquals(30, world.getMansion().getColumn());
     assertEquals("Doctor Lucky's world.Mansion", world.getMansion().getName());
@@ -24,8 +24,7 @@ public class WorldTest {
 
   @Test
   public void testParseString() throws IOException {
-    World world = new World();
-    world.setUp(new FileReader("res/mansion.txt"));
+    World world = new World(new FileReader("res/mansion.txt"), 100);
     assertEquals(36, world.getMansion().getRow());
     assertEquals(30, world.getMansion().getColumn());
     assertEquals("Doctor Lucky's world.Mansion", world.getMansion().getName());
@@ -44,8 +43,7 @@ public class WorldTest {
 
   @Test
   public void testGetTarget() throws IOException {
-    World world = new World();
-    world.setUp(new FileReader("res/mansion.txt"));
+    World world = new World(new FileReader("res/mansion.txt"), 100);
     assertEquals(50, world.getTarget().getHealth());
     assertEquals("Doctor Lucky", world.getTarget().getName());
     assertEquals(0, world.getTarget().getCurrentRoom());
