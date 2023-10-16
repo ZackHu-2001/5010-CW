@@ -3,17 +3,24 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Player {
+public class Player {
   private final String name;
   private List<Item> itemList;
   private int currentRoom;
+  private final boolean isHuman;
 
-  public Player(String name, int currentRoom) {
+  public Player(String name, int currentRoom, boolean isHuman) {
     this.name = name;
     this.currentRoom = currentRoom;
     this.itemList = new ArrayList<>();
+    this.isHuman = isHuman;
   }
 
+  /**
+   * Get current room that player is in.
+   *
+   * @return Current room's id.
+   */
   public int getCurrentRoom() {
     return currentRoom;
   }
@@ -28,12 +35,23 @@ public abstract class Player {
     currentRoom = targetRoom;
   }
 
+  /**
+   * Add item to the player.
+   *
+   * @param item Item to be added.
+   */
   public void addItem(Item item) {
     itemList.add(item);
   }
 
+  /**
+   * Return a description of a specific player including where they are
+   * in the world and what they are carrying.
+   *
+   * @return A description of a specific player including where they are
+   *    * in the world and what they are carrying.
+   */
   public String toString() {
-//    return a description of a specific player including where they are in the world and what they are carrying.
     StringBuilder stringBuilder = new StringBuilder("Player ").append(name);
 
     for (Item i: itemList) {
@@ -42,6 +60,4 @@ public abstract class Player {
 
     return stringBuilder.toString();
   }
-
-
 }
