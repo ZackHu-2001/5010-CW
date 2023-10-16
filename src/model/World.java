@@ -20,9 +20,10 @@ import java.util.Queue;
 public class World implements WorldModel{
   private Target target;
   private Mansion mansion;
+  private final int maxTurn;
+  private int currentTurn;
   private Queue<Player> playerQueue;
 
-  public World() {}
 
   /**
    * Sets up the world based on input data from a Readable source.
@@ -30,8 +31,7 @@ public class World implements WorldModel{
    * @param input The Readable input source containing world configuration data.
    * @throws IOException if an I/O error occurs while reading the input.
    */
-  @Override
-  public void setUp(Readable input) throws IOException {
+  public World(Readable input, int maxTurn) throws IOException {
     BufferedReader bufferedReader = new BufferedReader((Reader) input);
     StringBuffer stringBuffer = new StringBuffer();
     String line;
@@ -42,6 +42,8 @@ public class World implements WorldModel{
     }
 
     parseString(new String(stringBuffer));
+    this.maxTurn = maxTurn;
+    this.currentTurn = 0;
   }
 
   /**
@@ -71,16 +73,15 @@ public class World implements WorldModel{
     return player;
   }
 
-
   /**
-   * Add a new human player to this game.
+   * Add a new AI player to this game.
    *
-   * @param name Name of the human player.
+   * @param name Name of the AI player.
    * @param currentRoom Room that the player stay at the beginning of the game.
    * @return The created player.
    */
   @Override
-  public Player addHumanPlayer(String name, int currentRoom) {
+  public Player addAIPlayer(String name, int currentRoom) {
     Player player = new HumanPlayer(name, currentRoom);
     playerQueue.add(player);
     mansion.getRoomList().get(currentRoom).addPlayer(player);
@@ -113,7 +114,9 @@ public class World implements WorldModel{
     } else {
       throw new IllegalStateException("Invalid move to room " + targetRoomId);
     }
-    
+
+    // turn + 1
+    target.move();
   }
 
   /**
@@ -131,19 +134,39 @@ public class World implements WorldModel{
   }
 
   /**
-   * Allow the player to pick up item from the room they currently
-   * stay in.
+   * Allow the player to pick up item from the room they currently stay in.
    *
    * @param player  The player that choose to pick up item.
-   * @param name    Name of the item to take.
+   * @param itemName    Name of the item to take.
    */
-  public void pickUpItem(Player player, String name) {
+  public void pickUpItem(Player player, String itemName) {
     List<Item> itemList = mansion.getRoomList().get(player.getCurrentRoom()).getItemList();
     for (Item item: itemList) {
-      if (item.getName().equals(name)) {
+      if (item.getName().equals(itemName)) {
         player.addItem(item);
       }
     }
+
+    // turn + 1
+    target.move();
+  }
+
+  /**
+   * Displaying information about where a specific player is in the world including
+   * what spaces that can be seen from where they are.
+   *
+   * @param player The player whose turn it is.
+   * @return The information to display.
+   */
+  public String lookAround(Player player) {
+    // turn + 1
+    target.move();
+
+    return getMansion().getRoomList().get(player.getCurrentRoom()).toString();
+//    StringBuilder stringBuilder = new StringBuilder();
+//    stringBuilder.append("Currently player in room ")
+//            .append(player.getCurrentRoom()).append("\n");
+//    stringBuilder.append(getMansion().getRoomList().get())
   }
 
   /**
@@ -162,6 +185,24 @@ public class World implements WorldModel{
    */
   public Target getTarget() {
     return target;
+  }
+
+  /**
+   * Display information of this world.
+   *
+   * @return Information of this world.
+   */
+  public String toString() {
+    return this.mansion.toString();
+  }
+
+  /**
+   * Return whether game ends.
+   *
+   * @return Whether game ends.
+   */
+  public boolean isGameOver() {
+    return currentTurn >= maxTurn;
   }
 
   /**
