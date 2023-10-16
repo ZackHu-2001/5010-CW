@@ -1,14 +1,10 @@
 package controller;
 
-import model.World;
+import model.Player;
 import model.WorldModel;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.Scanner;
-
-import static java.lang.System.*;
 
 public class GameController {
 
@@ -31,10 +27,39 @@ public class GameController {
     }
 
     this.worldModel = worldModel;
+    try {
+      out.append("Start game by adding a player? [Y/N]\n");
+      // if not enter Y, exit
+      if (scan.hasNext() && scan.next() != "Y") {
+        System.exit(1);
+      }
+      out.append("Enter the name of the player: \n");
+      String name = "";
+      int position = 0;
 
-    while (scan.hasNext()) {
+      if (scan.hasNext()) {
+        name = scan.next();
+      }
+      out.append("Enter the starting position of the player: \n");
+      if (scan.hasNextInt()) {
+        position = scan.nextInt();
+      }
+
+      for (int i = 0; i < 6; i++) {
+        out.append("Do you want to add one more player? [Y/N]");
+        if (scan.hasNext()) {
+
+        }
+      }
+
+      while (!worldModel.isGameOver()) {
+        if ()
+      }
+    } catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
 
     }
+
   }
 
 }
