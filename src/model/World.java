@@ -66,27 +66,13 @@ public class World implements WorldModel{
    * @return The created player.
    */
   @Override
-  public Player addHumanPlayer(String name, int currentRoom) {
-    Player player = new HumanPlayer(name, currentRoom);
+  public Player addPlayer(String name, int currentRoom, boolean isHuman) {
+    Player player = new Player(name, currentRoom, isHuman);
     playerQueue.add(player);
     mansion.getRoomList().get(currentRoom).addPlayer(player);
     return player;
   }
 
-  /**
-   * Add a new AI player to this game.
-   *
-   * @param name Name of the AI player.
-   * @param currentRoom Room that the player stay at the beginning of the game.
-   * @return The created player.
-   */
-  @Override
-  public Player addAIPlayer(String name, int currentRoom) {
-    Player player = new HumanPlayer(name, currentRoom);
-    playerQueue.add(player);
-    mansion.getRoomList().get(currentRoom).addPlayer(player);
-    return player;
-  }
 
   /**
    * Moves the player to the target room.

@@ -10,22 +10,14 @@ public interface WorldModel {
   public Player getTurn();
 
   /**
-   * Add a new human player to this game.
+   * Add a new player to this game.
    *
-   * @param name Name of the human player.
+   * @param name Name of the player.
    * @param currentRoom Room that the player stay at the beginning of the game.
+   * @param isHuman Flag shows whether the player is human.
    * @return The created player.
    */
-  public Player addHumanPlayer(String name, int currentRoom);
-
-  /**
-   * Add a new AI player to this game.
-   *
-   * @param name Name of the AI player.
-   * @param currentRoom Room that the player stay at the beginning of the game.
-   * @return The created player.
-   */
-  public Player addAIPlayer(String name, int currentRoom);
+  public Player addPlayer(String name, int currentRoom, boolean isHuman);
 
   /**
    * Moves the player to the target room.
