@@ -164,14 +164,20 @@ public class Room {
         .append(" ")
         .append(location[3])
         .append("\n\t\tItems within: ");
-    for (Item item : itemList) {
-      sb.append(item.toString());
+    if (itemList.isEmpty()) {
+      sb.append("[Empty]");
+    } else {
+      for (Item item : itemList) {
+        sb.append(item.toString());
+      }
     }
+
     sb.append("\n\t\tNeighbors: ");
     for (Room room : neighbors) {
       sb.append(room.getName());
       sb.append(", ");
     }
+    sb.deleteCharAt(sb.length() - 2);
     sb.append("\n\n");
     return new String(sb);
   }
