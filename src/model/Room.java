@@ -174,8 +174,11 @@ public class Room {
 
     sb.append("\n\t\tNeighbors: ");
     for (Room room : neighbors) {
-      sb.append(room.getName());
-      sb.append(", ");
+      sb.append("#")
+          .append(room.getId() + 1)
+          .append(" ")
+          .append(room.getName())
+          .append(", ");
     }
     sb.deleteCharAt(sb.length() - 2);
     sb.append("\n\n");
