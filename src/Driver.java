@@ -25,7 +25,8 @@ public class Driver {
    *                      command line arguments.
    */
   public static void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
+    StringReader filePath = new StringReader("res/mansion.txt\n");
+    StringReader command = new StringReader("y\nh\nzack\n2\nn\nlook around\nmove\n2\n1");
     Appendable output = System.out;
 
     // read user input: the mansion file, or direct string input
@@ -36,7 +37,7 @@ public class Driver {
       pathToFile = args[0];
     } else {
       System.out.println("Please provide the path to the world file:");
-      pathToFile = scanner.nextLine();
+      pathToFile = new Scanner(filePath).nextLine();
     }
 
     try {
@@ -46,10 +47,10 @@ public class Driver {
       System.out.println("Successfully read in the file!\n\n"
           + "Here are detailed information:");
 
-//      StringReader input = new StringReader("2 2 1 1 3 3 1 2 1 3 2 3 2 1 3 1 3 2");
       output.append(worldModel.toString());
 
-      GameController gameController = new GameController(new InputStreamReader(System.in), output);
+//      GameController gameController = new GameController(new InputStreamReader(System.in), output);
+      GameController gameController = new GameController(command, output);
       gameController.startGame(worldModel);
 
     } catch (IOException e) {
