@@ -141,9 +141,14 @@ public class World implements WorldModel{
   public String showItems(Player player) {
     List<Item> itemList = mansion.getRoomList().get(player.getCurrentRoom()).getItemList();
     StringBuilder stringBuilder = new StringBuilder();
-    for (Item item: itemList) {
-      stringBuilder.append(item.toString());
+    if (itemList.isEmpty()) {
+      stringBuilder.append("[Empty]");
+    } else {
+      for (Item item: itemList) {
+        stringBuilder.append(item.toString());
+      }
     }
+
     return stringBuilder.toString();
   }
 
@@ -151,19 +156,16 @@ public class World implements WorldModel{
    * Allow the player to pick up item from the room they currently stay in.
    *
    * @param player  The player that choose to pick up item.
-   * @param itemName    Name of the item to take.
+   * @param index    Index of the item to take.
+   * @return Whether this command successfully executed.
    */
-  public void pickUpItem(Player player, String itemName) {
+  public boolean pickUpItem(Player player, int index) {
     List<Item> itemList = mansion.getRoomList().get(player.getCurrentRoom()).getItemList();
-    for (Item item: itemList) {
-      if (item.getName().equals(itemName)) {
-        player.addItem(item);
-      }
+    if (index < 0 || index >= itemList.size()) {
+      return false;
     }
-
-    // turn + 1
-    target.move();
-    updateTurn();
+    player.addItem(itemList.get(index));
+    return true;
   }
 
   /**
@@ -178,7 +180,22 @@ public class World implements WorldModel{
     target.move();
     updateTurn();
 
-    return getMansion().getRoomList().get(player.getCurrentRoom()).toString();
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("Neighbor rooms' information: \n");
+    for (Room neighborRoom: getMansion().getRoomList().get(player.getCurrentRoom()).getNeightborList()) {
+      stringBuilder.append(neighborRoom.toString());
+    }
+
+    return stringBuilder.toString();
+  }
+
+  /**
+   * Get doctor lucky's current position.
+   *
+   * @return Current position of doctor lucky.
+   */
+  public int getTargePosition() {
+    return target.getCurrentRoom();
   }
 
   /**

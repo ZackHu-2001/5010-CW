@@ -43,9 +43,10 @@ public interface WorldModel {
    * Allow the player to pick up item from the room they currently stay in.
    *
    * @param player  The player that choose to pick up item.
-   * @param itemName    Name of the item to take.
+   * @param index    Index of the item to take.
+   * @return Whether this command successfully executed.
    */
-  public void pickUpItem(Player player, String itemName);
+  public boolean pickUpItem(Player player, int index);
 
   /**
    * Displaying information about where a specific player is in the world including
@@ -85,4 +86,11 @@ public interface WorldModel {
    * @return The room number.
    */
   public int getRoomNum();
+
+  /**
+   * Get doctor lucky's current position.
+   *
+   * @return Current position of doctor lucky.
+   */
+  public int getTargePosition();
 }
