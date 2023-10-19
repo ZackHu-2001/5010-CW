@@ -17,6 +17,15 @@ public class Player {
   }
 
   /**
+   * Return whether it is a human player.
+   *
+   * @return Whether it is a human player.
+   */
+  public boolean isHuman() {
+    return isHuman;
+  }
+
+  /**
    * Get current room that player is in.
    *
    * @return Current room's id.
@@ -52,11 +61,17 @@ public class Player {
    *    * in the world and what they are carrying.
    */
   public String toString() {
-    StringBuilder stringBuilder = new StringBuilder("Player ").append(name);
-
-    for (Item i: itemList) {
-      stringBuilder.append(i.toString());
+    StringBuilder stringBuilder = new StringBuilder("Name: ")
+        .append(name)
+        .append("\nHolds: ");
+    if (itemList.isEmpty()) {
+      stringBuilder.append("[Empty]\n");
+    } else {
+      for (Item i: itemList) {
+        stringBuilder.append(i.toString());
+      }
     }
+
 
     return stringBuilder.toString();
   }
