@@ -121,6 +121,7 @@ public class Mansion {
    */
   public String toString() {
     StringBuilder sb = new StringBuilder()
+        .append("Mansion name: ")
         .append(new String(name))
         .append("\nRow: ")
         .append(row)
@@ -130,7 +131,7 @@ public class Mansion {
         .append("Room List:\n");
 
     for (int i = 0; i < roomList.size(); i++) {
-      sb.append("\t" + i + " ");
+      sb.append("\t" + (i + 1) + " ");
       sb.append(roomList.get(i).toString());
     }
 
