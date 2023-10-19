@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -20,7 +21,6 @@ import java.util.Queue;
 public class World implements WorldModel{
   private Target target;
   private Mansion mansion;
-  private final int maxTurn;
   private int currentTurn;
   private Queue<Player> playerQueue;
 
@@ -31,7 +31,7 @@ public class World implements WorldModel{
    * @param input The Readable input source containing world configuration data.
    * @throws IOException if an I/O error occurs while reading the input.
    */
-  public World(Readable input, int maxTurn) throws IOException {
+  public World(Readable input) throws IOException {
     BufferedReader bufferedReader = new BufferedReader((Reader) input);
     StringBuffer stringBuffer = new StringBuffer();
     String line;
@@ -42,8 +42,8 @@ public class World implements WorldModel{
     }
 
     parseString(new String(stringBuffer));
-    this.maxTurn = maxTurn;
     this.currentTurn = 0;
+    this.playerQueue = new ArrayDeque<>();
   }
 
   /**
@@ -53,9 +53,36 @@ public class World implements WorldModel{
    */
   @Override
   public Player getTurn() {
+    return playerQueue.peek();
+  }
+
+  /**
+   * Return the information of a specific room.
+   *
+   * @param roomId The room that its information needed.
+   * @return The information of the room.
+   */
+  public String getRoomInfo(int roomId) {
+    return getMansion().getRoomList().get(roomId).toString();
+  }
+
+  /**
+   * Return the room number in the mansion, which is to help
+   * handle user creating player.
+   *
+   * @return The room number.
+   */
+  public int getRoomNum() {
+    return getMansion().getRoomList().size();
+  }
+
+  /**
+   * Update the turn, poll the first player to the end of the queue.
+   */
+  @Override
+  public void updateTurn() {
     Player player = playerQueue.poll();
     playerQueue.offer(player);
-    return player;
   }
 
   /**
@@ -103,6 +130,7 @@ public class World implements WorldModel{
 
     // turn + 1
     target.move();
+    updateTurn();
   }
 
   /**
@@ -135,6 +163,7 @@ public class World implements WorldModel{
 
     // turn + 1
     target.move();
+    updateTurn();
   }
 
   /**
@@ -147,12 +176,9 @@ public class World implements WorldModel{
   public String lookAround(Player player) {
     // turn + 1
     target.move();
+    updateTurn();
 
     return getMansion().getRoomList().get(player.getCurrentRoom()).toString();
-//    StringBuilder stringBuilder = new StringBuilder();
-//    stringBuilder.append("Currently player in room ")
-//            .append(player.getCurrentRoom()).append("\n");
-//    stringBuilder.append(getMansion().getRoomList().get())
   }
 
   /**
@@ -182,14 +208,14 @@ public class World implements WorldModel{
     return this.mansion.toString();
   }
 
-  /**
-   * Return whether game ends.
-   *
-   * @return Whether game ends.
-   */
-  public boolean isGameOver() {
-    return currentTurn >= maxTurn;
-  }
+//  /**
+//   * Return whether game ends.
+//   *
+//   * @return Whether game ends.
+//   */
+//  public boolean isGameOver() {
+//    return currentTurn >= maxTurn;
+//  }
 
   /**
    * Parses the input information to create the mansion, target, rooms, and items in the world.

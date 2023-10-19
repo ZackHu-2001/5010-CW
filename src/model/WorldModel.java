@@ -10,6 +10,11 @@ public interface WorldModel {
   public Player getTurn();
 
   /**
+   * Update the turn, poll the first player to the end of the queue.
+   */
+  public void updateTurn();
+
+  /**
    * Add a new player to this game.
    *
    * @param name Name of the player.
@@ -42,7 +47,6 @@ public interface WorldModel {
    */
   public void pickUpItem(Player player, String itemName);
 
-
   /**
    * Displaying information about where a specific player is in the world including
    * what spaces that can be seen from where they are.
@@ -59,11 +63,26 @@ public interface WorldModel {
    */
   public String toString();
 
-  /**
-   * Return whether game ends.
-   *
-   * @return Whether game ends.
-   */
-  public boolean isGameOver();
+//  /**
+//   * Return whether game ends.
+//   *
+//   * @return Whether game ends.
+//   */
+//  public boolean isGameOver();
 
+  /**
+   * Return the information of a specific room.
+   *
+   * @param roomId The room that its information needed.
+   * @return The information of the room.
+   */
+  public String getRoomInfo(int roomId);
+
+  /**
+   * Return the room number in the mansion, which is to help
+   * handle user creating player.
+   *
+   * @return The room number.
+   */
+  public int getRoomNum();
 }
