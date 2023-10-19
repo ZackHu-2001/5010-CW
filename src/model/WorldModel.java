@@ -29,8 +29,9 @@ public interface WorldModel {
    *
    * @param player The player to be moved to the target room.
    * @param targetRoomId The target room's id.
+   * @return Return whether the command executed correctly.
    */
-  public void movePlayer(Player player, int targetRoomId);
+  public boolean movePlayer(Player player, int targetRoomId);
 
   /**
    * Show a list of available items in the room.
