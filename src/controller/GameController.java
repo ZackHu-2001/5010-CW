@@ -119,6 +119,15 @@ public class GameController {
    */
   private void updateTurn() {
     currentTurn += 1;
+    if (currentTurn > maxTurn) {
+      try {
+        out.append("Maximum turn reached, game over.");
+        System.exit(1);
+      } catch (IOException ioe) {
+        throw new IllegalStateException("Append failed\n");
+      }
+
+    }
   }
 
   /**
@@ -134,9 +143,9 @@ public class GameController {
 
       Player player = worldModel.getTurn();
       if (player.isHuman()) {
-        out.append("\nInformation of current turn's human player: \n");
+        out.append("\nInformation of the current turn's human player: \n");
       } else {
-        out.append("\nInformation of current turn's computer player: \n");
+        out.append("\nInformation of the current turn's computer player: \n");
       }
       out.append(player.toString())
           .append("In room ")
@@ -212,17 +221,19 @@ public class GameController {
       // initialize all commands
       Map<String, Function<Scanner, Command>> knownCommands = new HashMap<>();
       knownCommands.put("look around", s -> new lookAround(out));
-      knownCommands.put("move", s -> new movePlayer(s.nextInt()));
+      knownCommands.put("move", s -> new movePlayer(scan, out));
 
       out.append("All players loaded, game starts now!\n");
-      printTurnInfo();
       updateTurn();
+      printTurnInfo();
       upDateCommands(worldModel, knownCommands);
+      scan.nextLine();
 
       // handle user input command
-      while (scan.hasNext()) {
+      while (scan.hasNextLine()) {
         Command command;
         String in = scan.nextLine();
+
         if (in.equalsIgnoreCase("q") || in.equalsIgnoreCase("quit")) {
           return;
         }
@@ -237,8 +248,8 @@ public class GameController {
           command.act(worldModel);
         }
 
-        printTurnInfo();
         updateTurn();
+        printTurnInfo();
         upDateCommands(worldModel, knownCommands);
       }
     } catch (IOException ioe) {
