@@ -1,17 +1,26 @@
 package controller.command;
 
 import controller.Command;
+import java.io.IOException;
 import model.WorldModel;
 
-import java.io.IOException;
-
-public class lookAround implements Command {
+/**
+ * This command implements look around. Look around would
+ * display information of the neighbor rooms. Which includes
+ * the items inside and the player inside.
+ */
+public class LookAround implements Command {
   private final Appendable out;
 
-  public lookAround(Appendable out) {
+  public LookAround(Appendable out) {
     this.out = out;
   }
 
+  /**
+   * Apply the command.
+   *
+   * @param m the model to use
+   */
   public void act(WorldModel m) {
     if (m == null) {
       throw new IllegalArgumentException("model cannot be null");

@@ -1,21 +1,30 @@
 package controller.command;
 
 import controller.Command;
+import java.io.IOException;
+import java.util.Scanner;
 import model.Player;
 import model.WorldModel;
 
-import java.io.IOException;
-import java.util.Scanner;
-
-public class pickItem implements Command {
+/**
+ * This command implements pick item. Pick item would display
+ * the items in the room and let player pick which one they
+ * want to pick.
+ */
+public class PickItem implements Command {
   private final Scanner scan;
   private final Appendable out;
 
-  public pickItem(Scanner scan, Appendable out) {
+  public PickItem(Scanner scan, Appendable out) {
     this.out = out;
     this.scan = scan;
   }
 
+  /**
+   * Apply the command.
+   *
+   * @param m the model to use
+   */
   public void act(WorldModel m) {
     if (m == null) {
       throw new IllegalArgumentException("model cannot be null");

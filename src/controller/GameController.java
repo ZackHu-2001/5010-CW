@@ -1,18 +1,21 @@
 package controller;
 
-import controller.command.lookAround;
-import controller.command.movePlayer;
-import controller.command.pickItem;
-import model.Player;
-import model.WorldModel;
-
+import controller.command.LookAround;
+import controller.command.MovePlayer;
+import controller.command.PickItem;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Function;
+import model.Player;
+import model.WorldModel;
 
+/**
+ * This is the controller in MVC pattern. Once the program runs,
+ * it will take over control from the main method, give prompts
+ * and handle user input.
+ */
 public class GameController {
 
   private WorldModel worldModel;
@@ -22,6 +25,12 @@ public class GameController {
   private int currentTurn;
   private final String reEnterPromot = "Please enter again: ";
 
+  /**
+   * Game controller, control over the flow of the game.
+   *
+   * @param in  Readable input.
+   * @param out Appendable output.
+   */
   public GameController(Readable in, Appendable out) {
     if (in == null || out == null) {
       throw new IllegalArgumentException("Readable and Appendable can't be null");
@@ -41,10 +50,10 @@ public class GameController {
       out.append("Do you want to add a human player or a computer player? [H/C] \n");
       while (scan.hasNextLine()) {
         next = scan.nextLine();
-        if (next.equalsIgnoreCase("H") || next.equalsIgnoreCase("human")) {
+        if ("H".equalsIgnoreCase(next) || "human".equalsIgnoreCase(next)) {
           isHuman = true;
           break;
-        } else if (next.equalsIgnoreCase("C") || next.equalsIgnoreCase("computer")) {
+        } else if ("C".equalsIgnoreCase(next) || "computer".equalsIgnoreCase(next)) {
           isHuman = false;
           break;
         } else {
@@ -57,7 +66,7 @@ public class GameController {
 
       // read in the name of the player
       out.append("Enter the name of the player: \n");
-      String name = scan.nextLine();
+      final String name = scan.nextLine();
       int position = 0;
 
       // read in starting position of the player
@@ -167,11 +176,12 @@ public class GameController {
    * @param worldModel Would model to tell if player have item.
    * @param knownCommands Known command map to be modified.
    */
-  private void upDateCommands(WorldModel worldModel, Map<String, Function<Scanner, Command>> knownCommands) {
+  private void upDateCommands(WorldModel worldModel, Map<String,
+      Function<Scanner, Command>> knownCommands) {
     if (worldModel.showItems(worldModel.getTurn()).equals("[Empty]")) {
       knownCommands.remove("pick item");
     } else {
-      knownCommands.put("pick item", s -> new pickItem(scan, out));
+      knownCommands.put("pick item", s -> new PickItem(scan, out));
     }
   }
 
@@ -204,10 +214,11 @@ public class GameController {
         }
       }
 
-      out.append("\nStart game by adding a player? Enter y to add player and start, anything else to quit.\n");
+      out.append("\nStart game by adding a player? "
+          + "Enter y to add player and start, anything else to quit.\n");
       if (scan.hasNextLine()) {
         input = scan.nextLine();
-        if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("yes")) {
+        if ("y".equalsIgnoreCase(input) || "yes".equalsIgnoreCase(input)) {
           out.append("\nLet's add players.\n");
           addPlayer();
         } else {
@@ -218,10 +229,10 @@ public class GameController {
 
       for (int i = 0; i < 6; i++) {
         out.append("Do you want to add one more player? (Maximum 7, now ")
-            .append(String.valueOf(i+1))
+            .append(String.valueOf(i + 1))
             .append(") [Y/N]\n");
         input = scan.nextLine();
-        if (input.equalsIgnoreCase("Y") || input.equalsIgnoreCase("yes")) {
+        if ("y".equalsIgnoreCase(input) || "yes".equalsIgnoreCase(input)) {
           addPlayer();
         } else {
           out.append("\nStop adding player.\n");
@@ -231,8 +242,8 @@ public class GameController {
 
       // initialize all commands
       Map<String, Function<Scanner, Command>> knownCommands = new HashMap<>();
-      knownCommands.put("look around", s -> new lookAround(out));
-      knownCommands.put("move", s -> new movePlayer(scan, out));
+      knownCommands.put("look around", s -> new LookAround(out));
+      knownCommands.put("move", s -> new MovePlayer(scan, out));
 
       out.append("All players loaded, game starts now!\n");
       updateTurn();
@@ -244,7 +255,7 @@ public class GameController {
         Command command;
         String in = scan.nextLine();
 
-        if (in.equalsIgnoreCase("q") || in.equalsIgnoreCase("quit")) {
+        if ("q".equalsIgnoreCase(in) || "quit".equalsIgnoreCase(in)) {
           return;
         }
         Function<Scanner, Command> cmd = knownCommands.getOrDefault(in, null);
