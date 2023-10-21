@@ -24,12 +24,12 @@ public class pickItem implements Command {
     try {
       out.append("Here are available items: ")
           .append(m.showItems(player))
-          .append("\nWhich one you want to pick, enter index of item:");
+          .append("\nWhich one you want to pick, enter index of item: ");
 
       String next;
       int index;
-      while (true) {
-        next = scan.next();
+      while (scan.hasNextLine()) {
+        next = scan.nextLine();
         try {
           index = Integer.parseInt(next);
         } catch (NumberFormatException nfe) {
@@ -38,7 +38,8 @@ public class pickItem implements Command {
               .append("\nPlease enter again: ");
           continue;
         }
-        if (m.pickUpItem(player, index)) {
+        if (m.pickUpItem(player, index - 1)) {
+          out.append("Successfully picked up item.\n");
           break;
         } else {
           out.append("Index out of bound.\n")
