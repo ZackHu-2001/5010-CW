@@ -41,8 +41,10 @@ public class GameController {
 
   /**
    * Add players, whether human player or computer player.
+   *
+   * @return Whether user wants to quit.
    */
-  private void addPlayer() {
+  private boolean addPlayer() {
     String next;
     try {
       // let the user decides whether create a human player or computer player
@@ -50,6 +52,9 @@ public class GameController {
       out.append("Do you want to add a human player or a computer player? [H/C] \n");
       while (scan.hasNextLine()) {
         next = scan.nextLine();
+        if (quitCheck(next)) {
+          return true;
+        }
         if ("H".equalsIgnoreCase(next) || "human".equalsIgnoreCase(next)) {
           isHuman = true;
           break;
@@ -66,7 +71,12 @@ public class GameController {
 
       // read in the name of the player
       out.append("Enter the name of the player: \n");
-      final String name = scan.nextLine();
+      final String name;
+      if (scan.hasNextLine()) {
+        name = scan.nextLine();
+      } else {
+        return true;
+      }
       int position = 0;
 
       // read in starting position of the player
@@ -77,6 +87,9 @@ public class GameController {
 
       while (scan.hasNextLine()) {
         next = scan.nextLine();
+        if (quitCheck(next)) {
+          return true;
+        }
         try {
           position = Integer.valueOf(next);
           if (position <= roomNum && position >= 1) {
@@ -114,6 +127,8 @@ public class GameController {
           .append("\nStarting position: ")
           .append(String.valueOf(position + 1))
           .append("\n\n");
+
+      return false;
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
@@ -121,17 +136,20 @@ public class GameController {
 
   /**
    * Update current turn.
+   *
+   * @return Whether turn runs up and game should exit.
    */
-  private void updateTurn() {
+  private boolean updateTurn() {
     currentTurn += 1;
     if (currentTurn > maxTurn) {
       try {
         out.append("Maximum turn reached, game over.");
-        System.exit(1);
+        return true;
       } catch (IOException ioe) {
         throw new IllegalStateException("Append failed\n");
       }
-
+    } else {
+      return false;
     }
   }
 
@@ -186,6 +204,26 @@ public class GameController {
   }
 
   /**
+   * Check if user input quit or q, if so, return true to tell caller
+   * to exit the game.
+   *
+   * @param input User input.
+   * @return Whether user input quit.
+   */
+  private boolean quitCheck(String input) {
+    if (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit")) {
+      try {
+        out.append("Exit game, have a nice day~\n");
+        return true;
+      } catch (IOException ioe) {
+        throw new IllegalStateException("Append failed", ioe);
+      }
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Start the game, handling user's commands through command pattern.
    * Three commands provided, the detailed implementation of those
    * command are in the model.
@@ -205,11 +243,18 @@ public class GameController {
       out.append("What is the max turn of the game?\n");
       while (scan.hasNextLine()) {
         input = scan.nextLine();
+        if (quitCheck(input)) {
+          return;
+        }
         try {
           maxTurn = Integer.valueOf(input);
+          if (maxTurn <= 0) {
+            out.append("Invalid max turn, one positive integer expected.\n");
+            continue;
+          }
           break;
         } catch (NumberFormatException nfe) {
-          out.append("Invalid max turn, integer expected.\n")
+          out.append("Invalid max turn, one positive integer expected.\n")
               .append("Please enter again:");
         }
       }
@@ -218,26 +263,43 @@ public class GameController {
           + "Enter y to add player and start, anything else to quit.\n");
       if (scan.hasNextLine()) {
         input = scan.nextLine();
+        if (quitCheck(input)) {
+          return;
+        }
         if ("y".equalsIgnoreCase(input) || "yes".equalsIgnoreCase(input)) {
           out.append("\nLet's add players.\n");
-          addPlayer();
+          if (addPlayer()) {
+            return;
+          }
         } else {
           out.append("Exit game, have a nice day~\n");
-          System.exit(1);
+          return;
         }
       }
 
+      // allow for 7 players in total
       for (int i = 0; i < 6; i++) {
         out.append("Do you want to add one more player? (Maximum 7, now ")
             .append(String.valueOf(i + 1))
             .append(") [Y/N]\n");
-        input = scan.nextLine();
-        if ("y".equalsIgnoreCase(input) || "yes".equalsIgnoreCase(input)) {
-          addPlayer();
+        if (scan.hasNextLine()) {
+          input = scan.nextLine();
+          if (quitCheck(input)) {
+            return;
+          }
+          if ("y".equalsIgnoreCase(input) || "yes".equalsIgnoreCase(input)) {
+            if (addPlayer()) {
+              return;
+            }
+          } else {
+            out.append("\nStop adding player.\n");
+            break;
+          }
         } else {
           out.append("\nStop adding player.\n");
           break;
         }
+
       }
 
       // initialize all commands
@@ -246,7 +308,13 @@ public class GameController {
       knownCommands.put("move", s -> new MovePlayer(scan, out));
 
       out.append("All players loaded, game starts now!\n");
-      updateTurn();
+
+      // update turn returns whether turn runs up
+      if (updateTurn()) {
+        // return if turn runs up
+        return;
+      }
+
       printTurnInfo();
       upDateCommands(worldModel, knownCommands);
 
@@ -255,9 +323,10 @@ public class GameController {
         Command command;
         String in = scan.nextLine();
 
-        if ("q".equalsIgnoreCase(in) || "quit".equalsIgnoreCase(in)) {
+        if (quitCheck(in)) {
           return;
         }
+
         Function<Scanner, Command> cmd = knownCommands.getOrDefault(in, null);
         if (cmd == null) {
           out.append("Invalid input. Commands like [look around], [move], [pick item] expected.\n");
@@ -268,7 +337,11 @@ public class GameController {
           command.act(worldModel);
         }
 
-        updateTurn();
+        // update turn returns whether turn runs up
+        if (updateTurn()) {
+          // return if turn runs up
+          return;
+        }
         printTurnInfo();
         upDateCommands(worldModel, knownCommands);
       }
