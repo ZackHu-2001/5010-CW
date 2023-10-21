@@ -63,7 +63,7 @@ public class Player {
   public String toString() {
     StringBuilder stringBuilder = new StringBuilder("Name: ")
         .append(name)
-        .append("\nHolds: ");
+        .append("    Holds: ");
     if (itemList.isEmpty()) {
       stringBuilder.append("[Empty]\n");
     } else {
