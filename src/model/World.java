@@ -108,12 +108,17 @@ public class World implements WorldModel{
    * @param targetRoomId The target room's id.
    */
   @Override
-  public void movePlayer(Player player, int targetRoomId) {
+  public boolean movePlayer(Player player, int targetRoomId) {
+    if (targetRoomId < 0 || targetRoomId >= mansion.getRoomList().size()) {
+      return false;
+    }
     Room targetRoom = mansion.getRoomList().get(targetRoomId);
+//    System.out.println(targetRoom.toString());
     List<Room> neightborList = targetRoom.getNeightborList();
-    
+
     boolean isNeighbor = false;
     for (Room tmp: neightborList) {
+//    System.out.println(tmp.getId());
       if (tmp.getId() == player.getCurrentRoom()) {
         isNeighbor = true;
         break;
@@ -124,13 +129,15 @@ public class World implements WorldModel{
       mansion.getRoomList().get(player.getCurrentRoom()).deletePlayer(player);
       mansion.getRoomList().get(targetRoomId).addPlayer(player);
       player.move(targetRoomId);
-    } else {
-      throw new IllegalStateException("Invalid move to room " + targetRoomId);
-    }
 
-    // turn + 1
-    target.move();
-    updateTurn();
+      // turn + 1
+      target.move();
+      updateTurn();
+
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -144,8 +151,12 @@ public class World implements WorldModel{
     if (itemList.isEmpty()) {
       stringBuilder.append("[Empty]");
     } else {
+      int cnt = 1;
       for (Item item: itemList) {
-        stringBuilder.append(item.toString());
+        stringBuilder.append(cnt)
+                .append(". ")
+                .append(item.toString());
+        cnt += 1;
       }
     }
 
@@ -165,6 +176,7 @@ public class World implements WorldModel{
       return false;
     }
     player.addItem(itemList.get(index));
+    getMansion().getRoomList().get(player.getCurrentRoom()).deleteItem(index);
     return true;
   }
 
