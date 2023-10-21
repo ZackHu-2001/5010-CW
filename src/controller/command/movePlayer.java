@@ -33,6 +33,11 @@ public class movePlayer implements Command {
               out.append("\nCan not move to room ")
                   .append(String.valueOf(targetRoomId))
                   .append(", not neighbor of current room.\nPlease enter again: ");
+            } else {
+              out.append("\nSuccessfully moved to room ")
+                  .append(String.valueOf(targetRoomId))
+                  .append(".\n");
+              break;
             }
 
           } catch (NumberFormatException nfe) {
