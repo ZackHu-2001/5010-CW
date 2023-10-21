@@ -136,6 +136,14 @@ public class Room {
   }
 
   /**
+   * Once the player picked up the item, it is removed from room.
+   * @param index The item's index to be removed.
+   */
+  public void deleteItem(int index) {
+    itemList.remove(index);
+  }
+
+  /**
    * Gets the list of visible room.
    *
    * @return The list of visible room.
