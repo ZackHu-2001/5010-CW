@@ -79,12 +79,12 @@ public interface WorldModel {
   public String getRoomInfo(int roomId);
 
   /**
-   * Return the room number in the mansion, which is to help
+   * Return the total room count in the mansion, which is to help
    * handle user creating player.
    *
-   * @return The room number.
+   * @return The total room count.
    */
-  public int getRoomNum();
+  public int getRoomCnt();
 
   /**
    * Get doctor lucky's current position.
@@ -92,4 +92,11 @@ public interface WorldModel {
    * @return Current position of doctor lucky.
    */
   public int getTargePosition();
+
+  /**
+   * Return the command of computer player.
+   *
+   * @return The command of computer player.
+   */
+  public Readable computerPlayerAction(Player player);
 }

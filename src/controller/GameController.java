@@ -6,6 +6,7 @@ import controller.command.PickItem;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.function.Function;
 import model.Player;
@@ -19,7 +20,9 @@ import model.WorldModel;
 public class GameController {
 
   private WorldModel worldModel;
-  private final Scanner scan;
+  private Scanner scan;
+  private final Readable humanInput;
+  private Readable computerInput;
   private final Appendable out;
   private int maxTurn;
   private int currentTurn;
@@ -36,7 +39,8 @@ public class GameController {
       throw new IllegalArgumentException("Readable and Appendable can't be null");
     }
     this.out = out;
-    scan = new Scanner(in);
+    this.humanInput = in;
+    this.scan = new Scanner(in);
   }
 
   /**
@@ -80,9 +84,9 @@ public class GameController {
       int position = 0;
 
       // read in starting position of the player
-      int roomNum = worldModel.getRoomNum();
+      int roomCnt = worldModel.getRoomCnt();
       out.append("Enter the starting position (range from 1 to ")
-          .append(String.valueOf(roomNum))
+          .append(String.valueOf(roomCnt))
           .append(") of the player: \n");
 
       while (scan.hasNextLine()) {
@@ -92,13 +96,13 @@ public class GameController {
         }
         try {
           position = Integer.valueOf(next);
-          if (position <= roomNum && position >= 1) {
+          if (position <= roomCnt && position >= 1) {
             break;
           } else {
             out.append("Invalid position: ")
                 .append(String.valueOf(position))
                 .append(", should be in range 1 to ")
-                .append(String.valueOf(roomNum))
+                .append(String.valueOf(roomCnt))
                 .append(". \n")
                 .append(reEnterPromot);
           }
@@ -166,8 +170,11 @@ public class GameController {
 
       Player player = worldModel.getTurn();
       if (player.isHuman()) {
+        scan = new Scanner(humanInput);
         out.append("\nInformation of the current turn's human player: \n");
       } else {
+        computerInput = worldModel.computerPlayerAction(player);
+        scan = new Scanner(computerInput);
         out.append("\nInformation of the current turn's computer player: \n");
       }
       out.append(player.toString())
@@ -186,6 +193,7 @@ public class GameController {
       throw new IllegalStateException("Append failed", ioe);
     }
   }
+
 
   /**
    * The purpose of this method is to make sure that, when player have no item

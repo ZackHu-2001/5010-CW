@@ -5,13 +5,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.io.StringReader;
+import java.util.*;
 
 /**
  * The {@code World} class represents a virtual game world containing a mansion, 
@@ -67,12 +66,12 @@ public class World implements WorldModel {
   }
 
   /**
-   * Return the room number in the mansion, which is to help
+   * Return the total room count in the mansion, which is to help
    * handle user creating player.
    *
-   * @return The room number.
+   * @return The total room count.
    */
-  public int getRoomNum() {
+  public int getRoomCnt() {
     return getMansion().getRoomList().size();
   }
 
@@ -100,6 +99,23 @@ public class World implements WorldModel {
     return player;
   }
 
+  /**
+   * Return the command of computer player.
+   *
+   * @return The command of computer player.
+   */
+  public Readable computerPlayerAction(Player player) {
+     StringBuilder computerCommand = new StringBuilder();
+     Random random = new Random();
+     if (random.nextBoolean()) {
+       computerCommand.append("look around\n");
+     } else {
+       computerCommand.append("move\n");
+       int max = mansion.getRoomList().get(player.getCurrentRoom()).getNeightborList().size();
+       computerCommand.append(random.nextInt(max) + 1).append("\n");
+     }
+    return new StringReader(computerCommand.toString());
+  }
 
   /**
    * Moves the player to the target room.
