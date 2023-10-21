@@ -3,12 +3,24 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Player class represents the player. It maintains fields
+ * like name, currentRoom, and list of holding items. It
+ * also provides some basic method to let controller control.
+ */
 public class Player {
   private final String name;
   private List<Item> itemList;
   private int currentRoom;
   private final boolean isHuman;
 
+  /**
+   * Constructor of Player class.
+   *
+   * @param name        Name of the player.
+   * @param currentRoom Room that player start with.
+   * @param isHuman     Whether is a human player.
+   */
   public Player(String name, int currentRoom, boolean isHuman) {
     this.name = name;
     this.currentRoom = currentRoom;
@@ -58,7 +70,7 @@ public class Player {
    * in the world and what they are carrying.
    *
    * @return A description of a specific player including where they are
-   *    * in the world and what they are carrying.
+   *        in the world and what they are carrying.
    */
   public String toString() {
     StringBuilder stringBuilder = new StringBuilder("Name: ")
@@ -67,11 +79,10 @@ public class Player {
     if (itemList.isEmpty()) {
       stringBuilder.append("[Empty]\n");
     } else {
-      for (Item i: itemList) {
+      for (Item i : itemList) {
         stringBuilder.append(i.toString());
       }
     }
-
 
     return stringBuilder.toString();
   }

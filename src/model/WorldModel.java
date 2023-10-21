@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * The model in MVC pattern. Model provides a series of method
+ * to let controller handle and control.
+ */
 public interface WorldModel {
 
   /**
@@ -37,6 +41,7 @@ public interface WorldModel {
    * Show a list of available items in the room.
    *
    * @param player The player whose turn it is at the moment.
+   * @return The string shows the detailed information of those items.
    */
   public String showItems(Player player);
 

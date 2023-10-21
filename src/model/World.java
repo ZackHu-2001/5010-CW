@@ -18,7 +18,7 @@ import java.util.Queue;
  * a target, and various rooms. It provides functionality to set up the world 
  * from input data, calculate neighbors between rooms, and draw a map of the world.
  */
-public class World implements WorldModel{
+public class World implements WorldModel {
   private Target target;
   private Mansion mansion;
   private int currentTurn;
@@ -113,12 +113,10 @@ public class World implements WorldModel{
       return false;
     }
     Room targetRoom = mansion.getRoomList().get(targetRoomId);
-//    System.out.println(targetRoom.toString());
     List<Room> neightborList = targetRoom.getNeightborList();
 
     boolean isNeighbor = false;
-    for (Room tmp: neightborList) {
-//    System.out.println(tmp.getId());
+    for (Room tmp : neightborList) {
       if (tmp.getId() == player.getCurrentRoom()) {
         isNeighbor = true;
         break;
@@ -143,7 +141,8 @@ public class World implements WorldModel{
   /**
    * Show a list of available items in the room.
    *
-   * @param player    The player whose turn it is at the moment.
+   * @param player The player whose turn it is at the moment.
+   * @return The string shows the detailed information of those items.
    */
   public String showItems(Player player) {
     List<Item> itemList = mansion.getRoomList().get(player.getCurrentRoom()).getItemList();
@@ -152,7 +151,7 @@ public class World implements WorldModel{
       stringBuilder.append("[Empty]");
     } else {
       int cnt = 1;
-      for (Item item: itemList) {
+      for (Item item : itemList) {
         stringBuilder.append(cnt)
                 .append(". ")
                 .append(item.toString());
@@ -194,7 +193,9 @@ public class World implements WorldModel{
 
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("Neighbor rooms' information: \n");
-    for (Room neighborRoom: getMansion().getRoomList().get(player.getCurrentRoom()).getNeightborList()) {
+    List<Room> neightborList = getMansion().getRoomList()
+        .get(player.getCurrentRoom()).getNeightborList();
+    for (Room neighborRoom : neightborList) {
       stringBuilder.append(neighborRoom.toString());
     }
 
@@ -236,15 +237,6 @@ public class World implements WorldModel{
   public String toString() {
     return this.mansion.toString();
   }
-
-//  /**
-//   * Return whether game ends.
-//   *
-//   * @return Whether game ends.
-//   */
-//  public boolean isGameOver() {
-//    return currentTurn >= maxTurn;
-//  }
 
   /**
    * Parses the input information to create the mansion, target, rooms, and items in the world.
