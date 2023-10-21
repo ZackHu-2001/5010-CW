@@ -26,7 +26,7 @@ public class Driver {
    */
   public static void main(String[] args) {
     StringReader filePath = new StringReader("res/mansion.txt\n");
-    StringReader command = new StringReader("y\nh\nzack\n2\nn\nlook around\nmove\n2\n1");
+    StringReader command = new StringReader("jkl\n10\ny\nh\nzack\n2\nn\nlook around\nmove\n2\n1\n1\n0");
     Appendable output = System.out;
 
     // read user input: the mansion file, or direct string input
@@ -49,8 +49,8 @@ public class Driver {
 
       output.append(worldModel.toString());
 
-//      GameController gameController = new GameController(new InputStreamReader(System.in), output);
-      GameController gameController = new GameController(command, output);
+      GameController gameController = new GameController(new InputStreamReader(System.in), output);
+//      GameController gameController = new GameController(command, output);
       gameController.startGame(worldModel);
 
     } catch (IOException e) {
