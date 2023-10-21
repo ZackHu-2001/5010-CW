@@ -65,13 +65,6 @@ public interface WorldModel {
    */
   public String toString();
 
-//  /**
-//   * Return whether game ends.
-//   *
-//   * @return Whether game ends.
-//   */
-//  public boolean isGameOver();
-
   /**
    * Return the information of a specific room.
    *
