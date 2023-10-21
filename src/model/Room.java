@@ -24,6 +24,7 @@ public class Room {
    * @param location An array of four integers specifying the room's location within the world grid.
    *                 The array should contain four elements in the order
    *                 [rowStart, colStart, rowEnd, colEnd].
+   * @param id       The id of the room.
    * @throws IllegalArgumentException if the location array does not contain exactly four elements.
    * @throws IllegalStateException    if the location coordinates are invalid
    *                                  (e.g., end coordinates are less than start coordinates).
@@ -117,6 +118,7 @@ public class Room {
   public int getId() {
     return id;
   }
+
   /**
    * Gets the list of items found in the room.
    *
@@ -189,6 +191,14 @@ public class Room {
           .append(", ");
     }
     sb.deleteCharAt(sb.length() - 2);
+    sb.append("\n\t\tPlayer inside: ");
+    if (playerList.isEmpty()) {
+      sb.append("[Empty]");
+    } else {
+      for (Player player : playerList) {
+        sb.append(player.toString());
+      }
+    }
     sb.append("\n\n");
     return new String(sb);
   }
