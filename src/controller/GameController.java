@@ -39,8 +39,8 @@ public class GameController {
       // let the user decides whether create a human player or computer player
       boolean isHuman = true;
       out.append("Do you want to add a human player or a computer player? [H/C] \n");
-      while (scan.hasNext()) {
-        next = scan.next();
+      while (scan.hasNextLine()) {
+        next = scan.nextLine();
         if (next.equalsIgnoreCase("H") || next.equalsIgnoreCase("human")) {
           isHuman = true;
           break;
@@ -55,14 +55,10 @@ public class GameController {
         }
       }
 
-      // read in name of the player
+      // read in the name of the player
       out.append("Enter the name of the player: \n");
-      String name = "";
+      String name = scan.nextLine();
       int position = 0;
-
-      if (scan.hasNext()) {
-        name = scan.next();
-      }
 
       // read in starting position of the player
       int roomNum = worldModel.getRoomNum();
@@ -70,8 +66,8 @@ public class GameController {
           .append(String.valueOf(roomNum))
           .append(") of the player: \n");
 
-      while (scan.hasNext()) {
-        next = scan.next();
+      while (scan.hasNextLine()) {
+        next = scan.nextLine();
         try {
           position = Integer.valueOf(next);
           if (position <= roomNum && position >= 1) {
@@ -91,11 +87,11 @@ public class GameController {
               .append("\n")
               .append(reEnterPromot);
         }
-
       }
+      position -= 1;
 
       // add player to the game
-      worldModel.addPlayer(name, position - 1, isHuman);
+      worldModel.addPlayer(name, position, isHuman);
       out.append("\nOne player added successfully!\n")
           .append("\nA summary of the ");
       if (isHuman) {
@@ -107,7 +103,7 @@ public class GameController {
           .append("Name: ")
           .append(name)
           .append("\nStarting position: ")
-          .append(String.valueOf(position))
+          .append(String.valueOf(position + 1))
           .append("\n\n");
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
@@ -195,21 +191,36 @@ public class GameController {
 
     // add player
     try {
-      out.append("Start game by adding a player? Enter y to add player and start, anything else to quit.\n");
-      String input = scan.next();
-      if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("yes")) {
-        out.append("\nLet's add players.\n");
-        addPlayer();
-      } else {
-        out.append("Exit game, have a nice day~\n");
-        System.exit(1);
+      String input;
+      out.append("What is the max turn of the game?\n");
+      while (scan.hasNextLine()) {
+        input = scan.nextLine();
+        try {
+          maxTurn = Integer.valueOf(input);
+          break;
+        } catch (NumberFormatException nfe) {
+          out.append("Invalid max turn, integer expected.\n")
+              .append("Please enter again:");
+        }
+      }
+
+      out.append("\nStart game by adding a player? Enter y to add player and start, anything else to quit.\n");
+      if (scan.hasNextLine()) {
+        input = scan.nextLine();
+        if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("yes")) {
+          out.append("\nLet's add players.\n");
+          addPlayer();
+        } else {
+          out.append("Exit game, have a nice day~\n");
+          System.exit(1);
+        }
       }
 
       for (int i = 0; i < 6; i++) {
         out.append("Do you want to add one more player? (Maximum 7, now ")
             .append(String.valueOf(i+1))
             .append(") [Y/N]\n");
-        input = scan.next();
+        input = scan.nextLine();
         if (input.equalsIgnoreCase("Y") || input.equalsIgnoreCase("yes")) {
           addPlayer();
         } else {
@@ -227,7 +238,6 @@ public class GameController {
       updateTurn();
       printTurnInfo();
       upDateCommands(worldModel, knownCommands);
-      scan.nextLine();
 
       // handle user input command
       while (scan.hasNextLine()) {
@@ -241,7 +251,6 @@ public class GameController {
         if (cmd == null) {
           out.append("Invalid input. Commands like [look around], [move], [pick item] expected.\n");
           out.append(reEnterPromot);
-          scan.nextLine();
           continue;
         } else {
           command = cmd.apply(scan);
