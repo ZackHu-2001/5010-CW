@@ -57,12 +57,16 @@ public class Player {
   }
 
   /**
-   * Add item to the player.
+   * Add item to the player, if already have 4 items then replace the first item with the new item.
    *
    * @param item Item to be added.
    */
   public void addItem(Item item) {
-    itemList.add(item);
+    if (itemList.size() >= 4) {
+      itemList.set(0, item);
+    } else {
+      itemList.add(item);
+    }
   }
 
   /**
@@ -82,6 +86,7 @@ public class Player {
       for (Item i : itemList) {
         stringBuilder.append(i.toString());
       }
+      stringBuilder.append("\n");
     }
 
     return stringBuilder.toString();
