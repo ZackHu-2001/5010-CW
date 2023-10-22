@@ -166,13 +166,7 @@ public class Room {
         .append(name)
         .append("]")
         .append(": ")
-        .append(location[0])
-        .append(" ")
-        .append(location[1])
-        .append(", ")
-        .append(location[2])
-        .append(" ")
-        .append(location[3])
+        .append((id+1))
         .append("\n\t\tItems within: ");
     if (itemList.isEmpty()) {
       sb.append("[Empty]");
@@ -193,13 +187,13 @@ public class Room {
     sb.deleteCharAt(sb.length() - 2);
     sb.append("\n\t\tPlayer inside: ");
     if (playerList.isEmpty()) {
-      sb.append("[Empty]");
+      sb.append("[Empty]\n");
     } else {
       for (Player player : playerList) {
         sb.append(player.toString());
       }
     }
-    sb.append("\n\n");
+    sb.append("\n");
     return new String(sb);
   }
 
