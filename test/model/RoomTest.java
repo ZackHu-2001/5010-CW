@@ -84,7 +84,7 @@ public class RoomTest {
     Room room = new Room("Foo", new int[] { 1, 2, 3, 4}, 1);
     for (int i = 0; i < 20; i++) {
       room.addItem(new Item("Pen", random.nextInt(10) + 1,
-          random.nextInt(30), 31));
+          31));
       assertEquals(i + 1, room.getItemList().size());
     }
   }
@@ -140,7 +140,7 @@ public class RoomTest {
     Room room = new Room("Foo", new int[] {1, 2, 3, 4}, 1);
     for (int i = 0; i < 20; i++) {
       Item item = new Item("Pen", random.nextInt(10) + 1,
-          random.nextInt(30), 31);
+          31);
       room.addItem(item);
       assertEquals(i + 1, room.getItemList().size());
     }
@@ -156,7 +156,7 @@ public class RoomTest {
     Room room = new Room(name, location, roomId);
     for (int i = 0; i < 20; i++) {
       Item item = new Item("Pen", random.nextInt(10) + 1,
-          random.nextInt(30), 31);
+          31);
       room.addItem(item);
       assertEquals(i + 1, room.getItemList().size());
     }
@@ -200,7 +200,7 @@ public class RoomTest {
 
     for (int i = 0; i < 3; i++) {
       Item item = new Item("Pen", random.nextInt(10) + 1,
-          random.nextInt(30), 31);
+          31);
       a.addItem(item);
       b.addItem(item);
       c.addItem(item);
@@ -222,7 +222,7 @@ public class RoomTest {
     Room room = new Room(name, location, 1);
     for (int i = 0; i < 20; i++) {
       Item item = new Item("Pen", random.nextInt(10) + 1,
-          random.nextInt(30), 31);
+          31);
       room.addItem(item);
       assertEquals(i + 1, room.getItemList().size());
     }

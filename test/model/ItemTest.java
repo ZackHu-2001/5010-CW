@@ -24,28 +24,28 @@ public class ItemTest {
   @Test
   public void testInvalidValueForConstructor() {
     try {
-      new Item("Foo", 3, -1, 15);
+      new Item("Foo", 3, 15);
       fail("Unable to catch exception.");
     } catch (IllegalArgumentException e) {
       System.out.println("Successfully caught the exception.");
     }
 
     try {
-      new Item("Foo", -3, 10, 15);
+      new Item("Foo", -3, 15);
       fail("Unable to catch exception.");
     } catch (IllegalArgumentException e) {
       System.out.println("Successfully caught the exception.");
     }
 
     try {
-      new Item("Foo", 0, 10, 15);
+      new Item("Foo", 0, 15);
       fail("Unable to catch exception.");
     } catch (IllegalArgumentException e) {
       System.out.println("Successfully caught the exception.");
     }
 
     try {
-      new Item("Foo", 1, 10, 10);
+      new Item("Foo", 1, 10);
       fail("Unable to catch exception.");
     } catch (IllegalArgumentException e) {
       System.out.println("Successfully caught the exception.");
@@ -59,11 +59,11 @@ public class ItemTest {
   @Test
   public void testValidValueForConstructor() {
     try {
-      new Item("Foo", 1, 1, 15);
-      new Item("Foo", 3, 10, 15);
-      new Item("Foo", 4, 5, 15);
-      new Item("Foo", 2, 6, 15);
-      new Item("Foo", 6, 12, 15);
+      new Item("Foo", 1, 15);
+      new Item("Foo", 3, 15);
+      new Item("Foo", 4, 15);
+      new Item("Foo", 2, 15);
+      new Item("Foo", 6, 15);
     } catch (IllegalArgumentException e) {
       fail("No exception should be thrown.");
     }
@@ -80,7 +80,7 @@ public class ItemTest {
       int value = random.nextInt(100) + 1;
       int roomWithin = random.nextInt(100);
       Item item = new Item("Foo" + String.valueOf(value), value,
-          roomWithin, roomWithin + 1);
+          roomWithin + 1);
       assertEquals(value, item.getValue());
     }
   }
@@ -96,26 +96,26 @@ public class ItemTest {
       int value = random.nextInt(100) + 1;
       int roomWithin = random.nextInt(100);
       Item item = new Item("Foo" + String.valueOf(value), value,
-          roomWithin, roomWithin + 1);
+          roomWithin + 1);
       assertEquals("Foo" + String.valueOf(value), item.getName());
     }
   }
 
-  /**
-   * Test the {@link Item#getRoomWithin()} method to ensure it returns the correct room within.
-   */
-  @Test
-  public void testGetRoomWithin() {
-    // Fuzz test
-    Random random = new Random();
-    for (int i = 0; i < 20; i++) {
-      int value = random.nextInt(100) + 1;
-      int roomWithin = random.nextInt(100);
-      Item item = new Item("Foo" + String.valueOf(value), value,
-          roomWithin, roomWithin + 1);
-      assertEquals(roomWithin, item.getRoomWithin());
-    }
-  }
+//  /**
+//   * Test the {@link Item#getRoomWithin()} method to ensure it returns the correct room within.
+//   */
+//  @Test
+//  public void testGetRoomWithin() {
+//    // Fuzz test
+//    Random random = new Random();
+//    for (int i = 0; i < 20; i++) {
+//      int value = random.nextInt(100) + 1;
+//      int roomWithin = random.nextInt(100);
+//      Item item = new Item("Foo" + String.valueOf(value), value,
+//          roomWithin + 1);
+//      assertEquals(roomWithin, item.getRoomWithin());
+//    }
+//  }
 
   /**
    * Test the {@link Item#toString()} method to ensure it generates
@@ -129,7 +129,7 @@ public class ItemTest {
       int value = random.nextInt(100) + 1;
       int roomWithin = random.nextInt(100);
       Item item = new Item("Foo" + String.valueOf(value), value,
-          roomWithin, roomWithin + 1);
+          roomWithin + 1);
       String expected = String.format("[%s]: %d, in %d# room; ",
           "Foo" + String.valueOf(value), value, roomWithin);
       assertEquals(expected, item.toString());
@@ -142,22 +142,22 @@ public class ItemTest {
    */
   @Test
   public void testEquals() {
-    Item a = new Item("A", 3, 15, 20);
+    Item a = new Item("A", 3, 20);
     assertTrue(a.equals(a));
 
-    Item b = new Item("B", 3, 15, 20);
+    Item b = new Item("B", 3, 20);
     assertFalse(a.equals(b));
 
-    Item c = new Item("A", 1, 15, 20);
+    Item c = new Item("A", 1, 20);
     assertFalse(a.equals(c));
 
-    Item d = new Item("A", 3, 12, 20);
+    Item d = new Item("A", 3, 20);
     assertFalse(a.equals(d));
 
-    Item e = new Item("A", 3, 15, 18);
+    Item e = new Item("A", 3, 18);
     assertFalse(a.equals(e));
 
-    Item f = new Item("A", 3, 15, 20);
+    Item f = new Item("A", 3, 20);
     assertTrue(a.equals(f));
   }
 
@@ -167,7 +167,7 @@ public class ItemTest {
    */
   @Test
   public void testHashCode() {
-    Item a = new Item("A", 3, 15, 20);
+    Item a = new Item("A", 3, 20);
     assertEquals(Objects.hash("A", 3, 15, 20), a.hashCode());
   }
 }

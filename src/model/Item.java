@@ -10,28 +10,24 @@ import java.util.Objects;
 public class Item {
   private final String name;
   private final int value;
-  private int roomWithin;
+//  private int roomWithin;
   private final int maxRoomNum;
   /**
    * Constructs a new item with the specified name, value, and room location.
    *
    * @param name       The name of the item.
    * @param value      The value of the item.
-   * @param roomWithin The room number where the item is located.
    * @param maxRoomNum The maximum number of room in the mansion.
    */
 
-  public Item(String name, int value, int roomWithin, int maxRoomNum) {
+  public Item(String name, int value, int maxRoomNum) {
     if (value <= 0) {
       throw new IllegalArgumentException("Item should have positive attack.");
-    }
-    if (roomWithin < 0 || roomWithin >= maxRoomNum) {
-      throw new IllegalArgumentException("Illegal room for item.");
     }
 
     this.name = name;
     this.value = value;
-    this.roomWithin = roomWithin;
+//    this.roomWithin = roomWithin;
     this.maxRoomNum = maxRoomNum;
   }
 
@@ -52,14 +48,14 @@ public class Item {
     return name;
   }
 
-  /**
-   * Gets the room number where the item is located.
-   *
-   * @return The room number where the item is located.
-   */
-  public int getRoomWithin() {
-    return roomWithin;
-  }
+//  /**
+//   * Gets the room number where the item is located.
+//   *
+//   * @return The room number where the item is located.
+//   */
+//  public int getRoomWithin() {
+//    return roomWithin;
+//  }
 
 
   /**
@@ -68,7 +64,7 @@ public class Item {
    * @return A string containing item information.
    */
   public String toString() {
-    return String.format("[%s]: attack %d, in #%d room; ", name, value, roomWithin + 1);
+    return String.format("[%s]: attack %d; ", name, value);
   }
 
   /**
@@ -91,7 +87,6 @@ public class Item {
     Item item = (Item) o;
     return this.name.equals(item.name)
         && this.value == item.value
-        && this.roomWithin == item.roomWithin
         && this.maxRoomNum == item.maxRoomNum;
   }
 
@@ -103,6 +98,6 @@ public class Item {
    */
   @Override
   public int hashCode() {
-    return Objects.hash(name, value, roomWithin, maxRoomNum);
+    return Objects.hash(name, value, maxRoomNum);
   }
 }
