@@ -5,12 +5,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
 
 /**
  * The {@code World} class represents a virtual game world containing a mansion, 
@@ -22,6 +25,7 @@ public class World implements WorldModel {
   private Mansion mansion;
   private int currentTurn;
   private Queue<Player> playerQueue;
+  private final Random random = new Random(10);
 
 
   /**
@@ -102,18 +106,33 @@ public class World implements WorldModel {
   /**
    * Return the command of computer player.
    *
+   * @param player The current turn's player.
    * @return The command of computer player.
    */
   public Readable computerPlayerAction(Player player) {
-     StringBuilder computerCommand = new StringBuilder();
-     Random random = new Random();
-     if (random.nextBoolean()) {
-       computerCommand.append("look around\n");
-     } else {
-       computerCommand.append("move\n");
-       int max = mansion.getRoomList().get(player.getCurrentRoom()).getNeightborList().size();
-       computerCommand.append(random.nextInt(max) + 1).append("\n");
-     }
+    StringBuilder computerCommand = new StringBuilder();
+    int option;
+    if (mansion.getRoomList().get(player.getCurrentRoom()).getItemList().isEmpty()) {
+      option = 2;
+    } else {
+      option = 3;
+    }
+    int command = random.nextInt(option);
+    if (command == 0) {
+      computerCommand.append("look around\n");
+    } else if (command == 1) {
+      computerCommand.append("move\n");
+      List<Room> neighborList = mansion.getRoomList().get(player
+          .getCurrentRoom()).getNeightborList();
+      int max = neighborList.size();
+      Room selected = neighborList.get(random.nextInt(max));
+
+      computerCommand.append(selected.getId() + 1).append("\n");
+    } else {
+      computerCommand.append("pick item\n");
+      int maxItemOption = mansion.getRoomList().get(player.getCurrentRoom()).getItemList().size();
+      computerCommand.append(random.nextInt(maxItemOption) + 1);
+    }
     return new StringReader(computerCommand.toString());
   }
 
@@ -192,6 +211,10 @@ public class World implements WorldModel {
     }
     player.addItem(itemList.get(index));
     getMansion().getRoomList().get(player.getCurrentRoom()).deleteItem(index);
+
+    // turn + 1
+    target.move();
+    updateTurn();
     return true;
   }
 
@@ -308,7 +331,6 @@ public class World implements WorldModel {
       tmpRoom.addItem(new Item(
           parts[4 + roomNum + i].substring(parts[4 + roomNum + i].lastIndexOf(tmp[2])),
           Integer.parseInt(tmp[1]),
-          roomNumber,
           roomNum));
     }
   }
