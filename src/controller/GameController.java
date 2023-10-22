@@ -21,8 +21,7 @@ public class GameController {
 
   private WorldModel worldModel;
   private Scanner scan;
-  private final Readable humanInput;
-  private Readable computerInput;
+  private final Scanner humanInputScan;
   private final Appendable out;
   private int maxTurn;
   private int currentTurn;
@@ -39,8 +38,8 @@ public class GameController {
       throw new IllegalArgumentException("Readable and Appendable can't be null");
     }
     this.out = out;
-    this.humanInput = in;
-    this.scan = new Scanner(in);
+    this.humanInputScan = new Scanner(in);
+    this.scan = humanInputScan;
   }
 
   /**
@@ -166,14 +165,14 @@ public class GameController {
       out.append("\nTurn ")
           .append(String.valueOf(currentTurn))
           .append(", Doctor Lucky at room ")
-          .append(String.valueOf(worldModel.getTargePosition()));
+          .append(String.valueOf(worldModel.getTargePosition() + 1));
 
       Player player = worldModel.getTurn();
       if (player.isHuman()) {
-        scan = new Scanner(humanInput);
+        scan = humanInputScan;
         out.append("\nInformation of the current turn's human player: \n");
       } else {
-        computerInput = worldModel.computerPlayerAction(player);
+        Readable computerInput = worldModel.computerPlayerAction(player);
         scan = new Scanner(computerInput);
         out.append("\nInformation of the current turn's computer player: \n");
       }
@@ -219,7 +218,7 @@ public class GameController {
    * @return Whether user input quit.
    */
   private boolean quitCheck(String input) {
-    if (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit")) {
+    if ("q".equalsIgnoreCase(input) || "quit".equalsIgnoreCase(input)) {
       try {
         out.append("Exit game, have a nice day~\n");
         return true;
@@ -307,7 +306,6 @@ public class GameController {
           out.append("\nStop adding player.\n");
           break;
         }
-
       }
 
       // initialize all commands
