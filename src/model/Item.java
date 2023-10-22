@@ -10,7 +10,6 @@ import java.util.Objects;
 public class Item {
   private final String name;
   private final int value;
-//  private int roomWithin;
   private final int maxRoomNum;
   /**
    * Constructs a new item with the specified name, value, and room location.
@@ -27,7 +26,6 @@ public class Item {
 
     this.name = name;
     this.value = value;
-//    this.roomWithin = roomWithin;
     this.maxRoomNum = maxRoomNum;
   }
 
@@ -47,16 +45,6 @@ public class Item {
   public String getName() {
     return name;
   }
-
-//  /**
-//   * Gets the room number where the item is located.
-//   *
-//   * @return The room number where the item is located.
-//   */
-//  public int getRoomWithin() {
-//    return roomWithin;
-//  }
-
 
   /**
    * Returns a string representation of the item, including its name, value, and room location.

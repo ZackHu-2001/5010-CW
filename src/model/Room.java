@@ -166,7 +166,7 @@ public class Room {
         .append(name)
         .append("]")
         .append(": ")
-        .append((id+1))
+        .append((id + 1))
         .append("\n\t\tItems within: ");
     if (itemList.isEmpty()) {
       sb.append("[Empty]");

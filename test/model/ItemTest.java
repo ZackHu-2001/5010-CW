@@ -101,21 +101,6 @@ public class ItemTest {
     }
   }
 
-//  /**
-//   * Test the {@link Item#getRoomWithin()} method to ensure it returns the correct room within.
-//   */
-//  @Test
-//  public void testGetRoomWithin() {
-//    // Fuzz test
-//    Random random = new Random();
-//    for (int i = 0; i < 20; i++) {
-//      int value = random.nextInt(100) + 1;
-//      int roomWithin = random.nextInt(100);
-//      Item item = new Item("Foo" + String.valueOf(value), value,
-//          roomWithin + 1);
-//      assertEquals(roomWithin, item.getRoomWithin());
-//    }
-//  }
 
   /**
    * Test the {@link Item#toString()} method to ensure it generates

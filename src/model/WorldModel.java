@@ -96,6 +96,7 @@ public interface WorldModel {
   /**
    * Return the command of computer player.
    *
+   * @param player The computer player of this turn.
    * @return The command of computer player.
    */
   public Readable computerPlayerAction(Player player);
