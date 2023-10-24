@@ -63,8 +63,8 @@ public class World implements WorldModel {
    * Sets up the world based on input data from a Readable source.
    *
    * @param input The Readable input source containing world configuration data.
-   * @throws IOException if an I/O error occurs while reading the input.
    * @param numbers The numbers to control the computer player.
+   * @throws IOException if an I/O error occurs while reading the input.
    */
   public World(Readable input, int... numbers) throws IOException {
     BufferedReader bufferedReader = new BufferedReader((Reader) input);
