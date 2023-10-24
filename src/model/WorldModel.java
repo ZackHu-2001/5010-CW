@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.image.BufferedImage;
+
 /**
  * The model in MVC pattern. Model provides a series of method
  * to let controller handle and control.
@@ -100,4 +102,12 @@ public interface WorldModel {
    * @return The command of computer player.
    */
   public Readable computerPlayerAction(Player player);
+
+  /**
+   * Draws a map of the game world and saves it to an image file.
+   *
+   * @param outputFilePath The path and filename where the map image should be saved.
+   * @return bufferedImage The buffered image that could be stored in file.
+   */
+  public BufferedImage draw(String outputFilePath);
 }
