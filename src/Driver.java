@@ -1,6 +1,3 @@
-
-import static java.lang.System.exit;
-
 import controller.GameController;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,6 +7,8 @@ import java.io.StringReader;
 import java.util.Scanner;
 import model.World;
 import model.WorldModel;
+
+import static java.lang.System.*;
 
 
 /**
@@ -24,17 +23,19 @@ public class Driver {
    *                      command line arguments.
    */
   public static void main(String[] args) {
-    StringReader filePath = new StringReader("res/mansion.txt\n");
+    Readable input = new InputStreamReader(System.in);
     Appendable output = System.out;
 
     // read user input: the mansion file, or direct string input
     Reader fileReader;
     String pathToFile;
 
+    System.out.println("Please input path to the file: ");
+
     if (args.length != 0) {
       pathToFile = args[0];
     } else {
-      pathToFile = new Scanner(filePath).nextLine();
+      pathToFile = new Scanner(System.in).nextLine();
     }
 
     try {
@@ -46,7 +47,33 @@ public class Driver {
 
       output.append(worldModel.toString());
 
-      GameController gameController = new GameController(new InputStreamReader(System.in), output);
+      // read in max turn
+      int maxTurn = 0;
+      String inputString;
+      Scanner scan = new Scanner(System.in);
+
+      output.append("What is the max turn of the game?\n");
+      while (scan.hasNextLine()) {
+        inputString = scan.nextLine();
+        if (inputString.equalsIgnoreCase("quit")
+            || inputString.equalsIgnoreCase("q")) {
+          output.append("Exit game, have a nice day~\n");
+          return;
+        }
+        try {
+          maxTurn = Integer.valueOf(inputString);
+          if (maxTurn <= 0) {
+            output.append("Invalid max turn, one positive integer expected.\n");
+            continue;
+          }
+          break;
+        } catch (NumberFormatException nfe) {
+          output.append("Invalid max turn, one positive integer expected.\n")
+              .append("Please enter again:");
+        }
+      }
+
+      GameController gameController = new GameController(input, output, maxTurn);
       gameController.startGame(worldModel);
 
     } catch (IOException e) {
