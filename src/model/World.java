@@ -23,10 +23,41 @@ import java.util.Random;
 public class World implements WorldModel {
   private Target target;
   private Mansion mansion;
-  private int currentTurn;
   private Queue<Player> playerQueue;
-  private final Random random = new Random(10);
+  private RandomRumGenerator randomRumGenerator;
 
+
+  /**
+   * Inner class to help generate random number.
+   */
+  private class RandomRumGenerator {
+    private ArrayList<Integer> numbers;
+    private int currentIndex;
+    private Random random;
+
+    public RandomRumGenerator(int... numbers) {
+      if (numbers.length == 0) {
+        random = new Random(10);
+        this.currentIndex = -1;
+        this.numbers = null;
+      } else {
+        this.numbers = new ArrayList<>();
+        for (int number : numbers) {
+          this.numbers.add(number);
+        }
+        this.currentIndex = 0;
+        this.random = null;
+      }
+    }
+
+    public int getNextNumber(int range) {
+      if (random == null) {
+        return numbers.get(currentIndex ++ % numbers.size());
+      } else {
+        return random.nextInt(range);
+      }
+    }
+  }
 
   /**
    * Sets up the world based on input data from a Readable source.
@@ -34,7 +65,7 @@ public class World implements WorldModel {
    * @param input The Readable input source containing world configuration data.
    * @throws IOException if an I/O error occurs while reading the input.
    */
-  public World(Readable input) throws IOException {
+  public World(Readable input, int... numbers) throws IOException {
     BufferedReader bufferedReader = new BufferedReader((Reader) input);
     StringBuffer stringBuffer = new StringBuffer();
     String line;
@@ -45,8 +76,8 @@ public class World implements WorldModel {
     }
 
     parseString(new String(stringBuffer));
-    this.currentTurn = 0;
     this.playerQueue = new ArrayDeque<>();
+    this.randomRumGenerator = new RandomRumGenerator(numbers);
   }
 
   /**
@@ -117,7 +148,7 @@ public class World implements WorldModel {
     } else {
       option = 3;
     }
-    int command = random.nextInt(option);
+    int command = randomRumGenerator.getNextNumber(option);
     if (command == 0) {
       computerCommand.append("look around\n");
     } else if (command == 1) {
@@ -125,13 +156,13 @@ public class World implements WorldModel {
       List<Room> neighborList = mansion.getRoomList().get(player
           .getCurrentRoom()).getNeightborList();
       int max = neighborList.size();
-      Room selected = neighborList.get(random.nextInt(max));
+      Room selected = neighborList.get(randomRumGenerator.getNextNumber(max));
 
       computerCommand.append(selected.getId() + 1).append("\n");
     } else {
       computerCommand.append("pick item\n");
       int maxItemOption = mansion.getRoomList().get(player.getCurrentRoom()).getItemList().size();
-      computerCommand.append(random.nextInt(maxItemOption) + 1);
+      computerCommand.append(randomRumGenerator.getNextNumber(maxItemOption) + 1);
     }
     return new StringReader(computerCommand.toString());
   }
