@@ -8,5 +8,5 @@ import model.WorldModel;
  * control and starts game.
  */
 public interface Controller {
-  void playGame(WorldModel m);
+  void startGame(WorldModel m);
 }
