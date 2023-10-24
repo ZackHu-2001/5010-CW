@@ -3,12 +3,15 @@ package controller;
 import controller.command.LookAround;
 import controller.command.MovePlayer;
 import controller.command.PickItem;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.function.Function;
+import javax.imageio.ImageIO;
 import model.Player;
 import model.WorldModel;
 
@@ -17,7 +20,7 @@ import model.WorldModel;
  * it will take over control from the main method, give prompts
  * and handle user input.
  */
-public class GameController {
+public class GameController implements Controller{
 
   private WorldModel worldModel;
   private Scanner scan;
@@ -33,13 +36,14 @@ public class GameController {
    * @param in  Readable input.
    * @param out Appendable output.
    */
-  public GameController(Readable in, Appendable out) {
+  public GameController(Readable in, Appendable out, int maxTurn) {
     if (in == null || out == null) {
       throw new IllegalArgumentException("Readable and Appendable can't be null");
     }
     this.out = out;
     this.humanInputScan = new Scanner(in);
     this.scan = humanInputScan;
+    this.maxTurn = maxTurn;
   }
 
   /**
@@ -157,6 +161,19 @@ public class GameController {
   }
 
   /**
+   * Save map when exit the game.
+   */
+  private void saveMap() {
+    BufferedImage bufferedImage = worldModel.draw("./map.png");
+    try {
+      File outputFile = new File("map.png");
+      ImageIO.write(bufferedImage, "png", outputFile);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
    * Print current turn's player, and the items that the player holds.
    * Also displays the information of the room that the player current inside.
    */
@@ -247,24 +264,10 @@ public class GameController {
     // add player
     try {
       String input;
-      out.append("What is the max turn of the game?\n");
-      while (scan.hasNextLine()) {
-        input = scan.nextLine();
-        if (quitCheck(input)) {
-          return;
-        }
-        try {
-          maxTurn = Integer.valueOf(input);
-          if (maxTurn <= 0) {
-            out.append("Invalid max turn, one positive integer expected.\n");
-            continue;
-          }
-          break;
-        } catch (NumberFormatException nfe) {
-          out.append("Invalid max turn, one positive integer expected.\n")
-              .append("Please enter again:");
-        }
-      }
+
+      // auto save map
+      saveMap();
+      out.append("The graphical representation of the world is saved to map.png.\n");
 
       out.append("\nStart game by adding a player? "
           + "Enter y to add player and start, anything else to quit.\n");
