@@ -1397,304 +1397,318 @@ public class GameControllerTest {
     GameController gameController = new GameController(command, output, 10);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "The graphical representation of the world is saved to map.png.\n" +
-        "\n" +
-        "Start game by adding a player? Enter y to add player and start, anything else to quit.\n" +
-        "\n" +
-        "Let's add players.\n" +
-        "Do you want to add a human player or a computer player? [H/C] \n" +
-        "Enter the name of the player: \n" +
-        "Enter the starting position (range from 1 to 21) of the player: \n" +
-        "\n" +
-        "One player added successfully!\n" +
-        "\n" +
-        "A summary of the human player added:\n" +
-        "Name: bob\n" +
-        "Starting position: 1\n" +
-        "\n" +
-        "Do you want to add one more player? (Maximum 7, now 1) [Y/N]\n" +
-        "Do you want to add a human player or a computer player? [H/C] \n" +
-        "Enter the name of the player: \n" +
-        "Enter the starting position (range from 1 to 21) of the player: \n" +
-        "\n" +
-        "One player added successfully!\n" +
-        "\n" +
-        "A summary of the human player added:\n" +
-        "Name: zack\n" +
-        "Starting position: 2\n" +
-        "\n" +
-        "Do you want to add one more player? (Maximum 7, now 2) [Y/N]\n" +
-        "\n" +
-        "Stop adding player.\n" +
-        "All players loaded, game starts now!\n" +
-        "\n" +
-        "Turn 1, Doctor Lucky at room 1\n" +
-        "Information of the current turn's human player: \n" +
-        "Name: bob    Holds: [Empty]\n" +
-        "In room [Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: bob    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Please enter the index of the room you want to move to: \n" +
-        "Can not move to room 1, not neighbor of current room.\n" +
-        "Please enter again: \n" +
-        "Successfully moved to room 2.\n" +
-        "\n" +
-        "Turn 2, Doctor Lucky at room 2\n" +
-        "Information of the current turn's human player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "Name: bob    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Please enter the index of the room you want to move to: \n" +
-        "Can not move to room 2, not neighbor of current room.\n" +
-        "Please enter again: \n" +
-        "Successfully moved to room 1.\n" +
-        "\n" +
-        "Turn 3, Doctor Lucky at room 3\n" +
-        "Information of the current turn's human player: \n" +
-        "Name: bob    Holds: [Empty]\n" +
-        "In room [Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: bob    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Trophy world.Room]: 19\n" +
-        "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 4, Doctor Lucky at room 4\n" +
-        "Information of the current turn's human player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: bob    Holds: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Drawing world.Room]: 5\n" +
-        "\t\tItems within: [Letter Opener]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 5, Doctor Lucky at room 5\n" +
-        "Information of the current turn's human player: \n" +
-        "Name: bob    Holds: [Empty]\n" +
-        "In room [Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: bob    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Trophy world.Room]: 19\n" +
-        "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 6, Doctor Lucky at room 6\n" +
-        "Information of the current turn's human player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: bob    Holds: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Drawing world.Room]: 5\n" +
-        "\t\tItems within: [Letter Opener]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 7, Doctor Lucky at room 7\n" +
-        "Information of the current turn's human player: \n" +
-        "Name: bob    Holds: [Empty]\n" +
-        "In room [Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: bob    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Trophy world.Room]: 19\n" +
-        "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 8, Doctor Lucky at room 8\n" +
-        "Information of the current turn's human player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: bob    Holds: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Drawing world.Room]: 5\n" +
-        "\t\tItems within: [Letter Opener]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 9, Doctor Lucky at room 9\n" +
-        "Information of the current turn's human player: \n" +
-        "Name: bob    Holds: [Empty]\n" +
-        "In room [Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: bob    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Trophy world.Room]: 19\n" +
-        "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 10, Doctor Lucky at room 10\n" +
-        "Information of the current turn's human player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: bob    Holds: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Drawing world.Room]: 5\n" +
-        "\t\tItems within: [Letter Opener]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "Maximum turn reached, game over.";
+    String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
+        + "\n"
+        + "Start game by adding a player? Enter y to add player and start, anything else to quit.\n"
+        + "\n"
+        + "Let's add players.\n"
+        + "Do you want to add a human player or a computer player? [H/C] \n"
+        + "Enter the name of the player: \n"
+        + "Enter the starting position (range from 1 to 21) of the player: \n"
+        + "\n"
+        + "One player added successfully!\n"
+        + "\n"
+        + "A summary of the human player added:\n"
+        + "Name: bob\n"
+        + "Starting position: 1\n"
+        + "\n"
+        + "Do you want to add one more player? (Maximum 7, now 1) [Y/N]\n"
+        + "Do you want to add a human player or a computer player? [H/C] \n"
+        + "Enter the name of the player: \n"
+        + "Enter the starting position (range from 1 to 21) of the player: \n"
+        + "\n"
+        + "One player added successfully!\n"
+        + "\n"
+        + "A summary of the human player added:\n"
+        + "Name: zack\n"
+        + "Starting position: 2\n"
+        + "\n"
+        + "Do you want to add one more player? (Maximum 7, now 2) [Y/N]\n"
+        + "\n"
+        + "Stop adding player.\n"
+        + "All players loaded, game starts now!\n"
+        + "\n"
+        + "Turn 1, Doctor Lucky at room 1\n"
+        + "Information of the current turn's human player: \n"
+        + "Name: bob    Holds: [Empty]\n"
+        + "In room [Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: bob    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Please enter the index of the room you want to move to: \n"
+        + "Can not move to room 1, not neighbor of current room.\n"
+        + "Please enter again: \n"
+        + "Successfully moved to room 2.\n"
+        + "\n"
+        + "Turn 2, Doctor Lucky at room 2\n"
+        + "Information of the current turn's human player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "Name: bob    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Please enter the index of the room you want to move to: \n"
+        + "Can not move to room 2, not neighbor of current room.\n"
+        + "Please enter again: \n"
+        + "Successfully moved to room 1.\n"
+        + "\n"
+        + "Turn 3, Doctor Lucky at room 3\n"
+        + "Information of the current turn's human player: \n"
+        + "Name: bob    Holds: [Empty]\n"
+        + "In room [Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: bob    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Trophy world.Room]: 19\n"
+        + "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, "
+        + "#18 Tennessee world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 4, Doctor Lucky at room 4\n"
+        + "Information of the current turn's human player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: bob    Holds: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, "
+        + "#9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, "
+        + "#20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Drawing world.Room]: 5\n"
+        + "\t\tItems within: [Letter Opener]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 5, Doctor Lucky at room 5\n"
+        + "Information of the current turn's human player: \n"
+        + "Name: bob    Holds: [Empty]\n"
+        + "In room [Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: bob    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, "
+        + "#9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, "
+        + "#20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Trophy world.Room]: 19\n"
+        + "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, "
+        + "#18 Tennessee world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 6, Doctor Lucky at room 6\n"
+        + "Information of the current turn's human player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: bob    Holds: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Drawing world.Room]: 5\n"
+        + "\t\tItems within: [Letter Opener]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 7, Doctor Lucky at room 7\n"
+        + "Information of the current turn's human player: \n"
+        + "Name: bob    Holds: [Empty]\n"
+        + "In room [Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: bob    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Trophy world.Room]: 19\n"
+        + "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, "
+        + "#18 Tennessee world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 8, Doctor Lucky at room 8\n"
+        + "Information of the current turn's human player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: bob    Holds: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Drawing world.Room]: 5\n"
+        + "\t\tItems within: [Letter Opener]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 9, Doctor Lucky at room 9\n"
+        + "Information of the current turn's human player: \n"
+        + "Name: bob    Holds: [Empty]\n"
+        + "In room [Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: bob    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Trophy world.Room]: 19\n"
+        + "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, "
+        + "#18 Tennessee world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 10, Doctor Lucky at room 10\n"
+        + "Information of the current turn's human player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: bob    Holds: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Drawing world.Room]: 5\n"
+        + "\t\tItems within: [Letter Opener]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "Maximum turn reached, game over.";
     assertEquals(expectedOutput, output.toString());
   }
 
@@ -2226,7 +2240,7 @@ public class GameControllerTest {
 
     Reader fileReader;
     String pathToFile = "res/mansion.txt";
-    int[] computerCommand = {1,0,0,1,1,0,1,1,0,0};
+    int[] computerCommand = {1, 0, 0, 1, 1, 0, 1, 1, 0, 0};
 
     try {
       fileReader = new FileReader(pathToFile);
@@ -2240,269 +2254,281 @@ public class GameControllerTest {
     GameController gameController = new GameController(command, output, 10);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "The graphical representation of the world is saved to map.png.\n" +
-        "\n" +
-        "Start game by adding a player? Enter y to add player and start, anything else to quit.\n" +
-        "\n" +
-        "Let's add players.\n" +
-        "Do you want to add a human player or a computer player? [H/C] \n" +
-        "Enter the name of the player: \n" +
-        "Enter the starting position (range from 1 to 21) of the player: \n" +
-        "\n" +
-        "One player added successfully!\n" +
-        "\n" +
-        "A summary of the computer player added:\n" +
-        "Name: zack\n" +
-        "Starting position: 1\n" +
-        "\n" +
-        "Do you want to add one more player? (Maximum 7, now 1) [Y/N]\n" +
-        "\n" +
-        "Stop adding player.\n" +
-        "All players loaded, game starts now!\n" +
-        "\n" +
-        "Turn 1, Doctor Lucky at room 1\n" +
-        "Information of the current turn's computer player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Please enter the index of the room you want to move to: \n" +
-        "Successfully moved to room 2.\n" +
-        "\n" +
-        "Turn 2, Doctor Lucky at room 2\n" +
-        "Information of the current turn's computer player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Trophy world.Room]: 19\n" +
-        "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 3, Doctor Lucky at room 3\n" +
-        "Information of the current turn's computer player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Please enter the index of the room you want to move to: \n" +
-        "Successfully moved to room 4.\n" +
-        "\n" +
-        "Turn 4, Doctor Lucky at room 4\n" +
-        "Information of the current turn's computer player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Drawing world.Room]: 5\n" +
-        "\t\tItems within: [Letter Opener]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Kitchen]: 9\n" +
-        "\t\tItems within: [Crepe Pan]: attack 3; [Sharp Knife]: attack 3; \n" +
-        "\t\tNeighbors: #4 Dining Hall, #15 Parlor, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Parlor]: 15\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #4 Dining Hall, #9 Kitchen, #17 Servants' Quarters, #18 Tennessee world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Tennessee world.Room]: 18\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #4 Dining Hall, #12 Lilac world.Room, #13 Master Suite, #15 Parlor, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Trophy world.Room]: 19\n" +
-        "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Wine Cellar]: 20\n" +
-        "\t\tItems within: [Rat Poison]: attack 2; [Piece of Rope]: attack 2; \n" +
-        "\t\tNeighbors: #4 Dining Hall, #5 Drawing world.Room, #9 Kitchen \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 5, Doctor Lucky at room 5\n" +
-        "Information of the current turn's computer player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "Please enter the index of the room you want to move to: \n" +
-        "Successfully moved to room 2.\n" +
-        "\n" +
-        "Turn 6, Doctor Lucky at room 6\n" +
-        "Information of the current turn's computer player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Trophy world.Room]: 19\n" +
-        "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 7, Doctor Lucky at room 7\n" +
-        "Information of the current turn's computer player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Trophy world.Room]: 19\n" +
-        "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 8, Doctor Lucky at room 8\n" +
-        "Information of the current turn's computer player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Please enter the index of the room you want to move to: \n" +
-        "Successfully moved to room 1.\n" +
-        "\n" +
-        "Turn 9, Doctor Lucky at room 9\n" +
-        "Information of the current turn's computer player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Neighbor rooms' information: \n" +
-        "[Billiard world.Room]: 2\n" +
-        "\t\tItems within: [Billiard Cue]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Dining Hall]: 4\n" +
-        "\t\tItems within: [Empty]\n" +
-        "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "[Drawing world.Room]: 5\n" +
-        "\t\tItems within: [Letter Opener]: attack 2; \n" +
-        "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n" +
-        "\t\tPlayer inside: [Empty]\n" +
-        "\n" +
-        "\n" +
-        "Turn 10, Doctor Lucky at room 10\n" +
-        "Information of the current turn's computer player: \n" +
-        "Name: zack    Holds: [Empty]\n" +
-        "In room [Armory]: 1\n" +
-        "\t\tItems within: [Revolver]: attack 3; \n" +
-        "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n" +
-        "\t\tPlayer inside: Name: zack    Holds: [Empty]\n" +
-        "\n" +
-        "Available options of this turn:\n" +
-        "1. look around (show neighbor room information)\n" +
-        "2. move (move to a neighbor room)\n" +
-        "3. pick item (pick up item in the room)\n" +
-        "Please enter the index of the room you want to move to: \n" +
-        "Successfully moved to room 4.\n" +
-        "Maximum turn reached, game over.";
+    String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
+        + "\n"
+        + "Start game by adding a player? Enter y to add player and start, anything else to quit.\n"
+        + "\n"
+        + "Let's add players.\n"
+        + "Do you want to add a human player or a computer player? [H/C] \n"
+        + "Enter the name of the player: \n"
+        + "Enter the starting position (range from 1 to 21) of the player: \n"
+        + "\n"
+        + "One player added successfully!\n"
+        + "\n"
+        + "A summary of the computer player added:\n"
+        + "Name: zack\n"
+        + "Starting position: 1\n"
+        + "\n"
+        + "Do you want to add one more player? (Maximum 7, now 1) [Y/N]\n"
+        + "\n"
+        + "Stop adding player.\n"
+        + "All players loaded, game starts now!\n"
+        + "\n"
+        + "Turn 1, Doctor Lucky at room 1\n"
+        + "Information of the current turn's computer player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Please enter the index of the room you want to move to: \n"
+        + "Successfully moved to room 2.\n"
+        + "\n"
+        + "Turn 2, Doctor Lucky at room 2\n"
+        + "Information of the current turn's computer player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Trophy world.Room]: 19\n"
+        + "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, "
+        + "#18 Tennessee world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 3, Doctor Lucky at room 3\n"
+        + "Information of the current turn's computer player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Please enter the index of the room you want to move to: \n"
+        + "Successfully moved to room 4.\n"
+        + "\n"
+        + "Turn 4, Doctor Lucky at room 4\n"
+        + "Information of the current turn's computer player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Drawing world.Room]: 5\n"
+        + "\t\tItems within: [Letter Opener]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Kitchen]: 9\n"
+        + "\t\tItems within: [Crepe Pan]: attack 3; [Sharp Knife]: attack 3; \n"
+        + "\t\tNeighbors: #4 Dining Hall, #15 Parlor, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Parlor]: 15\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #4 Dining Hall, #9 Kitchen, #17 Servants' Quarters, "
+        + "#18 Tennessee world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Tennessee world.Room]: 18\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #4 Dining Hall, #12 Lilac world.Room, #13 Master Suite, "
+        + "#15 Parlor, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Trophy world.Room]: 19\n"
+        + "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, "
+        + "#18 Tennessee world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Wine Cellar]: 20\n"
+        + "\t\tItems within: [Rat Poison]: attack 2; [Piece of Rope]: attack 2; \n"
+        + "\t\tNeighbors: #4 Dining Hall, #5 Drawing world.Room, #9 Kitchen \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 5, Doctor Lucky at room 5\n"
+        + "Information of the current turn's computer player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "Please enter the index of the room you want to move to: \n"
+        + "Successfully moved to room 2.\n"
+        + "\n"
+        + "Turn 6, Doctor Lucky at room 6\n"
+        + "Information of the current turn's computer player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Trophy world.Room]: 19\n"
+        + "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, "
+        + "#18 Tennessee world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 7, Doctor Lucky at room 7\n"
+        + "Information of the current turn's computer player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Trophy world.Room]: 19\n"
+        + "\t\tItems within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, "
+        + "#18 Tennessee world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 8, Doctor Lucky at room 8\n"
+        + "Information of the current turn's computer player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Please enter the index of the room you want to move to: \n"
+        + "Successfully moved to room 1.\n"
+        + "\n"
+        + "Turn 9, Doctor Lucky at room 9\n"
+        + "Information of the current turn's computer player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Neighbor rooms' information: \n"
+        + "[Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Dining Hall]: 4\n"
+        + "\t\tItems within: [Empty]\n"
+        + "\t\tNeighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, "
+        + "#15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "[Drawing world.Room]: 5\n"
+        + "\t\tItems within: [Letter Opener]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar \n"
+        + "\t\tPlayer inside: [Empty]\n"
+        + "\n"
+        + "\n"
+        + "Turn 10, Doctor Lucky at room 10\n"
+        + "Information of the current turn's computer player: \n"
+        + "Name: zack    Holds: [Empty]\n"
+        + "In room [Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Name: zack    Holds: [Empty]\n"
+        + "\n"
+        + "Available options of this turn:\n"
+        + "1. look around (show neighbor room information)\n"
+        + "2. move (move to a neighbor room)\n"
+        + "3. pick item (pick up item in the room)\n"
+        + "Please enter the index of the room you want to move to: \n"
+        + "Successfully moved to room 4.\n"
+        + "Maximum turn reached, game over.";
     assertEquals(expectedOutput, output.toString());
 
 

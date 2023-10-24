@@ -3,7 +3,6 @@ package controller;
 import controller.command.LookAround;
 import controller.command.MovePlayer;
 import controller.command.PickItem;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +19,7 @@ import model.WorldModel;
  * it will take over control from the main method, give prompts
  * and handle user input.
  */
-public class GameController implements Controller{
+public class GameController implements Controller {
 
   private WorldModel worldModel;
   private Scanner scan;
@@ -35,6 +34,7 @@ public class GameController implements Controller{
    *
    * @param in  Readable input.
    * @param out Appendable output.
+   * @param maxTurn Max turn number allowed.
    */
   public GameController(Readable in, Appendable out, int maxTurn) {
     if (in == null || out == null) {

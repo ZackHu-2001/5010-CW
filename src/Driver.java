@@ -3,13 +3,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.Scanner;
 import model.World;
 import model.WorldModel;
-
-import static java.lang.System.*;
-
 
 /**
  * This driver class helps manipulate the World class
@@ -55,8 +51,8 @@ public class Driver {
       output.append("What is the max turn of the game?\n");
       while (scan.hasNextLine()) {
         inputString = scan.nextLine();
-        if (inputString.equalsIgnoreCase("quit")
-            || inputString.equalsIgnoreCase("q")) {
+        if ("quit".equalsIgnoreCase(inputString)
+            || "q".equalsIgnoreCase(inputString)) {
           output.append("Exit game, have a nice day~\n");
           return;
         }
@@ -78,7 +74,7 @@ public class Driver {
 
     } catch (IOException e) {
       System.out.println("There are problems with path to file, exit now.");
-      exit(1);
+      System.exit(1);
     }
 
   }

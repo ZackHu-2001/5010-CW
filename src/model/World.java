@@ -52,7 +52,7 @@ public class World implements WorldModel {
 
     public int getNextNumber(int range) {
       if (random == null) {
-        return numbers.get(currentIndex ++ % numbers.size());
+        return numbers.get(currentIndex++ % numbers.size());
       } else {
         return random.nextInt(range);
       }
@@ -64,6 +64,7 @@ public class World implements WorldModel {
    *
    * @param input The Readable input source containing world configuration data.
    * @throws IOException if an I/O error occurs while reading the input.
+   * @param numbers The numbers to control the computer player.
    */
   public World(Readable input, int... numbers) throws IOException {
     BufferedReader bufferedReader = new BufferedReader((Reader) input);
