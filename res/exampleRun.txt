@@ -1,351 +1,414 @@
-
-(base) zackhu@ZackHudeMacBook-Pro KillDoctorLucky % java -jar out/artifacts/KillDoctorLucky_jar/KillDoctorLucky.jar res/myMansion.txt
+(base) zackhu@ZackHudeMacBook-Pro Desktop % java -jar KillDoctorLucky.jar 
+Please input path to the file: 
+mansion.txt
 Successfully read in the file!
 
 Here are detailed information:
-Zack's Head
-Row: 40 Column: 30
+Mansion name: Doctor Lucky's world.Mansion
+Row: 36 Column: 30
 Room List:
-0 [Left Eyebrow One]: 0 0, 3 3
-Items within: [Revolver]: 3, in 0# room;
-Neighbors: Left Eyebrow Two,
+	1 [Armory]: 1
+		Items within: [Revolver]: attack 3; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room 
+		Player inside: [Empty]
 
-        1 [Left Eyebrow Two]: 1 4, 4 7
-                Items within: [Billiard Cue]: 2, in 1# room; 
-                Neighbors: Left Eyebrow One, Left Eyebrow Three, 
+	2 [Billiard world.Room]: 2
+		Items within: [Billiard Cue]: attack 2; 
+		Neighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room 
+		Player inside: [Empty]
 
-        2 [Left Eyebrow Three]: 2 8, 5 11
-                Items within: [Chain Saw]: 4, in 2# room; [Big Red Hammer]: 4, in 2# room; 
-                Neighbors: Left Eyebrow Two, Fore Head, 
+	3 [Carriage House]: 3
+		Items within: [Chain Saw]: attack 4; [Big Red Hammer]: attack 4; 
+		Neighbors: #21 Winter Garden 
+		Player inside: [Empty]
 
-        3 [Right Eyebrow One]: 2 13, 5 16
-                Items within: 
-                Neighbors: Right Eyebrow Two, Fore Head, 
+	4 [Dining Hall]: 4
+		Items within: [Empty]
+		Neighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar 
+		Player inside: [Empty]
 
-        4 [Right Eyebrow Two]: 1 17, 4 20
-                Items within: [Letter Opener]: 2, in 4# room; 
-                Neighbors: Right Eyebrow One, Right Eyebrow Three, 
+	5 [Drawing world.Room]: 5
+		Items within: [Letter Opener]: attack 2; 
+		Neighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar 
+		Player inside: [Empty]
 
-        5 [Right Eyebrow Three]: 0 21, 3 24
-                Items within: 
-                Neighbors: Right Eyebrow Two, 
+	6 [Foyer]: 6
+		Items within: [Empty]
+		Neighbors: #5 Drawing world.Room, #16 Piazza 
+		Player inside: [Empty]
 
-        6 [Fore Head]: 6 4, 7 20
-                Items within: [Trowel]: 2, in 6# room; [Pinking Shears]: 2, in 6# room; 
-                Neighbors: Left Eyebrow Three, Right Eyebrow One, FOO Left, FOO Right, BAR Left, BAR Right, Nose, 
+	7 [Green House]: 7
+		Items within: [Trowel]: attack 2; [Pinking Shears]: attack 2; 
+		Neighbors: #8 Hedge Maze 
+		Player inside: [Empty]
 
-        7 [FOO Left]: 8 0, 9 5
-                Items within: [Loud Noise]: 2, in 7# room; 
-                Neighbors: Fore Head, BAR Left, Cheek Left One, 
+	8 [Hedge Maze]: 8
+		Items within: [Loud Noise]: attack 2; 
+		Neighbors: #7 Green House, #16 Piazza 
+		Player inside: [Empty]
 
-        8 [FOO Right]: 8 17, 9 24
-                Items within: [Crepe Pan]: 3, in 8# room; [Sharp Knife]: 3, in 8# room; 
-                Neighbors: Fore Head, Cheek Right One, 
+	9 [Kitchen]: 9
+		Items within: [Crepe Pan]: attack 3; [Sharp Knife]: attack 3; 
+		Neighbors: #4 Dining Hall, #15 Parlor, #20 Wine Cellar 
+		Player inside: [Empty]
 
-        9 [BAR Left]: 8 6, 13 7
-                Items within: [Silken Cord]: 3, in 9# room; 
-                Neighbors: Fore Head, FOO Left, QUA Left, 
+	10 [Lancaster world.Room]: 10
+		Items within: [Silken Cord]: attack 3; 
+		Neighbors: #12 Lilac world.Room, #17 Servants' Quarters 
+		Player inside: [Empty]
 
-        10 [BAR Right]: 8 17, 13 18
-                Items within: 
-                Neighbors: Fore Head, QUA Right, 
+	11 [Library]: 11
+		Items within: [Empty]
+		Neighbors: #13 Master Suite, #14 Nursery, #19 Trophy world.Room 
+		Player inside: [Empty]
 
-        11 [QUA Left]: 10 8, 11 11
-                Items within: [Tight Hat]: 2, in 11# room; 
-                Neighbors: BAR Left, Nose, 
+	12 [Lilac world.Room]: 12
+		Items within: [Tight Hat]: attack 2; 
+		Neighbors: #10 Lancaster world.Room, #13 Master Suite, #17 Servants' Quarters, #18 Tennessee world.Room 
+		Player inside: [Empty]
 
-        12 [QUA Right]: 10 13, 13 16
-                Items within: [Shoe Horn]: 2, in 12# room; 
-                Neighbors: BAR Right, Right EYE, Nose, 
+	13 [Master Suite]: 13
+		Items within: [Shoe Horn]: attack 2; 
+		Neighbors: #11 Library, #12 Lilac world.Room, #14 Nursery, #18 Tennessee world.Room 
+		Player inside: [Empty]
 
-        13 [Left EYE]: 14 9, 14 10
-                Items within: [Bad Cream]: 2, in 13# room; 
-                Neighbors: 
+	14 [Nursery]: 14
+		Items within: [Bad Cream]: attack 2; 
+		Neighbors: #11 Library, #13 Master Suite 
+		Player inside: [Empty]
 
-        14 [Right EYE]: 14 14, 14 15
-                Items within: 
-                Neighbors: QUA Right, 
+	15 [Parlor]: 15
+		Items within: [Empty]
+		Neighbors: #4 Dining Hall, #9 Kitchen, #17 Servants' Quarters, #18 Tennessee world.Room 
+		Player inside: [Empty]
 
-        15 [Nose]: 8 12, 22 12
-                Items within: [Civil War Cannon]: 3, in 15# room; 
-                Neighbors: Fore Head, QUA Left, QUA Right, 
+	16 [Piazza]: 16
+		Items within: [Civil War Cannon]: attack 3; 
+		Neighbors: #6 Foyer, #8 Hedge Maze, #21 Winter Garden 
+		Player inside: [Empty]
 
-        16 [Cheek Left One]: 10 2, 21 4
-                Items within: [Broom Stick]: 2, in 16# room; 
-                Neighbors: FOO Left, Cheek Left Two, 
+	17 [Servants' Quarters]: 17
+		Items within: [Broom Stick]: attack 2; 
+		Neighbors: #10 Lancaster world.Room, #12 Lilac world.Room, #15 Parlor 
+		Player inside: [Empty]
 
-        17 [Cheek Left Two]: 16 5, 17 10
-                Items within: 
-                Neighbors: Cheek Left One, 
+	18 [Tennessee world.Room]: 18
+		Items within: [Empty]
+		Neighbors: #4 Dining Hall, #12 Lilac world.Room, #13 Master Suite, #15 Parlor, #19 Trophy world.Room 
+		Player inside: [Empty]
 
-        18 [Cheek Right One]: 10 20, 21 22
-                Items within: [Duck Decoy]: 3, in 18# room; [Monkey Hand]: 2, in 18# room; 
-                Neighbors: FOO Right, Cheek Right, 
+	19 [Trophy world.Room]: 19
+		Items within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room 
+		Player inside: [Empty]
 
-        19 [Cheek Right]: 16 14, 17 19
-                Items within: [Rat Poison]: 2, in 19# room; [Piece of Rope]: 2, in 19# room; 
-                Neighbors: Cheek Right One, 
+	20 [Wine Cellar]: 20
+		Items within: [Rat Poison]: attack 2; [Piece of Rope]: attack 2; 
+		Neighbors: #4 Dining Hall, #5 Drawing world.Room, #9 Kitchen 
+		Player inside: [Empty]
 
-        20 [Mouse Left]: 25 5, 26 7
-                Items within: 
-                Neighbors: Lip Up, Lip Down, Moustache, 
+	21 [Winter Garden]: 21
+		Items within: [Empty]
+		Neighbors: #3 Carriage House, #16 Piazza 
+		Player inside: [Empty]
 
-        21 [Mouse Right]: 25 17, 26 19
-                Items within: 
-                Neighbors: Lip Up, Lip Down, Moustache, 
+What is the max turn of the game?
+10
+2023-10-23 23:45:46.188 java[64463:2791350] WARNING: Secure coding is not enabled for restorable state! Enable secure coding by implementing NSApplicationDelegate.applicationSupportsSecureRestorableState: and returning YES.
+The graphical representation of the world is saved to map.png.
 
-        22 [Lip Up]: 25 8, 25 16
-                Items within: 
-                Neighbors: Mouse Left, Mouse Right, Lip Down, Moustache, 
+Start game by adding a player? Enter y to add player and start, anything else to quit.
+y
 
-        23 [Lip Down]: 26 8, 26 16
-                Items within: 
-                Neighbors: Mouse Left, Mouse Right, Lip Up, 
-
-        24 [Moustache]: 24 6, 24 18
-                Items within: 
-                Neighbors: Mouse Left, Mouse Right, Lip Up, 
-
-
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
+Let's add players.
+Do you want to add a human player or a computer player? [H/C] 
+h
+Enter the name of the player: 
+zack
+Enter the starting position (range from 1 to 21) of the player: 
 1
-Currently the target locates in room 1.
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 2.
+One player added successfully!
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 3.
+A summary of the human player added:
+Name: zack
+Starting position: 1
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 4.
+Do you want to add one more player? (Maximum 7, now 1) [Y/N]
+y
+Do you want to add a human player or a computer player? [H/C] 
+c
+Enter the name of the player: 
+bob
+Enter the starting position (range from 1 to 21) of the player: 
+2
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 5.
+One player added successfully!
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 6.
+A summary of the computer player added:
+Name: bob
+Starting position: 2
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 7.
+Do you want to add one more player? (Maximum 7, now 2) [Y/N]
+n
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 8.
+Stop adding player.
+All players loaded, game starts now!
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 9.
+Turn 1, Doctor Lucky at room 1
+Information of the current turn's human player: 
+Name: zack    Holds: [Empty]
+In room [Armory]: 1
+		Items within: [Revolver]: attack 3; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room 
+		Player inside: Name: zack    Holds: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 10.
+Available options of this turn:
+1. look around (show neighbor room information)
+2. move (move to a neighbor room)
+3. pick item (pick up item in the room)
+look around
+Neighbor rooms' information: 
+[Billiard world.Room]: 2
+		Items within: [Billiard Cue]: attack 2; 
+		Neighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room 
+		Player inside: Name: bob    Holds: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 11.
+[Dining Hall]: 4
+		Items within: [Empty]
+		Neighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar 
+		Player inside: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 12.
+[Drawing world.Room]: 5
+		Items within: [Letter Opener]: attack 2; 
+		Neighbors: #1 Armory, #4 Dining Hall, #6 Foyer, #20 Wine Cellar 
+		Player inside: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 13.
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 14.
+Turn 2, Doctor Lucky at room 2
+Information of the current turn's computer player: 
+Name: bob    Holds: [Empty]
+In room [Billiard world.Room]: 2
+		Items within: [Billiard Cue]: attack 2; 
+		Neighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room 
+		Player inside: Name: bob    Holds: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 15.
+Available options of this turn:
+1. look around (show neighbor room information)
+2. move (move to a neighbor room)
+3. pick item (pick up item in the room)
+Neighbor rooms' information: 
+[Armory]: 1
+		Items within: [Revolver]: attack 3; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room 
+		Player inside: Name: zack    Holds: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 16.
+[Dining Hall]: 4
+		Items within: [Empty]
+		Neighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar 
+		Player inside: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 17.
+[Trophy world.Room]: 19
+		Items within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room 
+		Player inside: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 18.
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 19.
+Turn 3, Doctor Lucky at room 3
+Information of the current turn's human player: 
+Name: zack    Holds: [Empty]
+In room [Armory]: 1
+		Items within: [Revolver]: attack 3; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room 
+		Player inside: Name: zack    Holds: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 20.
+Available options of this turn:
+1. look around (show neighbor room information)
+2. move (move to a neighbor room)
+3. pick item (pick up item in the room)
+move
+Please enter the index of the room you want to move to: 4
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 21.
+Successfully moved to room 4.
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 22.
+Turn 4, Doctor Lucky at room 4
+Information of the current turn's computer player: 
+Name: bob    Holds: [Empty]
+In room [Billiard world.Room]: 2
+		Items within: [Billiard Cue]: attack 2; 
+		Neighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room 
+		Player inside: Name: bob    Holds: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 23.
+Available options of this turn:
+1. look around (show neighbor room information)
+2. move (move to a neighbor room)
+3. pick item (pick up item in the room)
+Neighbor rooms' information: 
+[Armory]: 1
+		Items within: [Revolver]: attack 3; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room 
+		Player inside: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 24.
+[Dining Hall]: 4
+		Items within: [Empty]
+		Neighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar 
+		Player inside: Name: zack    Holds: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 0.
+[Trophy world.Room]: 19
+		Items within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room 
+		Player inside: [Empty]
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-1
-Currently the target locates in room 1.
 
-Select Option:
-1: Move target
-2: Output image
-3: Display room by index
-4: Display room's visibility by index
-5: Exit
-5
-(base) zackhu@ZackHudeMacBook-Pro KillDoctorLucky % 
+Turn 5, Doctor Lucky at room 5
+Information of the current turn's human player: 
+Name: zack    Holds: [Empty]
+In room [Dining Hall]: 4
+		Items within: [Empty]
+		Neighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar 
+		Player inside: Name: zack    Holds: [Empty]
+
+Available options of this turn:
+1. look around (show neighbor room information)
+2. move (move to a neighbor room)
+move
+Please enter the index of the room you want to move to: 2
+
+Successfully moved to room 2.
+
+Turn 6, Doctor Lucky at room 6
+Information of the current turn's computer player: 
+Name: bob    Holds: [Empty]
+In room [Billiard world.Room]: 2
+		Items within: [Billiard Cue]: attack 2; 
+		Neighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room 
+		Player inside: Name: bob    Holds: [Empty]
+Name: zack    Holds: [Empty]
+
+Available options of this turn:
+1. look around (show neighbor room information)
+2. move (move to a neighbor room)
+3. pick item (pick up item in the room)
+Neighbor rooms' information: 
+[Armory]: 1
+		Items within: [Revolver]: attack 3; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room 
+		Player inside: [Empty]
+
+[Dining Hall]: 4
+		Items within: [Empty]
+		Neighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar 
+		Player inside: [Empty]
+
+[Trophy world.Room]: 19
+		Items within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room 
+		Player inside: [Empty]
+
+
+Turn 7, Doctor Lucky at room 7
+Information of the current turn's human player: 
+Name: zack    Holds: [Empty]
+In room [Billiard world.Room]: 2
+		Items within: [Billiard Cue]: attack 2; 
+		Neighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room 
+		Player inside: Name: bob    Holds: [Empty]
+Name: zack    Holds: [Empty]
+
+Available options of this turn:
+1. look around (show neighbor room information)
+2. move (move to a neighbor room)
+3. pick item (pick up item in the room)
+pick item
+Here are available items: 1. [Billiard Cue]: attack 2; 
+Which one you want to pick, enter index of item: 1
+Successfully picked up item.
+
+Turn 8, Doctor Lucky at room 8
+Information of the current turn's computer player: 
+Name: bob    Holds: [Empty]
+In room [Billiard world.Room]: 2
+		Items within: [Empty]
+		Neighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room 
+		Player inside: Name: bob    Holds: [Empty]
+Name: zack    Holds: [Billiard Cue]: attack 2; 
+
+Available options of this turn:
+1. look around (show neighbor room information)
+2. move (move to a neighbor room)
+Neighbor rooms' information: 
+[Armory]: 1
+		Items within: [Revolver]: attack 3; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room 
+		Player inside: [Empty]
+
+[Dining Hall]: 4
+		Items within: [Empty]
+		Neighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar 
+		Player inside: [Empty]
+
+[Trophy world.Room]: 19
+		Items within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room 
+		Player inside: [Empty]
+
+
+Turn 9, Doctor Lucky at room 9
+Information of the current turn's human player: 
+Name: zack    Holds: [Billiard Cue]: attack 2; 
+In room [Billiard world.Room]: 2
+		Items within: [Empty]
+		Neighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room 
+		Player inside: Name: bob    Holds: [Empty]
+Name: zack    Holds: [Billiard Cue]: attack 2; 
+
+Available options of this turn:
+1. look around (show neighbor room information)
+2. move (move to a neighbor room)
+look around
+Neighbor rooms' information: 
+[Armory]: 1
+		Items within: [Revolver]: attack 3; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room 
+		Player inside: [Empty]
+
+[Dining Hall]: 4
+		Items within: [Empty]
+		Neighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar 
+		Player inside: [Empty]
+
+[Trophy world.Room]: 19
+		Items within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room 
+		Player inside: [Empty]
+
+
+Turn 10, Doctor Lucky at room 10
+Information of the current turn's computer player: 
+Name: bob    Holds: [Empty]
+In room [Billiard world.Room]: 2
+		Items within: [Empty]
+		Neighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room 
+		Player inside: Name: bob    Holds: [Empty]
+Name: zack    Holds: [Billiard Cue]: attack 2; 
+
+Available options of this turn:
+1. look around (show neighbor room information)
+2. move (move to a neighbor room)
+Neighbor rooms' information: 
+[Armory]: 1
+		Items within: [Revolver]: attack 3; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room 
+		Player inside: [Empty]
+
+[Dining Hall]: 4
+		Items within: [Empty]
+		Neighbors: #1 Armory, #2 Billiard world.Room, #5 Drawing world.Room, #9 Kitchen, #15 Parlor, #18 Tennessee world.Room, #19 Trophy world.Room, #20 Wine Cellar 
+		Player inside: [Empty]
+
+[Trophy world.Room]: 19
+		Items within: [Duck Decoy]: attack 3; [Monkey Hand]: attack 2; 
+		Neighbors: #2 Billiard world.Room, #4 Dining Hall, #11 Library, #18 Tennessee world.Room 
+		Player inside: [Empty]
+
+Maximum turn reached, game over.
