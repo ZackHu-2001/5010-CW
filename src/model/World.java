@@ -22,20 +22,21 @@ import java.util.Random;
  */
 public class World implements WorldModel {
   private Target target;
+  private Pet pet;
   private Mansion mansion;
   private Queue<Player> playerQueue;
-  private RandomRumGenerator randomRumGenerator;
+  private RandomNumGenerator RandomNumGenerator;
 
 
   /**
    * Inner class to help generate random number.
    */
-  private class RandomRumGenerator {
+  private class RandomNumGenerator {
     private ArrayList<Integer> numbers;
     private int currentIndex;
     private Random random;
 
-    public RandomRumGenerator(int... numbers) {
+    public RandomNumGenerator(int... numbers) {
       if (numbers.length == 0) {
         random = new Random(10);
         this.currentIndex = -1;
@@ -78,7 +79,7 @@ public class World implements WorldModel {
 
     parseString(new String(stringBuffer));
     this.playerQueue = new ArrayDeque<>();
-    this.randomRumGenerator = new RandomRumGenerator(numbers);
+    this.RandomNumGenerator = new RandomNumGenerator(numbers);
   }
 
   /**
@@ -149,7 +150,7 @@ public class World implements WorldModel {
     } else {
       option = 3;
     }
-    int command = randomRumGenerator.getNextNumber(option);
+    int command = RandomNumGenerator.getNextNumber(option);
     if (command == 0) {
       computerCommand.append("look around\n");
     } else if (command == 1) {
@@ -157,13 +158,13 @@ public class World implements WorldModel {
       List<Room> neighborList = mansion.getRoomList().get(player
           .getCurrentRoom()).getNeightborList();
       int max = neighborList.size();
-      Room selected = neighborList.get(randomRumGenerator.getNextNumber(max));
+      Room selected = neighborList.get(RandomNumGenerator.getNextNumber(max));
 
       computerCommand.append(selected.getId() + 1).append("\n");
     } else {
       computerCommand.append("pick item\n");
       int maxItemOption = mansion.getRoomList().get(player.getCurrentRoom()).getItemList().size();
-      computerCommand.append(randomRumGenerator.getNextNumber(maxItemOption) + 1);
+      computerCommand.append(RandomNumGenerator.getNextNumber(maxItemOption) + 1);
     }
     return new StringReader(computerCommand.toString());
   }
@@ -203,6 +204,25 @@ public class World implements WorldModel {
     } else {
       return false;
     }
+  }
+
+  /**
+   * Moves the pet to the target room.
+   *
+   * @param targetRoomId The target room's id.
+   */
+  @Override
+  public boolean movePet(int targetRoomId) {
+    if (targetRoomId < 0 || targetRoomId >= mansion.getRoomList().size()) {
+      return false;
+    }
+    pet.move(targetRoomId);
+
+    // turn + 1
+    target.move();
+    updateTurn();
+
+    return true;
   }
 
   /**
@@ -278,8 +298,12 @@ public class World implements WorldModel {
    *
    * @return Current position of doctor lucky.
    */
-  public int getTargePosition() {
+  public int getTargetPosition() {
     return target.getCurrentRoom();
+  }
+
+  public int getPetPosition() {
+    return pet.getCurrentRoom();
   }
 
   /**
