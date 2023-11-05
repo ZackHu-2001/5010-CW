@@ -250,7 +250,7 @@ public class MockWorld implements WorldModel {
    *
    * @return Current position of doctor lucky.
    */
-  public int getTargePosition() {
+  public int getTargetPosition() {
     return target.getCurrentRoom();
   }
 
