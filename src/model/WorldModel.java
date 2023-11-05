@@ -40,6 +40,13 @@ public interface WorldModel {
   public boolean movePlayer(Player player, int targetRoomId);
 
   /**
+   * Moves the pet to the target room.
+   *
+   * @param targetRoomId The target room's id.
+   */
+  public boolean movePet(int targetRoomId);
+
+  /**
    * Show a list of available items in the room.
    *
    * @param player The player whose turn it is at the moment.
@@ -93,7 +100,14 @@ public interface WorldModel {
    *
    * @return Current position of doctor lucky.
    */
-  public int getTargePosition();
+  public int getTargetPosition();
+
+  /**
+   * Get doctor pet's current position.
+   *
+   * @return Current position of pet.
+   */
+  public int getPetPosition();
 
   /**
    * Return the command of computer player.
