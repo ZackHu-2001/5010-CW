@@ -7,6 +7,7 @@ package model;
 public class Pet implements Movable{
   private final String name;
   private int currentRoom;
+  private final int[] routine;
 
   /**
    * Constructor of Pet class.
@@ -14,9 +15,10 @@ public class Pet implements Movable{
    * @param name          name of the pet.
    * @param currentRoom   current room that pet stay inside.
    */
-  public Pet(String name, int currentRoom) {
+  public Pet(String name, int currentRoom, int[] routine) {
     this.name = name;
     this.currentRoom = currentRoom;
+    this.routine = routine;
   }
 
   @Override
@@ -32,4 +34,14 @@ public class Pet implements Movable{
   public int getCurrentRoom() {
     return currentRoom;
   }
+
+  /**
+   * Get the name of the pet.
+   *
+   * @return pet's name
+   */
+  public String getName() {
+    return name;
+  }
+
 }

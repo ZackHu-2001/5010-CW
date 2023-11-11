@@ -22,6 +22,7 @@ import java.util.Random;
  */
 public class MockWorld implements WorldModel {
   private Target target;
+  private Pet pet;
   private Mansion mansion;
   private int currentTurn;
   private Queue<Player> playerQueue;
@@ -174,6 +175,20 @@ public class MockWorld implements WorldModel {
     }
   }
 
+  @Override
+  public boolean movePet(int targetRoomId) {
+    if (targetRoomId < 0 || targetRoomId >= mansion.getRoomList().size()) {
+      return false;
+    }
+    pet.move(targetRoomId);
+
+    // turn + 1
+    target.move();
+    updateTurn();
+
+    return true;
+  }
+
   /**
    * Show a list of available items in the room.
    *
@@ -254,6 +269,13 @@ public class MockWorld implements WorldModel {
     return target.getCurrentRoom();
   }
 
+  public int getPetPosition() {
+    return pet.getCurrentRoom();
+  }
+
+  public String getPetName() {
+    return pet.getName();
+  }
   /**
    * Gets the mansion included in the world.
    *

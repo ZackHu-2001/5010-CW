@@ -13,7 +13,7 @@ public class MovePet implements Command {
   private final Scanner scan;
   private final Appendable out;
 
-  public MovePlayer(Scanner scan, Appendable out) {
+  public MovePet(Scanner scan, Appendable out) {
     this.scan = scan;
     this.out = out;
   }
@@ -50,6 +50,5 @@ public class MovePet implements Command {
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
-  }
   }
 }

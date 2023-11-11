@@ -110,6 +110,13 @@ public interface WorldModel {
   public int getPetPosition();
 
   /**
+   * Get doctor pet's name.
+   *
+   * @return Name of the pet.
+   */
+  public String getPetName();
+
+  /**
    * Return the command of computer player.
    *
    * @param player The computer player of this turn.

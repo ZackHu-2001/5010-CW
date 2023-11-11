@@ -182,7 +182,11 @@ public class GameController implements Controller {
       out.append("\nTurn ")
           .append(String.valueOf(currentTurn))
           .append(", Doctor Lucky at room ")
-          .append(String.valueOf(worldModel.getTargetPosition() + 1));
+          .append(String.valueOf(worldModel.getTargetPosition() + 1))
+          .append(", ")
+          .append(worldModel.getPetName())
+          .append(" at room ")
+          .append(String.valueOf(worldModel.getPetPosition() + 1));
 
       Player player = worldModel.getTurn();
       if (player.isHuman()) {
