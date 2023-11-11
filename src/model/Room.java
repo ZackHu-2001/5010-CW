@@ -246,6 +246,7 @@ public class Room {
    */
   @Override
   public int hashCode() {
-    return Objects.hash(name, location, itemList, neighbors);
+//    return Objects.hash(name, location, itemList, neighbors);
+    return id;
   }
 }
