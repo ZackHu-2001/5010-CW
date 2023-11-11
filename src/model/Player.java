@@ -8,7 +8,7 @@ import java.util.List;
  * like name, currentRoom, and list of holding items. It
  * also provides some basic method to let controller control.
  */
-public class Player {
+public class Player implements Movable{
   private final String name;
   private List<Item> itemList;
   private int currentRoom;
