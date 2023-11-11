@@ -9,11 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Random;
+import java.util.*;
 
 /**
  * The {@code World} class represents a virtual game world containing a mansion, 
@@ -306,6 +302,10 @@ public class World implements WorldModel {
     return pet.getCurrentRoom();
   }
 
+  public String getPetName() {
+    return pet.getName();
+  }
+
   /**
    * Gets the mansion included in the world.
    *
@@ -344,7 +344,7 @@ public class World implements WorldModel {
 
     String[] tmp;
 
-    int roomNum = Integer.parseInt(parts[2]);
+    int roomNum = Integer.parseInt(parts[3]);
 
     tmp = (parts[1]).split(" ");
     target = new Target(Integer.parseInt(tmp[0]),
@@ -361,7 +361,7 @@ public class World implements WorldModel {
         roomList);
 
     for (int i = 0; i < roomNum; i++) {
-      tmp = parts[3 + i].trim().split("\\s+");
+      tmp = parts[4 + i].trim().split("\\s+");
       int[] location = new int[4];
 
       location[0] = Integer.parseInt(tmp[0]);
@@ -369,26 +369,64 @@ public class World implements WorldModel {
       location[2] = Integer.parseInt(tmp[2]);
       location[3] = Integer.parseInt(tmp[3]);
       roomList.add(new Room(
-          parts[3 + i].substring(11),
+          parts[4 + i].substring(11),
           location, i));
     }
 
     calculateNeighbor(roomList);
 
-    int itemNum = Integer.parseInt(parts[3 + roomNum]);
+    int itemNum = Integer.parseInt(parts[4 + roomNum]);
     int roomNumber;
 
     for (int i = 0; i < itemNum; i++) {
-      tmp = parts[4 + roomNum + i].split("\\s+");
+      tmp = parts[5 + roomNum + i].split("\\s+");
 
       roomNumber = Integer.parseInt(tmp[0]);
 
       Room tmpRoom = roomList.get(roomNumber);
       tmpRoom.addItem(new Item(
-          parts[4 + roomNum + i].substring(parts[4 + roomNum + i].lastIndexOf(tmp[2])),
+          parts[5 + roomNum + i].substring(parts[5 + roomNum + i].lastIndexOf(tmp[2])),
           Integer.parseInt(tmp[1]),
           roomNum));
     }
+
+    pet = new Pet(parts[2], 0, depthFirstTraversal(mansion));
+
+  }
+
+  /**
+   * Calculate the path for pet to move around.
+   */
+  private int[] depthFirstTraversal(Mansion mansion) {
+    Set<Room> visitedRoom = new HashSet<>();
+    Stack<Room> roomStack = new Stack<>();
+    int roomCnt = mansion.getRoomList().size();
+    int[] routine = new int[roomCnt];
+
+    Room currentRoom = mansion.getRoomList().get(0);
+    roomStack.push(currentRoom);
+    visitedRoom.add(currentRoom);
+    routine[0] = 1;
+
+    while (visitedRoom.size() != roomCnt && roomStack.size() != 0) {
+      currentRoom = roomStack.peek();
+      boolean isFound = false;
+      for (Room room : currentRoom.getNeightborList()) {
+        if (!visitedRoom.contains(room)) {
+          routine[visitedRoom.size()] = room.getId() + 1;
+          visitedRoom.add(room);
+          roomStack.push(room);
+          isFound = true;
+          break;
+        }
+      }
+
+      if (!isFound) {
+        roomStack.pop();
+      }
+    }
+
+    return routine;
   }
 
   /**
