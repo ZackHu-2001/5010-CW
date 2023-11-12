@@ -9,23 +9,23 @@ import java.util.Objects;
  */
 public class Item {
   private final String name;
-  private final int value;
+  private final int damage;
   private final int maxRoomNum;
   /**
    * Constructs a new item with the specified name, value, and room location.
    *
    * @param name       The name of the item.
-   * @param value      The value of the item.
+   * @param damage     The damage to the target.
    * @param maxRoomNum The maximum number of room in the mansion.
    */
 
-  public Item(String name, int value, int maxRoomNum) {
-    if (value <= 0) {
+  public Item(String name, int damage, int maxRoomNum) {
+    if (damage <= 0) {
       throw new IllegalArgumentException("Item should have positive attack.");
     }
 
     this.name = name;
-    this.value = value;
+    this.damage = damage;
     this.maxRoomNum = maxRoomNum;
   }
 
@@ -34,8 +34,8 @@ public class Item {
    *
    * @return The value of the item.
    */
-  public int getValue() {
-    return value;
+  public int getDamage() {
+    return damage;
   }
 
   /**
@@ -52,7 +52,7 @@ public class Item {
    * @return A string containing item information.
    */
   public String toString() {
-    return String.format("[%s]: attack %d; ", name, value);
+    return String.format("[%s]: attack %d; ", name, damage);
   }
 
   /**
@@ -74,7 +74,7 @@ public class Item {
 
     Item item = (Item) o;
     return this.name.equals(item.name)
-        && this.value == item.value
+        && this.damage == item.damage
         && this.maxRoomNum == item.maxRoomNum;
   }
 
@@ -86,6 +86,6 @@ public class Item {
    */
   @Override
   public int hashCode() {
-    return Objects.hash(name, value, maxRoomNum);
+    return Objects.hash(name, damage, maxRoomNum);
   }
 }
