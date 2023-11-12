@@ -10,7 +10,7 @@ import model.WorldModel;
 public interface Controller {
   /**
    * Controller should have a public method: Start Game.
-   * @param m
+   * @param m the world model to be controlled.
    */
   void startGame(WorldModel m);
 }
