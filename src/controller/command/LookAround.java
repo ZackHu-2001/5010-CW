@@ -12,6 +12,11 @@ import model.WorldModel;
 public class LookAround implements Command {
   private final Appendable out;
 
+  /**
+   * Default constructor.
+   *
+   * @param out where to append output.
+   */
   public LookAround(Appendable out) {
     this.out = out;
   }

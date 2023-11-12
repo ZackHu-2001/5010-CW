@@ -2877,8 +2877,8 @@ public class GameControllerTest {
     GameController gameController = new GameController(command, output, 5);
     gameController.startGame(worldModel);
 
-    String expectedOutput =
-    "Here are the items you hold: 1. [Letter Opener]: attack 2; 2. [Sharp Knife]: attack 3; \n"
+    String expectedOutput = "Here are the items you hold: "
+        + "1. [Letter Opener]: attack 2; 2. [Sharp Knife]: attack 3; \n"
         + "Which one you want to use, enter index of item: "
         + "Attack success! Target's remaining health: -1\n"
         + "Target killed!\n"

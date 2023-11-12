@@ -8,5 +8,9 @@ import model.WorldModel;
  * control and starts game.
  */
 public interface Controller {
+  /**
+   * Controller should have a public method: Start Game.
+   * @param m
+   */
   void startGame(WorldModel m);
 }

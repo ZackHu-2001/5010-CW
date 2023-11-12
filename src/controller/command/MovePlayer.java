@@ -14,6 +14,12 @@ public class MovePlayer implements Command {
   private final Scanner scan;
   private final Appendable out;
 
+  /**
+   * Default constructor.
+   *
+   * @param scan where to read user input.
+   * @param out  where to append output.
+   */
   public MovePlayer(Scanner scan, Appendable out) {
     this.scan = scan;
     this.out = out;

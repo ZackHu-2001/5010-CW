@@ -277,7 +277,7 @@ public class MockWorld implements WorldModel {
 
   @Override
   public boolean[] attackWithItem(Player player, int index) {
-    return new boolean[]{false,false};
+    return new boolean[]{false, false};
   }
 
   /**
@@ -289,10 +289,20 @@ public class MockWorld implements WorldModel {
     return target.getCurrentRoom();
   }
 
+  /**
+   * Get the position of pet.
+   *
+   * @return the position of pet.
+   */
   public int getPetPosition() {
     return pet.getCurrentRoom();
   }
 
+  /**
+   * Get the name of pet.
+   *
+   * @return the name of pet.
+   */
   public String getPetName() {
     return pet.getName();
   }

@@ -169,7 +169,7 @@ public class World implements WorldModel {
             max = item.getDamage();
             maxIdx = cnt;
           }
-          cnt ++;
+          cnt++;
         }
         computerCommand.append(String.valueOf(maxIdx + 1)).append("\n");
       } else {
@@ -201,8 +201,6 @@ public class World implements WorldModel {
       computerCommand.append(randomNumGenerator.getNextNumber(maxMoveOption) + 1);
     } else {
       computerCommand.append("pick item\n");
-//      int maxItemOption = mansion.getRoomList().get(player.getCurrentRoom()).getItemList().size();
-//      computerCommand.append(randomNumGenerator.getNextNumber(maxItemOption) + 1);
       computerCommand.append("1");
     }
     return new StringReader(computerCommand.toString());
@@ -383,7 +381,7 @@ public class World implements WorldModel {
         return false;
       }
     } else {
-    // if the pet does not stay in the same room as player
+      // if the pet does not stay in the same room as player
       List<Room> roomList = mansion.getRoomList().get(currentRoomId).getNeightborList();
 
       Set<Integer> neighborSet = new HashSet<>();
@@ -460,10 +458,20 @@ public class World implements WorldModel {
     return target.getCurrentRoom();
   }
 
+  /**
+   * Get the position of pet.
+   *
+   * @return the position of pet.
+   */
   public int getPetPosition() {
     return pet.getCurrentRoom();
   }
 
+  /**
+   * Get the name of pet.
+   *
+   * @return the name of pet.
+   */
   public String getPetName() {
     return pet.getName();
   }
