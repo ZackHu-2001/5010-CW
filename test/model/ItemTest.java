@@ -70,7 +70,7 @@ public class ItemTest {
   }
 
   /**
-   * Test the {@link Item#getValue()} method to ensure it returns the correct value.
+   * Test the {@link Item#getDamage()} method to ensure it returns the correct value.
    */
   @Test
   public void testGetValue() {
@@ -81,7 +81,7 @@ public class ItemTest {
       int roomWithin = random.nextInt(100);
       Item item = new Item("Foo" + String.valueOf(value), value,
           roomWithin + 1);
-      assertEquals(value, item.getValue());
+      assertEquals(value, item.getDamage());
     }
   }
 
