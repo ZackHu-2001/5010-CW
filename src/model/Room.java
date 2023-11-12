@@ -77,6 +77,15 @@ public class Room {
     playerList.add(player);
   }
 
+  /**
+   * Get the copy of player list inside the room.
+   *
+   * @return the copy of the player list inside the room.
+   */
+  public List<Player> getPlayerList() {
+    return new ArrayList<>(playerList);
+  }
+
 
   /**
    * Deletes a player to the list of player in this room.
@@ -152,6 +161,42 @@ public class Room {
    */
   public List<Room> getVisibleRoom() {
     return neighbors;
+  }
+
+  /**
+   * A special version of toString() which hides the information of
+   * player inside.
+   *
+   * @return A string containing room information.
+   */
+  public String toStringHideVersion() {
+    StringBuilder sb = new StringBuilder()
+        .append("[")
+        .append(name)
+        .append("]")
+        .append(": ")
+        .append((id + 1))
+        .append("\n\t\tItems within: ");
+    if (itemList.isEmpty()) {
+      sb.append("[Empty]");
+    } else {
+      for (Item item : itemList) {
+        sb.append(item.toString());
+      }
+    }
+
+    sb.append("\n\t\tNeighbors: ");
+    for (Room room : neighbors) {
+      sb.append("#")
+          .append(room.getId() + 1)
+          .append(" ")
+          .append(room.getName())
+          .append(", ");
+    }
+    sb.deleteCharAt(sb.length() - 2);
+    sb.append("\n\t\tPlayer inside: Oops! This room is "
+        + "invisible due to the magic of pet\n");
+    return new String(sb);
   }
 
   /**
@@ -246,7 +291,6 @@ public class Room {
    */
   @Override
   public int hashCode() {
-//    return Objects.hash(name, location, itemList, neighbors);
     return id;
   }
 }
