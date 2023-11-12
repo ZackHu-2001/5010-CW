@@ -9,7 +9,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Set;
+import java.util.Stack;
 
 /**
  * The {@code World} class represents a virtual game world containing a mansion, 
@@ -21,7 +28,7 @@ public class World implements WorldModel {
   private Pet pet;
   private Mansion mansion;
   private Queue<Player> playerQueue;
-  private RandomNumGenerator RandomNumGenerator;
+  private RandomNumGenerator randomNumGenerator;
 
 
   /**
@@ -75,7 +82,7 @@ public class World implements WorldModel {
 
     parseString(new String(stringBuffer));
     this.playerQueue = new ArrayDeque<>();
-    this.RandomNumGenerator = new RandomNumGenerator(numbers);
+    this.randomNumGenerator = new RandomNumGenerator(numbers);
   }
 
   /**
@@ -106,6 +113,15 @@ public class World implements WorldModel {
    */
   public int getRoomCnt() {
     return getMansion().getRoomList().size();
+  }
+
+  /**
+   * Return the remaining health of target.
+   *
+   * @return the remaining health of target.
+   */
+  public int getTargetRemainingHealth() {
+    return target.getHealth();
   }
 
   /**
@@ -140,13 +156,34 @@ public class World implements WorldModel {
    */
   public Readable computerPlayerAction(Player player) {
     StringBuilder computerCommand = new StringBuilder();
-    int option;
-    if (mansion.getRoomList().get(player.getCurrentRoom()).getItemList().isEmpty()) {
-      option = 2;
-    } else {
-      option = 3;
+
+    if (player.getCurrentRoom() == getTargetPosition()) {
+      computerCommand.append("attack\n");
+      List<Item> itemList = player.getItemList();
+      if (!itemList.isEmpty()) {
+        int maxIdx = -1;
+        int max = 0;
+        int cnt = 0;
+        for (Item item : itemList) {
+          if (item.getDamage() > max) {
+            max = item.getDamage();
+            maxIdx = cnt;
+          }
+          cnt ++;
+        }
+        computerCommand.append(String.valueOf(maxIdx)).append("\n");
+      } else {
+        return new StringReader(computerCommand.toString());
+      }
     }
-    int command = RandomNumGenerator.getNextNumber(option);
+
+    int option = 3;
+    if (mansion.getRoomList().get(player.getCurrentRoom()).getItemList().isEmpty()) {
+      option += 1;
+    }
+
+    int command = randomNumGenerator.getNextNumber(option);
+
     if (command == 0) {
       computerCommand.append("look around\n");
     } else if (command == 1) {
@@ -154,13 +191,17 @@ public class World implements WorldModel {
       List<Room> neighborList = mansion.getRoomList().get(player
           .getCurrentRoom()).getNeightborList();
       int max = neighborList.size();
-      Room selected = neighborList.get(RandomNumGenerator.getNextNumber(max));
+      Room selected = neighborList.get(randomNumGenerator.getNextNumber(max));
 
       computerCommand.append(selected.getId() + 1).append("\n");
+    } else if (command == 2) {
+      computerCommand.append("move pet\n");
+      int maxMoveOption = mansion.getRoomList().size() - 1;
+      computerCommand.append(randomNumGenerator.getNextNumber(maxMoveOption) + 1);
     } else {
       computerCommand.append("pick item\n");
       int maxItemOption = mansion.getRoomList().get(player.getCurrentRoom()).getItemList().size();
-      computerCommand.append(RandomNumGenerator.getNextNumber(maxItemOption) + 1);
+      computerCommand.append(randomNumGenerator.getNextNumber(maxItemOption) + 1);
     }
     return new StringReader(computerCommand.toString());
   }
@@ -194,6 +235,7 @@ public class World implements WorldModel {
 
       // turn + 1
       target.move();
+      pet.move();
       updateTurn();
 
       return true;
@@ -227,7 +269,7 @@ public class World implements WorldModel {
    * @param player The player whose turn it is at the moment.
    * @return The string shows the detailed information of those items.
    */
-  public String showItems(Player player) {
+  public String showItemsInRoom(Player player) {
     List<Item> itemList = mansion.getRoomList().get(player.getCurrentRoom()).getItemList();
     StringBuilder stringBuilder = new StringBuilder();
     if (itemList.isEmpty()) {
@@ -274,20 +316,138 @@ public class World implements WorldModel {
    * @return The information to display.
    */
   public String lookAround(Player player) {
-    // turn + 1
-    target.move();
-    updateTurn();
 
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("Neighbor rooms' information: \n");
     List<Room> neightborList = getMansion().getRoomList()
         .get(player.getCurrentRoom()).getNeightborList();
+
+    int petLocation = pet.getCurrentRoom();
     for (Room neighborRoom : neightborList) {
-      stringBuilder.append(neighborRoom.toString());
+      if (petLocation == neighborRoom.getId()) {
+        stringBuilder.append(neighborRoom.toStringHideVersion());
+      } else {
+        stringBuilder.append(neighborRoom.toString());
+      }
+    }
+
+    // turn + 1
+    target.move();
+    pet.move();
+    updateTurn();
+
+    return stringBuilder.toString();
+  }
+
+  /**
+   * Show a list of item that player holds.
+   *
+   * @param player The player whose turn it is at the moment.
+   * @return The string shows the detailed information of items holds.
+   */
+  public String showItemsHold(Player player) {
+    List<Item> itemList = player.getItemList();
+    StringBuilder stringBuilder = new StringBuilder();
+    if (itemList.isEmpty()) {
+      stringBuilder.append("[Empty]");
+    } else {
+      int cnt = 1;
+      for (Item item : itemList) {
+        stringBuilder.append(cnt)
+            .append(". ")
+            .append(item.toString());
+        cnt += 1;
+      }
     }
 
     return stringBuilder.toString();
   }
+
+  /**
+   * Check if the attack can seen bt others.
+   *
+   * @param currentPlayer the player that initiates an attack.
+   * @return if the attack can seen bt others
+   */
+  public boolean attackCheck(Player currentPlayer) {
+    int currentRoomId = currentPlayer.getCurrentRoom();
+
+    // if the pet stay in the exact same room as player
+    if (pet.getCurrentRoom() == currentRoomId) {
+      Room currentRoom = mansion.getRoomList().get(currentRoomId);
+      if (currentRoom.getPlayerList().size() > 1) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+    // if the pet does not stay in the same room as player
+      List<Room> roomList = mansion.getRoomList().get(currentRoomId).getNeightborList();
+
+      Set<Integer> neighborSet = new HashSet<>();
+      for (Room room : roomList) {
+        neighborSet.add(room.getId());
+      }
+
+      if (playerQueue.stream().anyMatch(p -> neighborSet.contains(p.getCurrentRoom()))) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+  /**
+   * Attack the target with bare hand.
+   *
+   * @return whether the attack attempt success.
+   */
+  public boolean attackWithHand() {
+    if (attackCheck(getTurn())) {
+      return false;
+    }
+
+    boolean isGameOver = target.takeAnAttack(1);
+
+    if (! isGameOver) {
+      // turn + 1
+      target.move();
+      pet.move();
+      updateTurn();
+    }
+    return true;
+  }
+
+  /**
+   * Attack the target with chosen item.
+   *
+   * @param player    The player that choose to attack.
+   * @param index     Index of the item to use.
+   * @return          Whether index out of bound and whether seen by others.
+   */
+  public boolean[] attackWithItem(Player player, int index) {
+    List<Item> itemList = player.getItemList();
+    if (index < 0 || index >= itemList.size()) {
+      return new boolean[]{false, false};
+    }
+    if (attackCheck(getTurn())) {
+      return new boolean[]{true, true};
+    }
+
+    Item item = itemList.get(index);
+    itemList.remove(index);
+
+    boolean isGameOver = target.takeAnAttack(item.getDamage());
+
+    if (! isGameOver) {
+      // turn + 1
+      target.move();
+      pet.move();
+      updateTurn();
+    }
+
+    return new boolean[]{true, false};
+  }
+
 
   /**
    * Get doctor lucky's current position.
@@ -406,14 +566,14 @@ public class World implements WorldModel {
     Room currentRoom = mansion.getRoomList().get(0);
     roomStack.push(currentRoom);
     visitedRoom.add(currentRoom);
-    routine[0] = 1;
+    routine[0] = 0;
 
     while (visitedRoom.size() != roomCnt && roomStack.size() != 0) {
       currentRoom = roomStack.peek();
       boolean isFound = false;
       for (Room room : currentRoom.getNeightborList()) {
         if (!visitedRoom.contains(room)) {
-          routine[visitedRoom.size()] = room.getId() + 1;
+          routine[visitedRoom.size()] = room.getId();
           visitedRoom.add(room);
           roomStack.push(room);
           isFound = true;
@@ -425,7 +585,6 @@ public class World implements WorldModel {
         roomStack.pop();
       }
     }
-
     return routine;
   }
 
