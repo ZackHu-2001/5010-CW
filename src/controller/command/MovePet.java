@@ -1,13 +1,12 @@
 package controller.command;
 
 import controller.Command;
-import model.WorldModel;
-
 import java.io.IOException;
 import java.util.Scanner;
+import model.WorldModel;
 
 /**
- * This command implements
+ * This command implements move pet.
  */
 public class MovePet implements Command {
   private final Scanner scan;
@@ -17,6 +16,7 @@ public class MovePet implements Command {
     this.scan = scan;
     this.out = out;
   }
+
   @Override
   public void act(WorldModel m) {
     if (m == null) {
@@ -25,19 +25,19 @@ public class MovePet implements Command {
 
     int targetRoomId;
     try {
-      out.append("Please enter the index of the room you want the pet move to: ");
+      out.append("\nPlease enter the index of the room you want the pet move to: ");
       String next;
 
       while (scan.hasNextLine()) {
         next = scan.nextLine();
         try {
           targetRoomId = Integer.parseInt(next);
-          if (!m.movePlayer(m.getTurn(), targetRoomId - 1)) {
+          if (!m.movePet(targetRoomId - 1)) {
             out.append("\nCan not move to room ")
                 .append(String.valueOf(targetRoomId))
-                .append(", not neighbor of current room.\nPlease enter again: ");
+                .append(", index out of bound.\nPlease enter again: ");
           } else {
-            out.append("\nSuccessfully moved to room ")
+            out.append("\nSuccessfully moved pet to room ")
                 .append(String.valueOf(targetRoomId))
                 .append(".\n");
             break;
