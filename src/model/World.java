@@ -56,7 +56,7 @@ public class World implements WorldModel {
 
     public int getNextNumber(int range) {
       if (random == null) {
-        return numbers.get(currentIndex++ % numbers.size());
+        return numbers.get(currentIndex++ % numbers.size()) % range;
       } else {
         return random.nextInt(range);
       }
@@ -171,16 +171,17 @@ public class World implements WorldModel {
           }
           cnt ++;
         }
-        computerCommand.append(String.valueOf(maxIdx)).append("\n");
+        computerCommand.append(String.valueOf(maxIdx + 1)).append("\n");
       } else {
         return new StringReader(computerCommand.toString());
       }
     }
 
     int option = 3;
-    if (mansion.getRoomList().get(player.getCurrentRoom()).getItemList().isEmpty()) {
+    if (!mansion.getRoomList().get(player.getCurrentRoom()).getItemList().isEmpty()) {
       option += 1;
     }
+
 
     int command = randomNumGenerator.getNextNumber(option);
 
@@ -200,8 +201,9 @@ public class World implements WorldModel {
       computerCommand.append(randomNumGenerator.getNextNumber(maxMoveOption) + 1);
     } else {
       computerCommand.append("pick item\n");
-      int maxItemOption = mansion.getRoomList().get(player.getCurrentRoom()).getItemList().size();
-      computerCommand.append(randomNumGenerator.getNextNumber(maxItemOption) + 1);
+//      int maxItemOption = mansion.getRoomList().get(player.getCurrentRoom()).getItemList().size();
+//      computerCommand.append(randomNumGenerator.getNextNumber(maxItemOption) + 1);
+      computerCommand.append("1");
     }
     return new StringReader(computerCommand.toString());
   }

@@ -1,6 +1,7 @@
 package controller;
 
 import static java.lang.System.exit;
+import static java.lang.System.out;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -2545,8 +2546,8 @@ public class GameControllerTest {
     GameController gameController = new GameController(command, output, 10);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "";
-    assertEquals(expectedOutput, output.toString());
+    String expectedOutput = "Turn 1: Doctor Lucky[50] at room 1, Fortune the Cat at room 1\n";
+    assertTrue(output.toString().contains(expectedOutput));
   }
 
   /**
@@ -2556,13 +2557,23 @@ public class GameControllerTest {
   @Test
   public void testPetDefaultMove() {
     StringReader command = new StringReader("yes\nh\nbob\n1\nn\n"
-        + "look around\nlook around\nlook around\nlook around");
-    GameController gameController = new GameController(command, output, 10);
+        + "look around\nlook around\nlook around\nlook around\nlook around\nlook around\n"
+        + "look around\nlook around\nlook around\nlook around\nlook around\nlook around\n"
+        + "look around\nlook around\nlook around\nlook around\nlook around\nlook around\n"
+        + "look around\nlook around\nlook around\nlook around\nlook around\nlook around\n");
+    GameController gameController = new GameController(command, output, 25);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "";
-    assertEquals(expectedOutput, output.toString());
+    String expectedOutput = "Turn 10: Doctor Lucky[50] at room 10, Fortune the Cat at room 3\n";
+    assertTrue(output.toString().contains(expectedOutput));
+
+    expectedOutput = "Turn 15: Doctor Lucky[50] at room 15, Fortune the Cat at room 10\n";
+    assertTrue(output.toString().contains(expectedOutput));
+
+    expectedOutput = "Turn 22: Doctor Lucky[50] at room 1, Fortune the Cat at room 1";
+    assertTrue(output.toString().contains(expectedOutput));
   }
+
 
   /**
    * Test move pet by player.
@@ -2570,12 +2581,21 @@ public class GameControllerTest {
   @Test
   public void testMovePet() {
     StringReader command = new StringReader("yes\nh\nbob\n1\nn\n"
-        + "move pet\n22\n21\nmove pet\n0\n1\n");
+        + "move pet\n22\n21\nmove pet\n0\n1\nlook around\nlook around\n");
     GameController gameController = new GameController(command, output, 10);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "";
-    assertEquals(expectedOutput, output.toString());
+    String expectedOutput = "Turn 2: Doctor Lucky[50] at room 2, Fortune the Cat at room 21\n";
+    assertTrue(output.toString().contains(expectedOutput));
+
+    expectedOutput = "Turn 3: Doctor Lucky[50] at room 3, Fortune the Cat at room 1\n";
+    assertTrue(output.toString().contains(expectedOutput));
+
+    expectedOutput = "Turn 4: Doctor Lucky[50] at room 4, Fortune the Cat at room 2\n";
+    assertTrue(output.toString().contains(expectedOutput));
+
+    expectedOutput = "Turn 5: Doctor Lucky[50] at room 5, Fortune the Cat at room 4\n";
+    assertTrue(output.toString().contains(expectedOutput));
   }
 
   /**
@@ -2584,16 +2604,25 @@ public class GameControllerTest {
   @Test
   public void testPetEffectOnVisibility() {
     StringReader command = new StringReader("yes\nh\nbob\n2\ny\nh\nzack\n1\n"
-        + "look around\nlook around\nlook around\nmove pet\n2\nlook around");
+        + "n\nlook around\nlook around\nmove pet\n2\nlook around");
     GameController gameController = new GameController(command, output, 10);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "";
-    assertEquals(expectedOutput, output.toString());
+    String expectedOutput = "[Armory]: 1\n"
+        + "\t\tItems within: [Revolver]: attack 3; \n"
+        + "\t\tNeighbors: #2 Billiard world.Room, #4 Dining Hall, #5 Drawing world.Room \n"
+        + "\t\tPlayer inside: Oops! This room is invisible due to the magic of pet";
+    assertTrue(output.toString().contains(expectedOutput));
+
+    expectedOutput = "[Billiard world.Room]: 2\n"
+        + "\t\tItems within: [Billiard Cue]: attack 2; \n"
+        + "\t\tNeighbors: #1 Armory, #4 Dining Hall, #19 Trophy world.Room \n"
+        + "\t\tPlayer inside: Oops! This room is invisible due to the magic of pet";
+    assertTrue(output.toString().contains(expectedOutput));
   }
 
   /**
-   * Test attack with someone nearby, with the help of pet
+   * Test attack with someone nearby, with the help of pet.
    */
   @Test
   public void testAttackWithNearbyWithPet() {
@@ -2602,8 +2631,9 @@ public class GameControllerTest {
     GameController gameController = new GameController(command, output, 10);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "";
-    assertEquals(expectedOutput, output.toString());
+    String expectedOutput = "You hold no item, so you poke him in the eye.\n"
+        + "Attack success! Target's remaining health: 49";
+    assertTrue(output.toString().contains(expectedOutput));
   }
 
   /**
@@ -2616,8 +2646,9 @@ public class GameControllerTest {
     GameController gameController = new GameController(command, output, 10);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "";
-    assertEquals(expectedOutput, output.toString());
+    String expectedOutput = "You hold no item, so you poke him in the eye.\n"
+        + "Oops! Your attack was seen by others, attack failed.";
+    assertTrue(output.toString().contains(expectedOutput));
   }
 
   /**
@@ -2630,12 +2661,13 @@ public class GameControllerTest {
     GameController gameController = new GameController(command, output, 10);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "";
-    assertEquals(expectedOutput, output.toString());
+    String expectedOutput = "You hold no item, so you poke him in the eye.\n"
+        + "Oops! Your attack was seen by others, attack failed.";
+    assertTrue(output.toString().contains(expectedOutput));
   }
 
   /**
-   * Test target killed by player and should prompt correctly.
+   * Test target killed by player using bare hand and should prompt correctly.
    */
   @Test
   public void testKillTargetEndGameCaseOne() {
@@ -2657,13 +2689,16 @@ public class GameControllerTest {
     GameController gameController = new GameController(command, output, 10);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "";
-    assertEquals(expectedOutput, output.toString());
+    String expectedOutput = "You hold no item, so you poke him in the eye.\n"
+        + "Attack success! Target's remaining health: 0\n"
+        + "Target killed!\n"
+        + "Player zack win the game!";
+    assertTrue(output.toString().contains(expectedOutput));
 
   }
 
   /**
-   * Test target killed by player and should prompt correctly.
+   * Test target killed by player using item and should prompt correctly.
    */
   @Test
   public void testKillTargetEndGameCaseTwo() {
@@ -2685,8 +2720,42 @@ public class GameControllerTest {
     GameController gameController = new GameController(command, output, 10);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "";
-    assertEquals(expectedOutput, output.toString());
+    String expectedOutput = "Here are the items you hold: 1. [Sharp Knife]: attack 3; \n"
+        + "Which one you want to use, enter index of item: "
+        + "Attack success! Target's remaining health: -1\n"
+        + "Target killed!\n"
+        + "Player zack win the game!";
+    assertTrue(output.toString().contains(expectedOutput));
+  }
+
+
+  /**
+   * Test player attack with item and whether item is deleted .
+   */
+  @Test
+  public void testKillWithItem() {
+
+    Reader fileReader;
+    String pathToFile = "res/easyMansion2.txt";
+
+    try {
+      fileReader = new FileReader(pathToFile);
+      this.worldModel = new World(fileReader);
+    } catch (IOException e) {
+      System.out.println("There are problems with path to file, exit now.");
+      exit(1);
+    }
+
+    // test case: one player picked an item and attack the target, the target died
+    StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\nzack\n4\nn\n"
+        + "look around\npick item\n1\nmove pet\n4\nattack\n1\nlook around\naround\n");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "Turn 6: Doctor Lucky[1] at room 6, Fortune the Cat at room 6\n"
+        + "Information of the current turn's human player: \n"
+        + "Name: zack    Holds: [Empty]";
+    assertTrue(output.toString().contains(expectedOutput));
   }
 
   /**
@@ -2720,14 +2789,15 @@ public class GameControllerTest {
   }
 
   /**
-   * Test the action of computer.
+   * Test the action of computer: computer player A attack first,
+   * then B attacks and kills the target.
    */
   @Test
-  public void testComputerPlayer() {
+  public void testComputerPlayer_case1() {
 
     Reader fileReader;
-    String pathToFile = "res/mansion.txt";
-    int[] computerCommand = {1, 0, 0, 1, 1, 0, 1, 1, 0, 0};
+    String pathToFile = "res/easyMansion.txt";
+    int[] computerCommand = {3, 0, 1};
 
     try {
       fileReader = new FileReader(pathToFile);
@@ -2737,13 +2807,83 @@ public class GameControllerTest {
       exit(1);
     }
 
-    StringReader command = new StringReader("yes\nc\nbob\n1\ny\nh\nzack\n4\nn\n"
-        + "look around\nlook around\nmove pet\n4\nattack\n");
-    GameController gameController = new GameController(command, output, 10);
+    StringReader command = new StringReader("yes\nc\nbob\n1\ny\nc\nzack\n4\nn\n");
+    GameController gameController = new GameController(command, output, 15);
     gameController.startGame(worldModel);
 
-    String expectedOutput = "";
-    assertEquals(expectedOutput, output.toString());
+    String expectedOutput = "Here are the items you hold: 1. [Sharp Knife]: attack 3; \n"
+        + "Which one you want to use, enter index of item: "
+        + "Attack success! Target's remaining health: -2\n"
+        + "Target killed!\n"
+        + "Player zack win the game!";
+    assertTrue(output.toString().contains(expectedOutput));
+
+    expectedOutput = "You hold no item, so you poke him in the eye.\n"
+        + "Attack success! Target's remaining health: 1";
+    assertTrue(output.toString().contains(expectedOutput));
+  }
+
+  /**
+   * Test the action of computer: both player move, look around but not able to attack as not
+   * in the same room. The game ends with the target escaped.
+   */
+  @Test
+  public void testComputerPlayer_case2() {
+
+    Reader fileReader;
+    String pathToFile = "res/easyMansion.txt";
+    int[] computerCommand = {0, 0, 1, 17, 1, 4, 0};
+
+    try {
+      fileReader = new FileReader(pathToFile);
+      this.worldModel = new World(fileReader, computerCommand);
+    } catch (IOException e) {
+      System.out.println("There are problems with path to file, exit now.");
+      exit(1);
+    }
+
+    StringReader command = new StringReader("yes\nc\nbob\n11\ny\nc\nzack\n14\nn\n");
+    GameController gameController = new GameController(command, output, 5);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "Maximum turn reached, you guys failed. Doctor lucky escaped!";
+    assertTrue(output.toString().contains(expectedOutput));
+  }
+
+
+
+  /**
+   * Test when computer controlled player holds multiple items, whether it would use the
+   * item with maximum damage to attack.
+   * Also test whether computer player would attack when possible.
+   *
+   */
+  @Test
+  public void testComputerPlayerAttackWithMaxDamageItem() {
+
+    Reader fileReader;
+    String pathToFile = "res/easyMansion.txt";
+    int[] computerCommand = {3, 1, 1, 3, 1, 4, 0};
+
+    try {
+      fileReader = new FileReader(pathToFile);
+      this.worldModel = new World(fileReader, computerCommand);
+    } catch (IOException e) {
+      System.out.println("There are problems with path to file, exit now.");
+      exit(1);
+    }
+
+    StringReader command = new StringReader("yes\nc\nbob\n5\nn\n");
+    GameController gameController = new GameController(command, output, 5);
+    gameController.startGame(worldModel);
+
+    String expectedOutput =
+    "Here are the items you hold: 1. [Letter Opener]: attack 2; 2. [Sharp Knife]: attack 3; \n"
+        + "Which one you want to use, enter index of item: "
+        + "Attack success! Target's remaining health: -1\n"
+        + "Target killed!\n"
+        + "Player bob win the game!";
+    assertTrue(output.toString().contains(expectedOutput));
   }
 
 }

@@ -32,7 +32,7 @@ public class PickItem implements Command {
     Player player = m.getTurn();
     try {
       out.append("Here are available items: ")
-          .append(m.showItems(player))
+          .append(m.showItemsInRoom(player))
           .append("\nWhich one you want to pick, enter index of item: ");
 
       String next;

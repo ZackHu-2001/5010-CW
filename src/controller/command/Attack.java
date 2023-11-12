@@ -30,7 +30,6 @@ public class Attack implements Command {
         out.append("\nYou hold no item, so you poke him in the eye.\n");
 
         boolean isSuccess = m.attackWithHand();
-        System.out.println(isSuccess);
         if (!isSuccess) {
           out.append("Oops! Your attack was seen by others, attack failed.\n");
           return;
