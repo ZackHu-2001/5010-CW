@@ -48,6 +48,17 @@ public class Target {
   }
 
   /**
+   * This method represents target under attack.
+   *
+   * @param damage the damage dealt to target.
+   * @return if the target survives.
+   */
+  public boolean takeAnAttack(int damage) {
+    health -= damage;
+    return health <= 0;
+  }
+
+  /**
    * Returns the current room that the target in.
    *
    * @return Number of room that the target in.
