@@ -84,6 +84,11 @@ public class MockWorld implements WorldModel {
     return getMansion().getRoomList().size();
   }
 
+  @Override
+  public int getTargetRemainingHealth() {
+    return 0;
+  }
+
   /**
    * Update the turn, poll the first player to the end of the queue.
    */
@@ -195,7 +200,7 @@ public class MockWorld implements WorldModel {
    * @param player The player whose turn it is at the moment.
    * @return The string shows the detailed information of those items.
    */
-  public String showItems(Player player) {
+  public String showItemsInRoom(Player player) {
     log.append("showItems called\n");
     List<Item> itemList = mansion.getRoomList().get(player.getCurrentRoom()).getItemList();
     StringBuilder stringBuilder = new StringBuilder();
@@ -260,6 +265,21 @@ public class MockWorld implements WorldModel {
     return stringBuilder.toString();
   }
 
+  @Override
+  public String showItemsHold(Player player) {
+    return null;
+  }
+
+  @Override
+  public boolean attackWithHand() {
+    return false;
+  }
+
+  @Override
+  public boolean[] attackWithItem(Player player, int index) {
+    return new boolean[]{false,false};
+  }
+
   /**
    * Get doctor lucky's current position.
    *
@@ -276,6 +296,7 @@ public class MockWorld implements WorldModel {
   public String getPetName() {
     return pet.getName();
   }
+
   /**
    * Gets the mansion included in the world.
    *
