@@ -1,6 +1,8 @@
 package controller;
 
+import controller.command.Attack;
 import controller.command.LookAround;
+import controller.command.MovePet;
 import controller.command.MovePlayer;
 import controller.command.PickItem;
 import java.awt.image.BufferedImage;
@@ -150,7 +152,15 @@ public class GameController implements Controller {
     currentTurn += 1;
     if (currentTurn > maxTurn) {
       try {
-        out.append("Maximum turn reached, game over.");
+        out.append("Maximum turn reached, you guys failed. Doctor lucky escaped!");
+        return true;
+      } catch (IOException ioe) {
+        throw new IllegalStateException("Append failed\n");
+      }
+    } else if (worldModel.getTargetRemainingHealth() <= 0) {
+      try {
+        out.append("Target killed!\n").append("Player ");
+        out.append(worldModel.getTurn().getName()).append(" win the game!");
         return true;
       } catch (IOException ioe) {
         throw new IllegalStateException("Append failed\n");
@@ -181,7 +191,9 @@ public class GameController implements Controller {
     try {
       out.append("\nTurn ")
           .append(String.valueOf(currentTurn))
-          .append(", Doctor Lucky at room ")
+          .append(": Doctor Lucky[")
+          .append(String.valueOf(worldModel.getTargetRemainingHealth()))
+          .append("] at room ")
           .append(String.valueOf(worldModel.getTargetPosition() + 1))
           .append(", ")
           .append(worldModel.getPetName())
@@ -203,10 +215,19 @@ public class GameController implements Controller {
 
       out.append("Available options of this turn:\n")
           .append("1. look around (show neighbor room information)\n")
-          .append("2. move (move to a neighbor room)\n");
+          .append("2. move (move to a neighbor room)\n")
+          .append("3. move pet (move pet to a specific room)\n");
 
-      if (!worldModel.showItems(player).equals("[Empty]")) {
-        out.append("3. pick item (pick up item in the room)\n");
+      int cnt = 4;
+      if (!worldModel.showItemsInRoom(player).equals("[Empty]")) {
+        out.append(String.valueOf(cnt))
+            .append(". pick item (pick up item in the room)\n");
+        cnt += 1;
+      }
+
+      if (player.getCurrentRoom() == worldModel.getTargetPosition()) {
+        out.append(String.valueOf(cnt))
+            .append(". attack (attack the target)\n");
       }
 
     } catch (IOException ioe) {
@@ -224,7 +245,7 @@ public class GameController implements Controller {
    */
   private void upDateCommands(WorldModel worldModel, Map<String,
       Function<Scanner, Command>> knownCommands) {
-    if (worldModel.showItems(worldModel.getTurn()).equals("[Empty]")) {
+    if (worldModel.showItemsInRoom(worldModel.getTurn()).equals("[Empty]")) {
       knownCommands.remove("pick item");
     } else {
       knownCommands.put("pick item", s -> new PickItem(scan, out));
@@ -319,6 +340,8 @@ public class GameController implements Controller {
       Map<String, Function<Scanner, Command>> knownCommands = new HashMap<>();
       knownCommands.put("look around", s -> new LookAround(out));
       knownCommands.put("move", s -> new MovePlayer(scan, out));
+      knownCommands.put("move pet", s -> new MovePet(scan, out));
+      knownCommands.put("attack", s -> new Attack(scan, out));
 
       out.append("All players loaded, game starts now!\n");
 
