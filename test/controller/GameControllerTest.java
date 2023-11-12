@@ -2,6 +2,7 @@ package controller;
 
 import static java.lang.System.exit;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -1285,7 +1286,7 @@ public class GameControllerTest {
 
     StringReader command = new StringReader("yes\nh\nzack\n1\nn\npick item\n1\nmove"
         + "\n5\npick item\n1\nmove\n6\nmove\n16\npick item\n1\nmove\n8\npick item\n1\n"
-            + "move\n7\npick item\n1\nquit\n");
+        + "move\n7\npick item\n1\nquit\n");
     GameController gameController = new GameController(command, output, 20);
     gameController.startGame(mockWorld);
 
@@ -2533,4 +2534,216 @@ public class GameControllerTest {
 
 
   }
+
+
+  /**
+   * Test the starting position of pet and pet location display.
+   */
+  @Test
+  public void testPetStartPoint() {
+    StringReader command = new StringReader("yes\nh\nbob\n1\nn\nlook around\n");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "";
+    assertEquals(expectedOutput, output.toString());
+  }
+
+  /**
+   * Test default move(DFT) of pet, and whether the information of pet's location
+   * correctly updated.
+   */
+  @Test
+  public void testPetDefaultMove() {
+    StringReader command = new StringReader("yes\nh\nbob\n1\nn\n"
+        + "look around\nlook around\nlook around\nlook around");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "";
+    assertEquals(expectedOutput, output.toString());
+  }
+
+  /**
+   * Test move pet by player.
+   */
+  @Test
+  public void testMovePet() {
+    StringReader command = new StringReader("yes\nh\nbob\n1\nn\n"
+        + "move pet\n22\n21\nmove pet\n0\n1\n");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "";
+    assertEquals(expectedOutput, output.toString());
+  }
+
+  /**
+   * Test pet's effect on visibility of room.
+   */
+  @Test
+  public void testPetEffectOnVisibility() {
+    StringReader command = new StringReader("yes\nh\nbob\n2\ny\nh\nzack\n1\n"
+        + "look around\nlook around\nlook around\nmove pet\n2\nlook around");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "";
+    assertEquals(expectedOutput, output.toString());
+  }
+
+  /**
+   * Test attack with someone nearby, with the help of pet
+   */
+  @Test
+  public void testAttackWithNearbyWithPet() {
+    StringReader command = new StringReader("yes\nh\nbob\n2\ny\nh\nzack\n4\nn\n"
+        + "look around\nlook around\nmove pet\n4\nattack\n");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "";
+    assertEquals(expectedOutput, output.toString());
+  }
+
+  /**
+   * Test attack with someone nearby, without help of pet.
+   */
+  @Test
+  public void testWithNearbyWithoutPet() {
+    StringReader command = new StringReader("yes\nh\nbob\n2\ny\nh\nzack\n4\nn\n"
+        + "look around\nlook around\nlook around\nattack\n");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "";
+    assertEquals(expectedOutput, output.toString());
+  }
+
+  /**
+   * Pet, target, player A and player B stay in the same room. Test attack.
+   */
+  @Test
+  public void testInSameRoom() {
+    StringReader command = new StringReader("yes\nh\nbob\n4\ny\nh\nzack\n4\nn\n"
+        + "look around\nlook around\nmove pet\n4\nattack\n");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "";
+    assertEquals(expectedOutput, output.toString());
+  }
+
+  /**
+   * Test target killed by player and should prompt correctly.
+   */
+  @Test
+  public void testKillTargetEndGameCaseOne() {
+
+    Reader fileReader;
+    String pathToFile = "res/easyMansion.txt";
+
+    try {
+      fileReader = new FileReader(pathToFile);
+      this.worldModel = new World(fileReader);
+    } catch (IOException e) {
+      System.out.println("There are problems with path to file, exit now.");
+      exit(1);
+    }
+
+    // test case: two players poked the target and target died
+    StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\nzack\n4\nn\n"
+        + "attack\nlook around\nmove pet\n4\nattack\n");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "";
+    assertEquals(expectedOutput, output.toString());
+
+  }
+
+  /**
+   * Test target killed by player and should prompt correctly.
+   */
+  @Test
+  public void testKillTargetEndGameCaseTwo() {
+
+    Reader fileReader;
+    String pathToFile = "res/easyMansion.txt";
+
+    try {
+      fileReader = new FileReader(pathToFile);
+      this.worldModel = new World(fileReader);
+    } catch (IOException e) {
+      System.out.println("There are problems with path to file, exit now.");
+      exit(1);
+    }
+
+    // test case: one player picked an item and attack the target, the target died
+    StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\nzack\n4\nn\n"
+        + "look around\npick item\n1\nmove pet\n4\nattack\n1\nlook around\n");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "";
+    assertEquals(expectedOutput, output.toString());
+  }
+
+  /**
+   * Test game ends without able to kill doctor lucky.
+   */
+  @Test
+  public void testEndWithoutKilled() {
+
+    Reader fileReader;
+    String pathToFile = "res/easyMansion.txt";
+
+    try {
+      fileReader = new FileReader(pathToFile);
+      this.worldModel = new World(fileReader);
+    } catch (IOException e) {
+      System.out.println("There are problems with path to file, exit now.");
+      exit(1);
+    }
+
+    // test case: one player picked an item and attack the target, the target died
+    StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\nzack\n4\nn\n"
+        + "look around\nlook around\nlook around\nlook around\nlook around\nlook around\n"
+        + "look around\nlook around\nlook around\nlook around\nlook around\nlook around\n");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "Maximum turn reached, you guys failed. Doctor lucky escaped!";
+    assertTrue(output.toString().contains(expectedOutput));
+    expectedOutput = "Turn 10: Doctor Lucky[2] at room 10, Fortune the Cat at room 3\n";
+    assertTrue(output.toString().contains(expectedOutput));
+  }
+
+  /**
+   * Test the action of computer.
+   */
+  @Test
+  public void testComputerPlayer() {
+
+    Reader fileReader;
+    String pathToFile = "res/mansion.txt";
+    int[] computerCommand = {1, 0, 0, 1, 1, 0, 1, 1, 0, 0};
+
+    try {
+      fileReader = new FileReader(pathToFile);
+      this.worldModel = new World(fileReader, computerCommand);
+    } catch (IOException e) {
+      System.out.println("There are problems with path to file, exit now.");
+      exit(1);
+    }
+
+    StringReader command = new StringReader("yes\nc\nbob\n1\ny\nh\nzack\n4\nn\n"
+        + "look around\nlook around\nmove pet\n4\nattack\n");
+    GameController gameController = new GameController(command, output, 10);
+    gameController.startGame(worldModel);
+
+    String expectedOutput = "";
+    assertEquals(expectedOutput, output.toString());
+  }
+
 }
