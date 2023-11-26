@@ -1059,7 +1059,7 @@ public class GameControllerTest {
         + "3. pick item (pick up item in the room)\n"
         + "Exit game, have a nice day~\n";
     assertEquals(expectedOutput, output.toString());
-  }
+  }G
 
   /**
    * Test pick item: whether show item list properly before and after picking, whether drops item
