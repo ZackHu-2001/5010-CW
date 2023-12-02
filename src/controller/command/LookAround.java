@@ -31,7 +31,7 @@ public class LookAround implements Command {
       throw new IllegalArgumentException("model cannot be null");
     }
     try {
-      out.append(m.lookAround(m.getTurn()));
+      out.append(m.lookAround(m.getCurrentTurnPlayer()));
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }

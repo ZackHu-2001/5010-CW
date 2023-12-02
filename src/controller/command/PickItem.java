@@ -35,7 +35,7 @@ public class PickItem implements Command {
     if (m == null) {
       throw new IllegalArgumentException("model cannot be null");
     }
-    Player player = m.getTurn();
+    Player player = m.getCurrentTurnPlayer();
     try {
       out.append("Here are available items: ")
           .append(m.showItemsInRoom(player))

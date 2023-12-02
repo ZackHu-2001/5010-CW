@@ -31,7 +31,7 @@ public class Attack implements Command {
     }
 
     try {
-      String items = m.showItemsHold(m.getTurn());
+      String items = m.showItemsHold(m.getCurrentTurnPlayer());
       if ("[Empty]".equals(items)) {
         out.append("\nYou hold no item, so you poke him in the eye.\n");
 
@@ -64,7 +64,7 @@ public class Attack implements Command {
           continue;
         }
 
-        boolean[] result = m.attackWithItem(m.getTurn(), index - 1);
+        boolean[] result = m.attackWithItem(m.getCurrentTurnPlayer(), index - 1);
         if (result[0]) {
           if (result[1]) {
             out.append("Oops! Your attack was seen by other, attack failed.\n");

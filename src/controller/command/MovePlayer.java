@@ -38,17 +38,17 @@ public class MovePlayer implements Command {
 
     int targetRoomId;
     try {
-      out.append("Please enter the index of the room you want to move to: ");
+      out.append("Please select on map or enter the index of the room you want to move to: ");
       String next;
 
       while (scan.hasNextLine()) {
         next = scan.nextLine();
         try {
           targetRoomId = Integer.parseInt(next);
-          if (!m.movePlayer(m.getTurn(), targetRoomId - 1)) {
+          if (!m.movePlayer(m.getCurrentTurnPlayer(), targetRoomId - 1)) {
             out.append("\nCan not move to room ")
                 .append(String.valueOf(targetRoomId))
-                .append(", not neighbor of current room.\nPlease enter again: ");
+                .append(", not neighbor of current room.\nPlease select again: ");
           } else {
             out.append("\nSuccessfully moved to room ")
                 .append(String.valueOf(targetRoomId))
