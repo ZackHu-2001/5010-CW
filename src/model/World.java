@@ -5,10 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +26,10 @@ public class World implements WorldModel {
   private Mansion mansion;
   private Queue<Player> playerQueue;
   private RandomNumGenerator randomNumGenerator;
+  private String pathToFile;
+  private int currentTurn;
+  private int maxTurn;
+  private final int SIZE = 25;
 
 
   /**
@@ -65,25 +66,43 @@ public class World implements WorldModel {
 
   /**
    * Sets up the world based on input data from a Readable source.
-   *
-   * @param input The Readable input source containing world configuration data.
-   * @param numbers The numbers to control the computer player.
-   * @throws IOException if an I/O error occurs while reading the input.
    */
-  public World(Readable input, int... numbers) throws IOException {
-    BufferedReader bufferedReader = new BufferedReader((Reader) input);
-    StringBuffer stringBuffer = new StringBuffer();
-    String line;
-
-    while ((line = bufferedReader.readLine()) != null) {
-      stringBuffer.append(line);
-      stringBuffer.append('\n');
-    }
-
-    parseString(new String(stringBuffer));
+  public World() {
     this.playerQueue = new ArrayDeque<>();
+    this.randomNumGenerator = new RandomNumGenerator();
+    this.pathToFile = "res/map/mansion.txt";
+  }
+
+  @Override
+  public void initializeWorld(String pathToFile) {
+    if (pathToFile != null) {
+      this.pathToFile = pathToFile;
+    }
+    try {
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(this.pathToFile));
+      StringBuffer stringBuffer = new StringBuffer();
+      String line;
+
+      while ((line = bufferedReader.readLine()) != null) {
+        stringBuffer.append(line);
+        stringBuffer.append('\n');
+      }
+
+      parseString(new String(stringBuffer));
+    } catch (IOException ioException) {
+      ioException.printStackTrace();
+    }
+  }
+
+  /**
+   * Set the operation for the computer.
+   *
+   * @param numbers   the operation that the computer would follow.
+   */
+  public void setComputerOption(int... numbers) {
     this.randomNumGenerator = new RandomNumGenerator(numbers);
   }
+
 
   /**
    * Get the player for this turn.
@@ -91,8 +110,39 @@ public class World implements WorldModel {
    * @return The player of this turn.
    */
   @Override
-  public Player getTurn() {
+  public Player getCurrentTurnPlayer() {
     return playerQueue.peek();
+  }
+
+  @Override
+  public int getTurn() {
+    return currentTurn;
+  }
+
+  @Override
+  public int getMaxTurn() {
+    return maxTurn;
+  }
+
+  @Override
+  public Room getRoom(int x, int y) {
+    for (Room room : mansion.getRoomList()) {
+      int[] location = room.getLocation();
+//      int height = (location[2] - location[0] + 1) * SIZE;
+//      int width = (location[3] - location[1] + 1) * SIZE;
+      if (x > location[0] && x < location[2] && y > location[1] && y < location[3]) {
+        return room;
+      }
+//      graphics2D.drawRect((location[1] + 1) * SIZE, (location[0] + 1) * SIZE, width, height);
+//      graphics2D.drawString(room.getName(), (location[1] + 1) * SIZE + 15,
+//          (location[0] + 1) * SIZE + 20);
+    }
+    return null;
+  }
+
+  @Override
+  public boolean checkTurnUsedUp() {
+    return currentTurn + 1 >= maxTurn;
   }
 
   /**
@@ -129,8 +179,14 @@ public class World implements WorldModel {
    */
   @Override
   public void updateTurn() {
+    currentTurn += 1;
     Player player = playerQueue.poll();
     playerQueue.offer(player);
+  }
+
+  @Override
+  public void setMaxTurn(int maxTurn) {
+    this.maxTurn = maxTurn;
   }
 
   /**
@@ -402,7 +458,7 @@ public class World implements WorldModel {
    * @return whether the attack attempt success.
    */
   public boolean attackWithHand() {
-    if (attackCheck(getTurn())) {
+    if (attackCheck(getCurrentTurnPlayer())) {
       return false;
     }
 
@@ -429,7 +485,7 @@ public class World implements WorldModel {
     if (index < 0 || index >= itemList.size()) {
       return new boolean[]{false, false};
     }
-    if (attackCheck(getTurn())) {
+    if (attackCheck(getCurrentTurnPlayer())) {
       return new boolean[]{true, true};
     }
 
@@ -648,36 +704,35 @@ public class World implements WorldModel {
   /**
    * Draws a map of the game world and saves it to an image file.
    *
-   * @param outputFilePath The path and filename where the map image should be saved.
    * @return bufferedImage The buffered image that could be stored in file.
    */
-  public BufferedImage draw(String outputFilePath) {
+  public BufferedImage drawMap() {
     BufferedImage bufferedImage = new BufferedImage(
-        (mansion.getColumn() + 2) * 30, (mansion.getRow() + 2) * 30,
+        (mansion.getColumn() + 2) * SIZE, (mansion.getRow() + 2) * SIZE,
         BufferedImage.TYPE_INT_RGB);
 
     Graphics2D graphics2D = bufferedImage.createGraphics();
 
     graphics2D.setColor(Color.white);
-    graphics2D.fillRect(0, 0, (mansion.getColumn() + 2) * 30, (mansion.getRow() + 2) * 30);
+    graphics2D.fillRect(0, 0, (mansion.getColumn() + 2) * SIZE, (mansion.getRow() + 2) * SIZE);
 
     BasicStroke stroke = new BasicStroke(3.0f);
-    Font font = new Font("Arial", Font.BOLD, 15);
+    Font font = new Font("Arial", Font.BOLD, 12);
 
     graphics2D.setColor(Color.black);
     graphics2D.setStroke(stroke);
     graphics2D.setFont(font);
 
-    graphics2D.drawRect(30, 30, mansion.getColumn() * 30, mansion.getRow() * 30);
+    graphics2D.drawRect(SIZE, SIZE, mansion.getColumn() * SIZE, mansion.getRow() * SIZE);
 
     for (Room room : mansion.getRoomList()) {
       int[] location = room.getLocation();
-      int height = (location[2] - location[0] + 1) * 30;
-      int width = (location[3] - location[1] + 1) * 30;
+      int height = (location[2] - location[0] + 1) * SIZE;
+      int width = (location[3] - location[1] + 1) * SIZE;
 
-      graphics2D.drawRect((location[1] + 1) * 30, (location[0] + 1) * 30, width, height);
-      graphics2D.drawString(room.getName(), (location[1] + 1) * 30 + 15,
-          (location[0] + 1) * 30 + 20);
+      graphics2D.drawRect((location[1] + 1) * SIZE, (location[0] + 1) * SIZE, width, height);
+      graphics2D.drawString(room.getName(), (location[1] + 1) * SIZE + 15,
+          (location[0] + 1) * SIZE + 20);
     }
     graphics2D.dispose();
 

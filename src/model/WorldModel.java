@@ -1,24 +1,31 @@
 package model;
 
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * The model in MVC pattern. Model provides a series of method
  * to let controller handle and control.
  */
-public interface WorldModel {
+public interface WorldModel extends ReadOnlyModel {
 
   /**
-   * Get the player for this turn.
-   *
-   * @return The player of this turn.
+   * Initialize the world based on the input world configuration.
    */
-  Player getTurn();
+  public void initializeWorld(String pathToFile);
 
   /**
    * Update the turn, poll the first player to the end of the queue.
    */
   void updateTurn();
+
+  /**
+   * Set the max turn of the game.
+   *
+   * @param maxTurn The max turn number of this game.
+   */
+  void setMaxTurn(int maxTurn);
 
   /**
    * Add a new player to this game.
@@ -46,14 +53,6 @@ public interface WorldModel {
    * @return              return whether room id is valid.
    */
   boolean movePet(int targetRoomId);
-
-  /**
-   * Show a list of available items in the room.
-   *
-   * @param player The player whose turn it is at the moment.
-   * @return The string shows the detailed information of those items.
-   */
-  String showItemsInRoom(Player player);
 
   /**
    * Allow the player to pick up item from the room they currently stay in.
@@ -98,57 +97,6 @@ public interface WorldModel {
   boolean[] attackWithItem(Player player, int index);
 
   /**
-   * Display information of this world.
-   *
-   * @return Information of this world.
-   */
-  String toString();
-
-  /**
-   * Return the information of a specific room.
-   *
-   * @param roomId The room that its information needed.
-   * @return The information of the room.
-   */
-  String getRoomInfo(int roomId);
-
-  /**
-   * Return the total room count in the mansion, which is to help
-   * handle user creating player.
-   *
-   * @return The total room count.
-   */
-  int getRoomCnt();
-
-  /**
-   * Return the remaining health of target.
-   *
-   * @return the remaining health of target.
-   */
-  int getTargetRemainingHealth();
-
-  /**
-   * Get doctor lucky's current position.
-   *
-   * @return Current position of doctor lucky.
-   */
-  int getTargetPosition();
-
-  /**
-   * Get doctor pet's current position.
-   *
-   * @return Current position of pet.
-   */
-  int getPetPosition();
-
-  /**
-   * Get doctor pet's name.
-   *
-   * @return Name of the pet.
-   */
-  String getPetName();
-
-  /**
    * Return the command of computer player.
    *
    * @param player The computer player of this turn.
@@ -156,11 +104,4 @@ public interface WorldModel {
    */
   Readable computerPlayerAction(Player player);
 
-  /**
-   * Draws a map of the game world and saves it to an image file.
-   *
-   * @param outputFilePath The path and filename where the map image should be saved.
-   * @return bufferedImage The buffered image that could be stored in file.
-   */
-  BufferedImage draw(String outputFilePath);
 }

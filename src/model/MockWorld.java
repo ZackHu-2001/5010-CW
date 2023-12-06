@@ -57,9 +57,29 @@ public class MockWorld implements WorldModel {
    * @return The player of this turn.
    */
   @Override
-  public Player getTurn() {
+  public Player getCurrentTurnPlayer() {
     log.append("getTurn called\n");
     return playerQueue.peek();
+  }
+
+  @Override
+  public int getTurn() {
+    return 0;
+  }
+
+  @Override
+  public int getMaxTurn() {
+    return 0;
+  }
+
+  @Override
+  public Room getRoom(int x, int y) {
+    return null;
+  }
+
+  @Override
+  public boolean checkTurnUsedUp() {
+    return false;
   }
 
   /**
@@ -89,6 +109,11 @@ public class MockWorld implements WorldModel {
     return 0;
   }
 
+  @Override
+  public void initializeWorld(String pathToFile) {
+
+  }
+
   /**
    * Update the turn, poll the first player to the end of the queue.
    */
@@ -97,6 +122,11 @@ public class MockWorld implements WorldModel {
     log.append("updateTurn called\n");
     Player player = playerQueue.poll();
     playerQueue.offer(player);
+  }
+
+  @Override
+  public void setMaxTurn(int maxTurn) {
+
   }
 
   /**
@@ -442,10 +472,9 @@ public class MockWorld implements WorldModel {
   /**
    * Draws a map of the game world and saves it to an image file.
    *
-   * @param outputFilePath The path and filename where the map image should be saved.
    * @return bufferedImage The buffered image that could be stored in file.
    */
-  public BufferedImage draw(String outputFilePath) {
+  public BufferedImage drawMap() {
     BufferedImage bufferedImage = new BufferedImage(
         (mansion.getColumn() + 2) * 30, (mansion.getRow() + 2) * 30,
         BufferedImage.TYPE_INT_RGB);
