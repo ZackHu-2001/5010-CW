@@ -108,8 +108,8 @@ public class PlayerCreationDialog extends JDialog {
             getItemCapacity(), getControlMode());
         if (addedSuccessfully) {
           int option = JOptionPane.showConfirmDialog(PlayerCreationDialog.this,
-              String.format("Player added successfully! There is/are %d player(s) now. "
-                  + "Do you want to add more players?", model.getPlayerCount()),
+              String.format("Player added successfully! "
+                  + "Do you want to add more players?"),
               "Success", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
           if (option == JOptionPane.YES_OPTION) {
@@ -135,7 +135,6 @@ public class PlayerCreationDialog extends JDialog {
   private void setInputVerifier() {
     playerNameField.setInputVerifier(new NonEmptyStringVerifier());
     initialLocationField.setInputVerifier(new LocationVerifier());
-
   }
 
   private class LocationVerifier extends InputVerifier {
@@ -150,10 +149,10 @@ public class PlayerCreationDialog extends JDialog {
       }
       try {
         int location = Integer.parseInt(text);
-        if (location >= 0 && location < model.getRoomCount()) {
+        if (location >= 0 && location < model.getRoomCnt()) {
           return true;
         } else {
-          showError(String.format("Location must be between 0 and %d.", model.getRoomCount() - 1));
+          showError(String.format("Location must be between 0 and %d.", model.getRoomCnt() - 1));
           return false;
         }
       } catch (NumberFormatException e) {
