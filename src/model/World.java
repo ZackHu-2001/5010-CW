@@ -30,6 +30,7 @@ public class World implements WorldModel {
   private int currentTurn;
   private int maxTurn;
   private final int SIZE = 25;
+  private boolean initialized = false;
 
 
   /**
@@ -89,6 +90,7 @@ public class World implements WorldModel {
       }
 
       parseString(new String(stringBuffer));
+      initialized = true;
     } catch (IOException ioException) {
       ioException.printStackTrace();
     }
@@ -737,6 +739,11 @@ public class World implements WorldModel {
     graphics2D.dispose();
 
     return bufferedImage;
+  }
+
+  @Override
+  public boolean isInitialized() {
+    return initialized;
   }
 }
 

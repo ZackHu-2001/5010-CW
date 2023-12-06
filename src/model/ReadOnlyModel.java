@@ -107,4 +107,11 @@ public interface ReadOnlyModel {
    * @return bufferedImage The buffered image that could be stored in file.
    */
   BufferedImage drawMap();
+
+  /**
+   * Tells if the model is initialized.
+   *
+   * @return whether the model is initialized
+   */
+  boolean isInitialized();
 }

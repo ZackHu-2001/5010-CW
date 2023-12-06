@@ -506,6 +506,11 @@ public class MockWorld implements WorldModel {
 
     return bufferedImage;
   }
+
+  @Override
+  public boolean isInitialized() {
+    return false;
+  }
 }
 
 
