@@ -1,7 +1,6 @@
 package controller;
 
 import static java.lang.System.exit;
-import static java.lang.System.out;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -14,6 +13,8 @@ import model.World;
 import model.WorldModel;
 import org.junit.Before;
 import org.junit.Test;
+import view.View;
+import view.ViewFactory;
 
 
 /**
@@ -23,25 +24,37 @@ import org.junit.Test;
  */
 public class GameControllerTest {
   StringBuilder log = new StringBuilder();
-  private WorldModel worldModel;
   private Appendable output = new StringBuffer();
-
+  private WorldModel model;
+  private View view;
+  private Controller controller;
 
   /**
    * Read in the model before each test.
    */
   @Before
   public void setUp() {
-    Reader fileReader;
-    String pathToFile = "res/mansion.txt";
+    // initialize world model
+    model = new World();
 
-    try {
-      fileReader = new FileReader(pathToFile);
-      this.worldModel = new World(fileReader);
-    } catch (IOException e) {
-      System.out.println("There are problems with path to file, exit now.");
-      exit(1);
-    }
+    // initialize view factory to create view
+    ViewFactory viewFactory = new ViewFactory();
+    view = viewFactory.createView("CMD", model);
+
+    // initialize controller
+    controller = new GameController(model, view);
+
+    
+//    Reader fileReader;
+//    String pathToFile = "res/mansion.txt";
+//
+//    try {
+//      fileReader = new FileReader(pathToFile);
+//      this.model = new World();
+//    } catch (IOException e) {
+//      System.out.println("There are problems with path to file, exit now.");
+//      exit(1);
+//    }
 
   }
 
@@ -51,8 +64,8 @@ public class GameControllerTest {
   @Test
   public void testInvalidTurn_StringInput() {
     StringReader command = new StringReader("jkl\n10\nq\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    
+    controller.playGame();
 
     String expectedOutput = "What is the max turn of the game?\n"
         + "Invalid max turn, one positive integer expected.\n"
@@ -69,8 +82,7 @@ public class GameControllerTest {
   @Test
   public void testInvalidTurn_NonconsecutiveString() {
     StringReader command = new StringReader("jkl uio\n10\nq\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "What is the max turn of the game?\n"
         + "Invalid max turn, one positive integer expected.\n"
@@ -88,8 +100,7 @@ public class GameControllerTest {
   @Test
   public void testInvalidTurn_MultipleLineOfString() {
     StringReader command = new StringReader("jkl\nuio\nabc\n10\nq\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "What is the max turn of the game?\n"
         + "Invalid max turn, one positive integer expected.\n"
@@ -108,8 +119,7 @@ public class GameControllerTest {
   @Test
   public void testInvalidTurn_Zero() {
     StringReader command = new StringReader("0\n10\nq\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "What is the max turn of the game?\n"
         + "Invalid max turn, one positive integer expected.\n"
@@ -126,8 +136,7 @@ public class GameControllerTest {
   @Test
   public void testInvalidTurn_NegativeValue() {
     StringReader command = new StringReader("-5\n10\nq\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "What is the max turn of the game?\n"
         + "Invalid max turn, one positive integer expected.\n"
@@ -144,8 +153,7 @@ public class GameControllerTest {
   @Test
   public void testInvalidTurn_QuitDirectly() {
     StringReader command = new StringReader("q\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "What is the max turn of the game?\n"
         + "Exit game, have a nice day~\n";
@@ -159,8 +167,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_Quit() {
     StringReader command = new StringReader("q\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -177,8 +184,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_IndirectQuit() {
     StringReader command = new StringReader("no I don't want to start\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -195,8 +201,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_QuitHalfWay_1() {
     StringReader command = new StringReader("yes\nquit\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -216,8 +221,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_QuitHalfWay_2() {
     StringReader command = new StringReader("yes\nhuman\nzack\nquit\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -239,8 +243,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_QuitHalfWay_3() {
     StringReader command = new StringReader("yes\nhuman\nzack\n5\nquit\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -269,8 +272,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_InvalidTypeOfPlayer_1() {
     StringReader command = new StringReader("y\nAI\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -290,8 +292,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_InvalidTypeOfPlayer_2() {
     StringReader command = new StringReader("y\ncomputer AI\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -311,8 +312,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_QuitAsName() {
     StringReader command = new StringReader("q\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -328,8 +328,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_InvalidPosition_Zero() {
     StringReader command = new StringReader("yes\nhuman\nzack\n0\n1\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -374,8 +373,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_InvalidPosition_NegativeValue() {
     StringReader command = new StringReader("yes\nhuman\nzack\n-5\n1\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -420,8 +418,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_InvalidPosition_OutOfBound() {
     StringReader command = new StringReader("yes\nhuman\nzack\n22\n1\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -466,8 +463,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_OneHumanPlayer() {
     StringReader command = new StringReader("yes\nh\nzack\n5\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -512,8 +508,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_OneComputerPlayer() {
     StringReader command = new StringReader("yes\nc\nzack\n5\nquit\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -542,8 +537,7 @@ public class GameControllerTest {
   @Test
   public void testAddPlayer_OneComputerOneHuman() {
     StringReader command = new StringReader("yes\nc\nai\n5\ny\nh\nzack\n2");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -635,8 +629,7 @@ public class GameControllerTest {
   public void testAddPlayer_MaxNum() {
     StringReader command = new StringReader("yes\nc\nzack\n5\ny\nh\nfoo\n2\ny\nh\n"
         + "bar\n3\ny\nh\nqua\n4\ny\nh\nufo\n6\ny\nh\nhhh\n12\ny\nh\nabc\n20\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -780,8 +773,7 @@ public class GameControllerTest {
   public void testMove_InvalidMove() {
     StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\n"
         + "zack\n2\nN\nmove\n1\n2\nquit\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -856,8 +848,7 @@ public class GameControllerTest {
   public void testMove_InvalidMove_1() {
     StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\nzack\n"
         + "2\nN\nmove\n1\n2\nmove\n2\n1\nquit\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -949,8 +940,7 @@ public class GameControllerTest {
   public void testLookAround() {
     StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\n"
         + "zack\n2\nN\nlook around\nlook around\nquit\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -1059,7 +1049,7 @@ public class GameControllerTest {
         + "3. pick item (pick up item in the room)\n"
         + "Exit game, have a nice day~\n";
     assertEquals(expectedOutput, output.toString());
-  }G
+  }
 
   /**
    * Test pick item: whether show item list properly before and after picking, whether drops item
@@ -1070,8 +1060,7 @@ public class GameControllerTest {
     StringReader command = new StringReader("yes\nh\nzack\n1\nn\npick item\n1\nmove"
         + "\n5\npick item\n1\nmove\n6\nmove\n16\npick item\n1\nmove\n8\npick item\n1\n"
         + "move\n7\npick item\n1\nquit\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -1288,8 +1277,7 @@ public class GameControllerTest {
     StringReader command = new StringReader("yes\nh\nzack\n1\nn\npick item\n1\nmove"
         + "\n5\npick item\n1\nmove\n6\nmove\n16\npick item\n1\nmove\n8\npick item\n1\n"
         + "move\n7\npick item\n1\nquit\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(mockWorld);
+    controller.playGame();
 
     String expectedOutput = "getRoomCnt called\n"
         + "addPlayer called\n"
@@ -1396,8 +1384,7 @@ public class GameControllerTest {
     StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\nzack\n2\nN\nmove\n"
         + "1\n2\nmove\n2\n1\nlook around\nlook around\nlook around\nlook around"
         + "\nlook around\nlook around\nlook around\nlook around\nlook around\nlook around\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -1721,8 +1708,7 @@ public class GameControllerTest {
   @Test
   public void testComputer() {
     StringReader command = new StringReader("yes\nc\nzack\n1\n");
-    GameController gameController = new GameController(command, output, 20);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -2246,15 +2232,14 @@ public class GameControllerTest {
 
     try {
       fileReader = new FileReader(pathToFile);
-      this.worldModel = new World(fileReader, computerCommand);
+      this.model = new World();
     } catch (IOException e) {
       System.out.println("There are problems with path to file, exit now.");
       exit(1);
     }
 
     StringReader command = new StringReader("yes\nc\nzack\n1\nn\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "The graphical representation of the world is saved to map.png.\n"
         + "\n"
@@ -2543,8 +2528,7 @@ public class GameControllerTest {
   @Test
   public void testPetStartPoint() {
     StringReader command = new StringReader("yes\nh\nbob\n1\nn\nlook around\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "Turn 1: Doctor Lucky[50] at room 1, Fortune the Cat at room 1\n";
     assertTrue(output.toString().contains(expectedOutput));
@@ -2561,8 +2545,7 @@ public class GameControllerTest {
         + "look around\nlook around\nlook around\nlook around\nlook around\nlook around\n"
         + "look around\nlook around\nlook around\nlook around\nlook around\nlook around\n"
         + "look around\nlook around\nlook around\nlook around\nlook around\nlook around\n");
-    GameController gameController = new GameController(command, output, 25);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "Turn 10: Doctor Lucky[50] at room 10, Fortune the Cat at room 3\n";
     assertTrue(output.toString().contains(expectedOutput));
@@ -2582,8 +2565,7 @@ public class GameControllerTest {
   public void testMovePet() {
     StringReader command = new StringReader("yes\nh\nbob\n1\nn\n"
         + "move pet\n22\n21\nmove pet\n0\n1\nlook around\nlook around\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "Turn 2: Doctor Lucky[50] at room 2, Fortune the Cat at room 21\n";
     assertTrue(output.toString().contains(expectedOutput));
@@ -2605,8 +2587,7 @@ public class GameControllerTest {
   public void testPetEffectOnVisibility() {
     StringReader command = new StringReader("yes\nh\nbob\n2\ny\nh\nzack\n1\n"
         + "n\nlook around\nlook around\nmove pet\n2\nlook around");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "[Armory]: 1\n"
         + "\t\tItems within: [Revolver]: attack 3; \n"
@@ -2628,8 +2609,7 @@ public class GameControllerTest {
   public void testAttackWithNearbyWithPet() {
     StringReader command = new StringReader("yes\nh\nbob\n2\ny\nh\nzack\n4\nn\n"
         + "look around\nlook around\nmove pet\n4\nattack\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "You hold no item, so you poke him in the eye.\n"
         + "Attack success! Target's remaining health: 49";
@@ -2643,8 +2623,7 @@ public class GameControllerTest {
   public void testWithNearbyWithoutPet() {
     StringReader command = new StringReader("yes\nh\nbob\n2\ny\nh\nzack\n4\nn\n"
         + "look around\nlook around\nlook around\nattack\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "You hold no item, so you poke him in the eye.\n"
         + "Oops! Your attack was seen by others, attack failed.";
@@ -2658,8 +2637,7 @@ public class GameControllerTest {
   public void testInSameRoom() {
     StringReader command = new StringReader("yes\nh\nbob\n4\ny\nh\nzack\n4\nn\n"
         + "look around\nlook around\nmove pet\n4\nattack\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "You hold no item, so you poke him in the eye.\n"
         + "Oops! Your attack was seen by others, attack failed.";
@@ -2677,7 +2655,7 @@ public class GameControllerTest {
 
     try {
       fileReader = new FileReader(pathToFile);
-      this.worldModel = new World(fileReader);
+      this.model = new World();
     } catch (IOException e) {
       System.out.println("There are problems with path to file, exit now.");
       exit(1);
@@ -2686,8 +2664,7 @@ public class GameControllerTest {
     // test case: two players poked the target and target died
     StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\nzack\n4\nn\n"
         + "attack\nlook around\nmove pet\n4\nattack\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "You hold no item, so you poke him in the eye.\n"
         + "Attack success! Target's remaining health: 0\n"
@@ -2708,7 +2685,7 @@ public class GameControllerTest {
 
     try {
       fileReader = new FileReader(pathToFile);
-      this.worldModel = new World(fileReader);
+      this.model = new World();
     } catch (IOException e) {
       System.out.println("There are problems with path to file, exit now.");
       exit(1);
@@ -2717,8 +2694,7 @@ public class GameControllerTest {
     // test case: one player picked an item and attack the target, the target died
     StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\nzack\n4\nn\n"
         + "look around\npick item\n1\nmove pet\n4\nattack\n1\nlook around\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "Here are the items you hold: 1. [Sharp Knife]: attack 3; \n"
         + "Which one you want to use, enter index of item: "
@@ -2740,7 +2716,7 @@ public class GameControllerTest {
 
     try {
       fileReader = new FileReader(pathToFile);
-      this.worldModel = new World(fileReader);
+      this.model = new World();
     } catch (IOException e) {
       System.out.println("There are problems with path to file, exit now.");
       exit(1);
@@ -2749,8 +2725,7 @@ public class GameControllerTest {
     // test case: one player picked an item and attack the target, the target died
     StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\nzack\n4\nn\n"
         + "look around\npick item\n1\nmove pet\n4\nattack\n1\nlook around\naround\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "Turn 6: Doctor Lucky[1] at room 6, Fortune the Cat at room 6\n"
         + "Information of the current turn's human player: \n"
@@ -2769,7 +2744,7 @@ public class GameControllerTest {
 
     try {
       fileReader = new FileReader(pathToFile);
-      this.worldModel = new World(fileReader);
+      this.model = new World();
     } catch (IOException e) {
       System.out.println("There are problems with path to file, exit now.");
       exit(1);
@@ -2779,8 +2754,7 @@ public class GameControllerTest {
     StringReader command = new StringReader("yes\nh\nbob\n1\ny\nh\nzack\n4\nn\n"
         + "look around\nlook around\nlook around\nlook around\nlook around\nlook around\n"
         + "look around\nlook around\nlook around\nlook around\nlook around\nlook around\n");
-    GameController gameController = new GameController(command, output, 10);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "Maximum turn reached, you guys failed. Doctor lucky escaped!";
     assertTrue(output.toString().contains(expectedOutput));
@@ -2801,15 +2775,14 @@ public class GameControllerTest {
 
     try {
       fileReader = new FileReader(pathToFile);
-      this.worldModel = new World(fileReader, computerCommand);
+      this.model = new World();
     } catch (IOException e) {
       System.out.println("There are problems with path to file, exit now.");
       exit(1);
     }
 
     StringReader command = new StringReader("yes\nc\nbob\n1\ny\nc\nzack\n4\nn\n");
-    GameController gameController = new GameController(command, output, 15);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "Here are the items you hold: 1. [Sharp Knife]: attack 3; \n"
         + "Which one you want to use, enter index of item: "
@@ -2836,15 +2809,14 @@ public class GameControllerTest {
 
     try {
       fileReader = new FileReader(pathToFile);
-      this.worldModel = new World(fileReader, computerCommand);
+      this.model = new World();
     } catch (IOException e) {
       System.out.println("There are problems with path to file, exit now.");
       exit(1);
     }
 
     StringReader command = new StringReader("yes\nc\nbob\n11\ny\nc\nzack\n14\nn\n");
-    GameController gameController = new GameController(command, output, 5);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "Maximum turn reached, you guys failed. Doctor lucky escaped!";
     assertTrue(output.toString().contains(expectedOutput));
@@ -2867,15 +2839,14 @@ public class GameControllerTest {
 
     try {
       fileReader = new FileReader(pathToFile);
-      this.worldModel = new World(fileReader, computerCommand);
+      this.model = new World();
     } catch (IOException e) {
       System.out.println("There are problems with path to file, exit now.");
       exit(1);
     }
 
     StringReader command = new StringReader("yes\nc\nbob\n5\nn\n");
-    GameController gameController = new GameController(command, output, 5);
-    gameController.startGame(worldModel);
+    controller.playGame();
 
     String expectedOutput = "Here are the items you hold: "
         + "1. [Letter Opener]: attack 2; 2. [Sharp Knife]: attack 3; \n"
