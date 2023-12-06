@@ -43,16 +43,16 @@ public class StatusPanel extends JPanel {
     g2d.drawString("Holds: ", 30, 120);
     g2d.drawString("Move:", 30, BASE_OPTION);
     g2d.drawString("Move Pet:", 30, BASE_OPTION + INTERVAL_OPTION);
-    g2d.drawString("Pick Item:", 30, BASE_OPTION + 2 * INTERVAL_OPTION);
-    g2d.drawString("Look Around:", 30, BASE_OPTION + 3 * INTERVAL_OPTION);
+    g2d.drawString("Look Around:", 30, BASE_OPTION + 2 * INTERVAL_OPTION);
+    g2d.drawString("Pick Item:", 30, BASE_OPTION + 3 * INTERVAL_OPTION);
     g2d.drawString("Attack:", 30, BASE_OPTION + 4 * INTERVAL_OPTION);
 
     // draw option key
     g2d.setFont(new Font("Arial", Font.PLAIN, 24));
     g2d.drawString("M", 300, BASE_OPTION);
-    g2d.drawString("Shift M", 300, BASE_OPTION + INTERVAL_OPTION);
-    g2d.drawString("P", 300, BASE_OPTION + 2 * INTERVAL_OPTION);
-    g2d.drawString("L", 300, BASE_OPTION + 3 * INTERVAL_OPTION);
+    g2d.drawString("N", 300, BASE_OPTION + INTERVAL_OPTION);
+    g2d.drawString("L", 300, BASE_OPTION + 2 * INTERVAL_OPTION);
+    g2d.drawString("P", 300, BASE_OPTION + 3 * INTERVAL_OPTION);
     g2d.drawString("A", 300, BASE_OPTION + 4 * INTERVAL_OPTION);
 
     // draw console
