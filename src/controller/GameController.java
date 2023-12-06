@@ -6,15 +6,18 @@ import controller.command.MovePet;
 import controller.command.MovePlayer;
 import controller.command.PickItem;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 import javax.imageio.ImageIO;
 import model.Player;
+import model.Room;
+import model.World;
 import model.WorldModel;
+import view.NullView;
+import view.View;
 
 /**
  * This is the controller in MVC pattern. Once the program runs,
@@ -23,29 +26,58 @@ import model.WorldModel;
  */
 public class GameController implements Controller {
 
-  private WorldModel worldModel;
+  private WorldModel model;
+  private View view;
   private Scanner scan;
-  private final Scanner humanInputScan;
-  private final Appendable out;
-  private int maxTurn;
-  private int currentTurn;
-  private final String reEnterPromot = "Please enter again: ";
+  private Scanner humanInputScan;
+  private Appendable out;
+  private boolean isCMD;
+  private final String reEnterPrompt = "Please enter again: ";
 
   /**
    * Game controller, control over the flow of the game.
-   *
-   * @param in  Readable input.
-   * @param out Appendable output.
-   * @param maxTurn Max turn number allowed.
    */
-  public GameController(Readable in, Appendable out, int maxTurn) {
-    if (in == null || out == null) {
-      throw new IllegalArgumentException("Readable and Appendable can't be null");
+  public GameController(WorldModel model, View view) {
+    // validate world model
+    if (model == null) {
+      throw new IllegalArgumentException("Invalid model.");
     }
-    this.out = out;
-    this.humanInputScan = new Scanner(in);
-    this.scan = humanInputScan;
-    this.maxTurn = maxTurn;
+
+    // validate view
+    if (view == null) {
+      throw new IllegalArgumentException("Invalid view.");
+    }
+
+    this.model = model;
+    this.view = view;
+
+    if (this.view instanceof NullView) {
+
+//    if (in == null || out == null) {
+//    throw new IllegalArgumentException("Readable and Appendable can't be null");
+//  }
+//    this.out = out;
+//    this.humanInputScan = new Scanner(in);
+      this.out = System.out;
+      this.humanInputScan = new Scanner(System.in);
+      this.scan = humanInputScan;
+      this.isCMD = true;
+    } else {
+//      model.initializeWorld(null);
+      view.connect(this);
+      view.makeVisible();
+      view.refresh();
+      playGame();
+    }
+  }
+
+  /**
+   * Set max turn for the game.
+   *
+   * @param maxTurn maxTurn of the game.
+   */
+  public void setMaxTurn(int maxTurn) {
+    model.setMaxTurn(maxTurn);
   }
 
   /**
@@ -53,7 +85,7 @@ public class GameController implements Controller {
    *
    * @return Whether user wants to quit.
    */
-  private boolean addPlayer() {
+  private boolean addPlayerCMD() {
     String next;
     try {
       // let the user decides whether create a human player or computer player
@@ -74,7 +106,7 @@ public class GameController implements Controller {
           out.append("Undetectable input: ")
               .append(next)
               .append("\n")
-              .append(reEnterPromot);
+              .append(reEnterPrompt);
         }
       }
 
@@ -89,7 +121,7 @@ public class GameController implements Controller {
       int position = 0;
 
       // read in starting position of the player
-      int roomCnt = worldModel.getRoomCnt();
+      int roomCnt = model.getRoomCnt();
       out.append("Enter the starting position (range from 1 to ")
           .append(String.valueOf(roomCnt))
           .append(") of the player: \n");
@@ -109,20 +141,20 @@ public class GameController implements Controller {
                 .append(", should be in range 1 to ")
                 .append(String.valueOf(roomCnt))
                 .append(". \n")
-                .append(reEnterPromot);
+                .append(reEnterPrompt);
           }
         } catch (NumberFormatException nfe) {
           out.append("Invalid position: ")
               .append(next)
               .append(", should be integer. ")
               .append("\n")
-              .append(reEnterPromot);
+              .append(reEnterPrompt);
         }
       }
       position -= 1;
 
       // add player to the game
-      worldModel.addPlayer(name, position, isHuman);
+      model.addPlayer(name, position, isHuman);
       out.append("\nOne player added successfully!\n")
           .append("\nA summary of the ");
       if (isHuman) {
@@ -144,23 +176,53 @@ public class GameController implements Controller {
   }
 
   /**
+   * Add players, whether human player or computer player.
+   *
+   * @return Whether user wants to quit.
+   */
+  public boolean addPlayerGUI(String name, int position, int capacity, boolean isHuman) {
+
+      // add player to the game
+      model.addPlayer(name, position - 1, isHuman);
+
+      view.refresh();
+//      out.append("\nOne player added successfully!\n")
+//          .append("\nA summary of the ");
+//      if (isHuman) {
+//        out.append("human ");
+//      } else {
+//        out.append("computer ");
+//      }
+//      out.append("player added:\n")
+//          .append("Name: ")
+//          .append(name)
+//          .append("\nStarting position: ")
+//          .append(String.valueOf(position + 1))
+//          .append("\n\n");
+//
+//      return false;
+//    } catch (IOException ioe) {
+//      throw new IllegalStateException("Append failed", ioe);
+//    }
+  }
+
+  /**
    * Update current turn.
    *
    * @return Whether turn runs up and game should exit.
    */
-  private boolean updateTurn() {
-    currentTurn += 1;
-    if (currentTurn > maxTurn) {
+  private boolean checkTurn() {
+    if (model.checkTurnUsedUp()) {
       try {
         out.append("Maximum turn reached, you guys failed. Doctor lucky escaped!");
         return true;
       } catch (IOException ioe) {
         throw new IllegalStateException("Append failed\n");
       }
-    } else if (worldModel.getTargetRemainingHealth() <= 0) {
+    } else if (model.getTargetRemainingHealth() <= 0) {
       try {
         out.append("Target killed!\n").append("Player ");
-        out.append(worldModel.getTurn().getName()).append(" win the game!");
+        out.append(model.getCurrentTurnPlayer().getName()).append(" win the game!");
         return true;
       } catch (IOException ioe) {
         throw new IllegalStateException("Append failed\n");
@@ -174,7 +236,7 @@ public class GameController implements Controller {
    * Save map when exit the game.
    */
   private void saveMap() {
-    BufferedImage bufferedImage = worldModel.draw("./map.png");
+    BufferedImage bufferedImage = model.drawMap();
     try {
       File outputFile = new File("map.png");
       ImageIO.write(bufferedImage, "png", outputFile);
@@ -190,28 +252,28 @@ public class GameController implements Controller {
   private void printTurnInfo() {
     try {
       out.append("\nTurn ")
-          .append(String.valueOf(currentTurn))
+          .append(String.valueOf(model.getTurn()))
           .append(": Doctor Lucky[")
-          .append(String.valueOf(worldModel.getTargetRemainingHealth()))
+          .append(String.valueOf(model.getTargetRemainingHealth()))
           .append("] at room ")
-          .append(String.valueOf(worldModel.getTargetPosition() + 1))
+          .append(String.valueOf(model.getTargetPosition() + 1))
           .append(", ")
-          .append(worldModel.getPetName())
+          .append(model.getPetName())
           .append(" at room ")
-          .append(String.valueOf(worldModel.getPetPosition() + 1));
+          .append(String.valueOf(model.getPetPosition() + 1));
 
-      Player player = worldModel.getTurn();
+      Player player = model.getCurrentTurnPlayer();
       if (player.isHuman()) {
         scan = humanInputScan;
         out.append("\nInformation of the current turn's human player: \n");
       } else {
-        Readable computerInput = worldModel.computerPlayerAction(player);
+        Readable computerInput = model.computerPlayerAction(player);
         scan = new Scanner(computerInput);
         out.append("\nInformation of the current turn's computer player: \n");
       }
       out.append(player.toString())
           .append("In room ")
-          .append(worldModel.getRoomInfo(player.getCurrentRoom()));
+          .append(model.getRoomInfo(player.getCurrentRoom()));
 
       out.append("Available options of this turn:\n")
           .append("1. look around (show neighbor room information)\n")
@@ -219,13 +281,13 @@ public class GameController implements Controller {
           .append("3. move pet (move pet to a specific room)\n");
 
       int cnt = 4;
-      if (!worldModel.showItemsInRoom(player).equals("[Empty]")) {
+      if (!model.showItemsInRoom(player).equals("[Empty]")) {
         out.append(String.valueOf(cnt))
             .append(". pick item (pick up item in the room)\n");
         cnt += 1;
       }
 
-      if (player.getCurrentRoom() == worldModel.getTargetPosition()) {
+      if (player.getCurrentRoom() == model.getTargetPosition()) {
         out.append(String.valueOf(cnt))
             .append(". attack (attack the target)\n");
       }
@@ -245,7 +307,7 @@ public class GameController implements Controller {
    */
   private void upDateCommands(WorldModel worldModel, Map<String,
       Function<Scanner, Command>> knownCommands) {
-    if (worldModel.showItemsInRoom(worldModel.getTurn()).equals("[Empty]")) {
+    if (worldModel.showItemsInRoom(worldModel.getCurrentTurnPlayer()).equals("[Empty]")) {
       knownCommands.remove("pick item");
     } else {
       knownCommands.put("pick item", s -> new PickItem(scan, out));
@@ -272,23 +334,65 @@ public class GameController implements Controller {
     }
   }
 
-  /**
-   * Start the game, handling user's commands through command pattern.
-   * Three commands provided, the detailed implementation of those
-   * command are in the model.
-   *
-   * @param worldModel The model that it controls over.
-   */
-  public void startGame(WorldModel worldModel) {
-    // validate world model
-    if (worldModel == null) {
-      throw new IllegalArgumentException("Invalid model.");
+  public void playGameUnderCMD() {
+
+    Readable input = new InputStreamReader(System.in);
+    Appendable output = System.out;
+
+    // read user input: the mansion file, or direct string input
+    Reader fileReader;
+    String pathToFile;
+
+    System.out.println("Please input path to the file: ");
+    pathToFile = new Scanner(System.in).nextLine();
+    model.initializeWorld(pathToFile);
+
+    try {
+      fileReader = new FileReader(pathToFile);
+      WorldModel worldModel = new World();
+
+      System.out.println("Successfully read in the file!\n\n"
+          + "Here are detailed information:");
+
+      output.append(worldModel.toString());
+
+      // read in max turn
+      int maxTurn = 0;
+      String inputString;
+      Scanner scan = new Scanner(System.in);
+
+      output.append("What is the max turn of the game?\n");
+      while (scan.hasNextLine()) {
+        inputString = scan.nextLine();
+        if ("quit".equalsIgnoreCase(inputString)
+            || "q".equalsIgnoreCase(inputString)) {
+          output.append("Exit game, have a nice day~\n");
+          return;
+        }
+        try {
+          maxTurn = Integer.valueOf(inputString);
+          if (maxTurn <= 0) {
+            output.append("Invalid max turn, one positive integer expected.\n");
+            continue;
+          }
+          break;
+        } catch (NumberFormatException nfe) {
+          output.append("Invalid max turn, one positive integer expected.\n")
+              .append("Please enter again:");
+        }
+      }
+      setMaxTurn(maxTurn);
+//      GameController gameController = new GameController(, );
+//      gameController.playGame();
+
+    } catch (IOException e) {
+      System.out.println("There are problems with path to file, exit now.");
+      System.exit(1);
     }
-    this.worldModel = worldModel;
 
     // add player
     try {
-      String input;
+      String inputLine;
 
       // auto save map
       saveMap();
@@ -297,13 +401,13 @@ public class GameController implements Controller {
       out.append("\nStart game by adding a player? "
           + "Enter y to add player and start, anything else to quit.\n");
       if (scan.hasNextLine()) {
-        input = scan.nextLine();
-        if (quitCheck(input)) {
+        inputLine = scan.nextLine();
+        if (quitCheck(inputLine)) {
           return;
         }
-        if ("y".equalsIgnoreCase(input) || "yes".equalsIgnoreCase(input)) {
+        if ("y".equalsIgnoreCase(inputLine) || "yes".equalsIgnoreCase(inputLine)) {
           out.append("\nLet's add players.\n");
-          if (addPlayer()) {
+          if (addPlayerCMD()) {
             return;
           }
         } else {
@@ -318,12 +422,12 @@ public class GameController implements Controller {
             .append(String.valueOf(i + 1))
             .append(") [Y/N]\n");
         if (scan.hasNextLine()) {
-          input = scan.nextLine();
-          if (quitCheck(input)) {
+          inputLine = scan.nextLine();
+          if (quitCheck(inputLine)) {
             return;
           }
-          if ("y".equalsIgnoreCase(input) || "yes".equalsIgnoreCase(input)) {
-            if (addPlayer()) {
+          if ("y".equalsIgnoreCase(inputLine) || "yes".equalsIgnoreCase(inputLine)) {
+            if (addPlayerCMD()) {
               return;
             }
           } else {
@@ -346,13 +450,13 @@ public class GameController implements Controller {
       out.append("All players loaded, game starts now!\n");
 
       // update turn returns whether turn runs up
-      if (updateTurn()) {
+      if (checkTurn()) {
         // return if turn runs up
         return;
       }
 
       printTurnInfo();
-      upDateCommands(worldModel, knownCommands);
+      upDateCommands(model, knownCommands);
 
       // handle user input command
       while (scan.hasNextLine()) {
@@ -366,23 +470,66 @@ public class GameController implements Controller {
         Function<Scanner, Command> cmd = knownCommands.getOrDefault(in, null);
         if (cmd == null) {
           out.append("Invalid input. Commands like [look around], [move], [pick item] expected.\n");
-          out.append(reEnterPromot);
+          out.append(reEnterPrompt);
           continue;
         } else {
           command = cmd.apply(scan);
-          command.act(worldModel);
+          command.act(model);
         }
 
         // update turn returns whether turn runs up
-        if (updateTurn()) {
+        if (checkTurn()) {
           // return if turn runs up
           return;
         }
         printTurnInfo();
-        upDateCommands(worldModel, knownCommands);
+        upDateCommands(model, knownCommands);
       }
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
+  }
+
+  public void playGame() {
+    if (isCMD) {
+      playGameUnderCMD();
+    } else {
+      playGameUnderGUI();
+    }
+  }
+
+  @Override
+  public void handleMapClick(int x, int y) {
+    Room room = model.getRoom(x, y);
+    if (room != null) {
+
+    }
+  }
+
+  @Override
+  public void handleKeyPress(char key) {
+    switch (key) {
+//      case "l":
+//        Command cmd = new LookAround();
+//        break;
+
+    }
+
+  }
+
+  @Override
+  public void initializeWorld(String pathToFile) {
+    model.initializeWorld(pathToFile);
+  }
+
+  public void playGameUnderGUI() {
+
+    Map<String, Function<Scanner, Command>> knownCommands = new HashMap<>();
+    knownCommands.put("l", s -> new LookAround(out));
+    knownCommands.put("m", s -> new MovePlayer(scan, out));
+    knownCommands.put("n", s -> new MovePet(scan, out));
+    knownCommands.put("a", s -> new Attack(scan, out));
+    upDateCommands(model, knownCommands);
+
   }
 }

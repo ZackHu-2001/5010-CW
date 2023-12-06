@@ -1,7 +1,5 @@
 package controller;
 
-import model.WorldModel;
-
 /**
  * The interface for controller specify that the detailed
  * controller would provide a playGame method that take over
@@ -9,8 +7,27 @@ import model.WorldModel;
  */
 public interface Controller {
   /**
-   * Controller should have a public method: Start Game.
-   * @param m the world model to be controlled.
+   * Play Game.
    */
-  void startGame(WorldModel m);
+  void playGame();
+
+  /**
+   * Handle map click.
+   */
+  void handleMapClick(int x, int y);
+
+  /**
+   * Handle key pressed.
+   *
+   * @param key the key pressed
+   */
+  void handleKeyPress(char key);
+
+  /**
+   * Initialize the world through the given file.
+   *
+   * @param pathToFile path to the world configuration file
+   */
+  void initializeWorld(String pathToFile);
+
 }
