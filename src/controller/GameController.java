@@ -6,7 +6,11 @@ import controller.command.MovePet;
 import controller.command.MovePlayer;
 import controller.command.PickItem;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -33,6 +37,7 @@ public class GameController implements Controller {
   private Appendable out;
   private boolean isCMD;
   private final String reEnterPrompt = "Please enter again: ";
+  private Map<String, Function<Scanner, Command>> knownCommands = new HashMap<>();
 
   /**
    * Game controller, control over the flow of the game.
@@ -51,6 +56,12 @@ public class GameController implements Controller {
     this.model = model;
     this.view = view;
 
+    knownCommands.put("look around", s -> new LookAround(out));
+    knownCommands.put("move", s -> new MovePlayer(scan, out));
+    knownCommands.put("move pet", s -> new MovePet(scan, out));
+    knownCommands.put("attack", s -> new Attack(scan, out));
+    knownCommands.put("pick item", s -> new PickItem(scan, out));
+
     if (this.view instanceof NullView) {
 
 //    if (in == null || out == null) {
@@ -63,19 +74,13 @@ public class GameController implements Controller {
       this.scan = humanInputScan;
       this.isCMD = true;
     } else {
-//      model.initializeWorld(null);
       view.connect(this);
       view.makeVisible();
       view.refresh();
-      playGame();
     }
   }
 
-  /**
-   * Set max turn for the game.
-   *
-   * @param maxTurn maxTurn of the game.
-   */
+  @Override
   public void setMaxTurn(int maxTurn) {
     model.setMaxTurn(maxTurn);
   }
@@ -175,35 +180,15 @@ public class GameController implements Controller {
     }
   }
 
-  /**
-   * Add players, whether human player or computer player.
-   *
-   * @return Whether user wants to quit.
-   */
+  @Override
   public boolean addPlayerGUI(String name, int position, int capacity, boolean isHuman) {
 
       // add player to the game
       model.addPlayer(name, position - 1, isHuman);
 
       view.refresh();
-//      out.append("\nOne player added successfully!\n")
-//          .append("\nA summary of the ");
-//      if (isHuman) {
-//        out.append("human ");
-//      } else {
-//        out.append("computer ");
-//      }
-//      out.append("player added:\n")
-//          .append("Name: ")
-//          .append(name)
-//          .append("\nStarting position: ")
-//          .append(String.valueOf(position + 1))
-//          .append("\n\n");
-//
-//      return false;
-//    } catch (IOException ioe) {
-//      throw new IllegalStateException("Append failed", ioe);
-//    }
+
+      return true;
   }
 
   /**
@@ -213,20 +198,22 @@ public class GameController implements Controller {
    */
   private boolean checkTurn() {
     if (model.checkTurnUsedUp()) {
-      try {
-        out.append("Maximum turn reached, you guys failed. Doctor lucky escaped!");
+        System.out.append("Maximum turn reached! Doctor lucky escaped!");
+        if (!(view instanceof NullView)) {
+          view.gameOverHint("Maximum turn reached! Doctor lucky escaped!");
+        }
         return true;
-      } catch (IOException ioe) {
-        throw new IllegalStateException("Append failed\n");
-      }
     } else if (model.getTargetRemainingHealth() <= 0) {
-      try {
-        out.append("Target killed!\n").append("Player ");
-        out.append(model.getCurrentTurnPlayer().getName()).append(" win the game!");
-        return true;
-      } catch (IOException ioe) {
-        throw new IllegalStateException("Append failed\n");
+      StringBuilder prompt = new StringBuilder();
+      prompt.append("Target killed!\n")
+          .append("Player ")
+          .append(model.getCurrentTurnPlayer().getName())
+          .append(" win the game!");
+      System.out.println(prompt.toString());
+      if (!(view instanceof NullView)) {
+        view.gameOverHint(prompt.toString());
       }
+      return true;
     } else {
       return false;
     }
@@ -252,7 +239,7 @@ public class GameController implements Controller {
   private void printTurnInfo() {
     try {
       out.append("\nTurn ")
-          .append(String.valueOf(model.getTurn()))
+          .append(String.valueOf(model.getTurn() + 1))
           .append(": Doctor Lucky[")
           .append(String.valueOf(model.getTargetRemainingHealth()))
           .append("] at room ")
@@ -291,6 +278,7 @@ public class GameController implements Controller {
         out.append(String.valueOf(cnt))
             .append(". attack (attack the target)\n");
       }
+      out.append("\n");
 
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
@@ -311,6 +299,11 @@ public class GameController implements Controller {
       knownCommands.remove("pick item");
     } else {
       knownCommands.put("pick item", s -> new PickItem(scan, out));
+    }
+    if (worldModel.getCurrentTurnPlayer().getCurrentRoom() == worldModel.getTargetPosition()) {
+      knownCommands.put("attack", s -> new Attack(scan, out));
+    } else {
+      knownCommands.remove("attack");
     }
   }
 
@@ -493,43 +486,221 @@ public class GameController implements Controller {
   public void playGame() {
     if (isCMD) {
       playGameUnderCMD();
-    } else {
-      playGameUnderGUI();
     }
   }
 
   @Override
-  public void handleMapClick(int x, int y) {
+  public void handleRightClick(int x, int y) {
+    if (model.getTurn() == -1 || model.isGameOver()) {
+      return;
+    }
     Room room = model.getRoom(x, y);
-    if (room != null) {
+    if (room == null) {
+      System.out.println("You can not move to this place!");
+      return;
+    }
+    System.out.println("You right clicked room " + room.getName() + ".");
 
+    Player player = model.getCurrentTurnPlayer();
+    StringBuilder stringBuilder = new StringBuilder();
+    if (!model.movePlayer(player, room.getId())) {
+      stringBuilder.append("\nCan not move to room ")
+          .append(room.getName())
+          .append(", not neighbor of current room.\nPlease select again: ");
+      System.out.println(stringBuilder.toString());
+      return;
+    } else {
+      stringBuilder.append("\nSuccessfully moved to room ")
+          .append(room.getName()).append("!");
+      System.out.println(stringBuilder.toString());
+      view.refresh();
+      if (checkTurn()) {
+        model.gameOver();
+        return;
+      }
+      printTurnInfo();
+      upDateCommands(model, knownCommands);
     }
   }
 
   @Override
   public void handleKeyPress(char key) {
-    switch (key) {
-//      case "l":
-//        Command cmd = new LookAround();
-//        break;
-
+    if (model.getTurn() == -1 || model.isGameOver()) {
+      return;
     }
+
+    Function<Scanner, Command> cmd;
+    StringBuilder output;
+
+    Map<String, Integer> highestDamageItem;
+    String itemName = "";
+    int itemIdx = 0;
+
+    switch (key) {
+      case 'n':
+        break;
+
+      case 'l':
+        System.out.println("You choose to look around.");
+        System.out.println(model.lookAround(model.getCurrentTurnPlayer()));
+        view.refresh();
+        if (checkTurn()) {
+          model.gameOver();
+          return;
+        }
+        printTurnInfo();
+        upDateCommands(model, knownCommands);
+        break;
+
+      case 'p':
+        cmd = knownCommands.getOrDefault("pick item", null);
+        if (cmd == null) {
+          return;
+        }
+        output = new StringBuilder()
+            .append("Here are available items: ")
+            .append(model.showItemsHold(model.getCurrentTurnPlayer()))
+            .append("\nYou picked the item with the highest attack among all the items: ");
+
+        highestDamageItem = model.getHighestDamageItem();
+
+        for (Map.Entry<String, Integer> entry : highestDamageItem.entrySet()) {
+          itemName = entry.getKey();
+          itemIdx = entry.getValue();
+        }
+        output.append(itemName);
+        model.pickUpItem(model.getCurrentTurnPlayer(), itemIdx);
+
+        System.out.println(output.toString());
+        view.refresh();
+        if (checkTurn()) {
+          model.gameOver();
+          return;
+        }
+        printTurnInfo();
+        upDateCommands(model, knownCommands);
+        break;
+
+      case 'a':
+        cmd = knownCommands.getOrDefault("attack", null);
+        if (cmd == null) {
+          return;
+        }
+        output = new StringBuilder();
+        String items = model.showItemsHold(model.getCurrentTurnPlayer());
+        if ("[Empty]".equals(items)) {
+          output.append("\nYou hold no item, so you poke him in the eye.\n");
+
+          boolean isSuccess = model.attackWithHand();
+          if (!isSuccess) {
+            output.append("Oops! Your attack was seen by others, attack failed.\n");
+            return;
+          }
+
+          output.append("Attack success! Target's remaining health: ")
+              .append(String.valueOf(model.getTargetRemainingHealth()))
+              .append("\n");
+          System.out.println(output.toString());
+          return;
+        } else  {
+          output.append("\nHere are the items you hold: ")
+              .append(items)
+              .append("\nYou used the item with the highest attack: ");
+          highestDamageItem = model.getHighestDamageItem();
+          for (Map.Entry<String, Integer> entry : highestDamageItem.entrySet()) {
+            itemName = entry.getKey();
+            itemIdx = entry.getValue();
+          }
+          output.append(itemName);
+
+          boolean[] result = model.attackWithItem(model.getCurrentTurnPlayer(), itemIdx);
+          if (result[0]) {
+            if (result[1]) {
+              output.append("Oops! Your attack was seen by other, attack failed.\n");
+              return;
+            }
+            output.append("Attack success! Target's remaining health: ")
+                .append(String.valueOf(model.getTargetRemainingHealth()))
+                .append("\n");
+            break;
+          } else {
+            output.append("Index out of bound.\n")
+                .append("Please enter again: ");
+          }
+          System.out.println(output);
+        }
+
+        view.refresh();
+        if (checkTurn()) {
+          model.gameOver();
+          return;
+        }
+        printTurnInfo();
+        upDateCommands(model, knownCommands);
+
+        break;
+      default:
+    }
+
+//    Command command;
+//    Function<Scanner, Command> cmd = knownCommands.getOrDefault(input, null);
+//    if (cmd == null) {
+//      try {
+//        out.append("Invalid input. Commands like l [look around], m [move], p 1[pick item] expected.\n");
+//        out.append(reEnterPrompt);
+//      } catch (IOException e) {
+//        System.out.println(e);
+//      }
+//    } else {
+//      command = cmd.apply(scan);
+//      command.act(model);
+//    }
 
   }
 
   @Override
   public void initializeWorld(String pathToFile) {
     model.initializeWorld(pathToFile);
+    view.refresh();
   }
 
+
+  @Override
   public void playGameUnderGUI() {
+    model.startGame();
 
-    Map<String, Function<Scanner, Command>> knownCommands = new HashMap<>();
-    knownCommands.put("l", s -> new LookAround(out));
-    knownCommands.put("m", s -> new MovePlayer(scan, out));
-    knownCommands.put("n", s -> new MovePet(scan, out));
-    knownCommands.put("a", s -> new Attack(scan, out));
+    // as the system.out is redirected to the console
+    out = System.out;
+
     upDateCommands(model, knownCommands);
+    printTurnInfo();
 
+    view.refresh();
   }
+
+  @Override
+  public Map<String, Function<Scanner, Command>> getAvailableCommand() {
+    return knownCommands;
+  }
+
+  @Override
+  public void handleLeftClick(int x, int y) {
+    if (model.getTurn() == -1 || model.isGameOver()) {
+      return;
+    }
+    Map<String, int[]> positions = model.getPositions();
+    for (Map.Entry<String, int[]> entry : positions.entrySet()) {
+      String name = entry.getKey();
+      if (name.equals("target") || name.equals("pet")) {
+        continue;
+      }
+      int[] position = entry.getValue();
+      if (x > position[0] && x <position[0] + 40) {
+        if (y > position[1] && y < position[1] + 60) {
+          System.out.println(model.getPlayerDescription(name));
+        }
+      }
+    }
+  }
+
 }

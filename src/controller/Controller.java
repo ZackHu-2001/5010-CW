@@ -1,5 +1,9 @@
 package controller;
 
+import java.util.Map;
+import java.util.Scanner;
+import java.util.function.Function;
+
 /**
  * The interface for controller specify that the detailed
  * controller would provide a playGame method that take over
@@ -12,9 +16,14 @@ public interface Controller {
   void playGame();
 
   /**
-   * Handle map click.
+   * Handle right click on map.
    */
-  void handleMapClick(int x, int y);
+  void handleRightClick(int x, int y);
+
+  /**
+   * Handle left click on map.
+   */
+  void handleLeftClick(int x, int y);
 
   /**
    * Handle key pressed.
@@ -30,4 +39,34 @@ public interface Controller {
    */
   void initializeWorld(String pathToFile);
 
-}
+  /**
+   * Add player to the GUI game version.
+   *
+   * @param name      name of the player
+   * @param position  initial position of the player
+   * @param capacity  the capacity of the player
+   * @param isHuman   whether is human player
+   * @return          whether player successfully added
+   */
+   boolean addPlayerGUI(String name, int position, int capacity, boolean isHuman);
+
+  /**
+   * Start GUI game.
+   */
+   void playGameUnderGUI();
+
+  /**
+   * Set max turn for the game.
+   *
+   * @param maxTurn maxTurn of the game.
+   */
+  void setMaxTurn(int maxTurn);
+
+  /**
+   * Return the available command of current turn.
+   *
+   * @return
+   */
+  Map<String, Function<Scanner, Command>> getAvailableCommand();
+
+  }
