@@ -1,15 +1,24 @@
 package view;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
+/**
+ * The WelcomePanel class represents the welcome panel.
+ */
 public class WelcomePanel extends JPanel {
-  private JLabel gameNameLabel;
-  private JLabel authorLabel;
   public static int WIDTH = 600;
   public static int HEIGHT = 350;
+  private JLabel gameNameLabel;
+  private JLabel authorLabel;
 
-
+  /**
+   * Constructor for WelcomePanel.
+   */
   public WelcomePanel() {
     setLayout(new GridBagLayout());
     setSize(600, 400);
@@ -26,7 +35,7 @@ public class WelcomePanel extends JPanel {
     gameNameLabel.setFont(new Font("Arial", Font.ITALIC, 42));
     gameNameLabel.setHorizontalAlignment(JLabel.CENTER);
     gameNameLabel.setVerticalAlignment(JLabel.CENTER);
-    gbc.insets = new Insets(100,0,0, 0);
+    gbc.insets = new Insets(100, 0, 0,  0);
     add(gameNameLabel, gbc);
 
     gbc.gridy = 1;
@@ -35,7 +44,7 @@ public class WelcomePanel extends JPanel {
     authorLabel.setFont(new Font("Arial", Font.PLAIN, 22));
     authorLabel.setHorizontalAlignment(JLabel.RIGHT);
     authorLabel.setVerticalAlignment(JLabel.CENTER);
-    gbc.insets = new Insets(0,0,100, 70);
+    gbc.insets = new Insets(0, 0, 100, 70);
     add(authorLabel, gbc);
   }
 }

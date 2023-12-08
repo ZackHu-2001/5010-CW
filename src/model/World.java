@@ -5,9 +5,20 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.sql.Array;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Set;
+import java.util.Stack;
 
 /**
  * The {@code World} class represents a virtual game world containing a mansion, 
@@ -15,6 +26,7 @@ import java.util.*;
  * from input data, calculate neighbors between rooms, and draw a map of the world.
  */
 public class World implements WorldModel {
+  private static final int SIZE = 25;
   private Target target;
   private Pet pet;
   private Mansion mansion;
@@ -23,7 +35,6 @@ public class World implements WorldModel {
   private String pathToFile;
   private int currentTurn = -1;
   private int maxTurn;
-  private final int SIZE = 25;
   private boolean initialized = false;
   private boolean isGameOver;
 
@@ -126,17 +137,12 @@ public class World implements WorldModel {
   public Room getRoom(int x, int y) {
     for (Room room : mansion.getRoomList()) {
       int[] location = room.getLocation();
-//      int height = (location[2] - location[0] + 1) * SIZE;
-//      int width = (location[3] - location[1] + 1) * SIZE;
       if (y > (location[0] + 1) * 25
           && y < (location[2] + 1) * 25
           && x > (location[1] + 1) * 25
           && x < (location[3] + 1) * 25) {
         return room;
       }
-//      graphics2D.drawRect((location[1] + 1) * SIZE, (location[0] + 1) * SIZE, width, height);
-//      graphics2D.drawString(room.getName(), (location[1] + 1) * SIZE + 15,
-//          (location[0] + 1) * SIZE + 20);
     }
     return null;
   }
@@ -746,32 +752,25 @@ public class World implements WorldModel {
     return initialized;
   }
 
+  /**
+   * Get the positions of all the players and items in the world.
+   * @return  A map of all the positions.
+   */
   public Map<String, int[]> getPositions() {
     int targetRoom = getTargetPosition();
-    int petRoom = getPetPosition();
 
     Map<String, int[]> positions = new HashMap<>();
     Map<Integer, Integer> occupied = new HashMap<>();
     occupied.put(targetRoom, 1);
-    occupied.put(petRoom, 1);
 
     List<Room> roomList = mansion.getRoomList();
     int[] targetLocation = roomList.get(targetRoom).getLocation();
     int[] targetPosition = {(targetLocation[1] + 1) * SIZE, (targetLocation[0] + 1) * SIZE + 20};
 
-    int[] petLocation = roomList.get(targetRoom).getLocation();
-    int[] petPosition = {(petLocation[1] + 1) * SIZE, (petLocation[0] + 1) * SIZE + 30};
-
-    if (targetRoom == petRoom) {
-      occupied.put(targetRoom, 2);
-      petPosition[0] += 50;
-    }
-
     positions.put("target", targetPosition);
-    positions.put("pet", petPosition);
 
     int offset = 50;
-    for (Player player: playerQueue) {
+    for (Player player : playerQueue) {
       int roomId = player.getCurrentRoom();
       Room currentRoom = roomList.get(roomId);
 
@@ -819,7 +818,7 @@ public class World implements WorldModel {
         List<Item> itemList = room.getItemList();
         int maxDamage = itemList.get(0).getDamage();
         int maxIdx = 0;
-        for (int i=1; i<itemList.size(); i++) {
+        for (int i = 1; i < itemList.size(); i++) {
           if (itemList.get(i).getDamage() > maxDamage) {
             maxDamage = itemList.get(i).getDamage();
             maxIdx = i;

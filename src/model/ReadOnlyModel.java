@@ -32,6 +32,8 @@ public interface ReadOnlyModel {
   /**
    * Get the clicked room's id.
    *
+   * @param x The x coordinate of the clicked point.
+   * @param y The y coordinate of the clicked point.
    * @return the room.
    */
   Room getRoom(int x, int y);
@@ -118,6 +120,8 @@ public interface ReadOnlyModel {
 
   /**
    * Return the name position pair of object.
+   *
+   * @return the name position pair of object
    */
   public Map<String, int[]> getPositions();
 

@@ -145,7 +145,7 @@ public class GamePanel extends JPanel {
       public void actionPerformed(ActionEvent e) {
         String userInput = userInputField.getText();
         controller.setMaxTurn(Integer.valueOf(userInput));
-        controller.playGameUnderGUI();
+        controller.playGameUnderGui();
         maxTurnSetUp.dispose();
       }
     });
@@ -197,7 +197,7 @@ public class GamePanel extends JPanel {
     // Use a FlowLayout with horizontal and vertical gaps
     JPanel popupPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
-
+    popupPanel.add(pathTextField);
     popupPanel.add(chooseFileButton);
 
     // Add the popup panel to the dialog content pane

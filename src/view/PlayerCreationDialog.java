@@ -1,11 +1,11 @@
 package view;
 
 import controller.Controller;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,9 +17,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import model.ReadOnlyModel;
 
-
+/**
+ * The PlayerCreationDialog class represents the dialog for creating a player.
+ */
 public class PlayerCreationDialog extends JDialog {
-
+  private static final int DEFAULT_CAPACITY = 2;
   private static final long serialVersionUID = 4080458570669687911L;
   private JTextField playerNameField;
   private JTextField initialLocationField;
@@ -27,8 +29,13 @@ public class PlayerCreationDialog extends JDialog {
   private JComboBox<String> controlModeComboBox;
   private JButton addButton;
   private ReadOnlyModel model;
-  private final int DEFAULT_CAPACITY = 2;
 
+  /**
+   * Constructs a PlayerCreationDialog with the specified parent frame, model and controller.
+   * @param parentFrame The parent frame of this dialog.
+   * @param model       The model to be read from.
+   * @param controller  The controller responsible for handling events.
+   */
   public PlayerCreationDialog(JFrame parentFrame, ReadOnlyModel model, Controller controller) {
     super(parentFrame, "Create Player", true);
     this.model = model;
@@ -52,7 +59,6 @@ public class PlayerCreationDialog extends JDialog {
     // Set initial width for text fields
     playerNameField.setColumns(15);
     initialLocationField.setColumns(15);
-
   }
 
   private void addComponents() {
@@ -104,7 +110,7 @@ public class PlayerCreationDialog extends JDialog {
     addButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        boolean addedSuccessfully = controller.addPlayerGUI(getPlayerName(), getInitialLocation(),
+        boolean addedSuccessfully = controller.addPlayerGui(getPlayerName(), getInitialLocation(),
             getItemCapacity(), getControlMode());
         if (addedSuccessfully) {
           int option = JOptionPane.showConfirmDialog(PlayerCreationDialog.this,

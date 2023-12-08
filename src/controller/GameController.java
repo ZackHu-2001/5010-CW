@@ -18,7 +18,6 @@ import java.util.function.Function;
 import javax.imageio.ImageIO;
 import model.Player;
 import model.Room;
-import model.World;
 import model.WorldModel;
 import view.NullView;
 import view.View;
@@ -35,12 +34,15 @@ public class GameController implements Controller {
   private Scanner scan;
   private Scanner humanInputScan;
   private Appendable out;
-  private boolean isCMD;
+  private boolean isCmd;
   private final String reEnterPrompt = "Please enter again: ";
   private Map<String, Function<Scanner, Command>> knownCommands = new HashMap<>();
 
   /**
    * Game controller, control over the flow of the game.
+   *
+   * @param model World model.
+   * @param view View.
    */
   public GameController(WorldModel model, View view) {
     // validate world model
@@ -63,16 +65,10 @@ public class GameController implements Controller {
     knownCommands.put("pick item", s -> new PickItem(scan, out));
 
     if (this.view instanceof NullView) {
-
-//    if (in == null || out == null) {
-//    throw new IllegalArgumentException("Readable and Appendable can't be null");
-//  }
-//    this.out = out;
-//    this.humanInputScan = new Scanner(in);
       this.out = System.out;
       this.humanInputScan = new Scanner(System.in);
       this.scan = humanInputScan;
-      this.isCMD = true;
+      this.isCmd = true;
     } else {
       view.connect(this);
       view.makeVisible();
@@ -90,7 +86,7 @@ public class GameController implements Controller {
    *
    * @return Whether user wants to quit.
    */
-  private boolean addPlayerCMD() {
+  private boolean addPlayerCmd() {
     String next;
     try {
       // let the user decides whether create a human player or computer player
@@ -181,14 +177,13 @@ public class GameController implements Controller {
   }
 
   @Override
-  public boolean addPlayerGUI(String name, int position, int capacity, boolean isHuman) {
+  public boolean addPlayerGui(String name, int position, int capacity, boolean isHuman) {
+    // add player to the game
+    model.addPlayer(name, position - 1, isHuman);
 
-      // add player to the game
-      model.addPlayer(name, position - 1, isHuman);
+    view.refresh();
 
-      view.refresh();
-
-      return true;
+    return true;
   }
 
   /**
@@ -198,11 +193,11 @@ public class GameController implements Controller {
    */
   private boolean checkTurn() {
     if (model.checkTurnUsedUp()) {
-        System.out.append("Maximum turn reached! Doctor lucky escaped!");
-        if (!(view instanceof NullView)) {
-          view.gameOverHint("Maximum turn reached! Doctor lucky escaped!");
-        }
-        return true;
+      System.out.append("Maximum turn reached! Doctor lucky escaped!");
+      if (!(view instanceof NullView)) {
+        view.gameOverHint("Maximum turn reached! Doctor lucky escaped!");
+      }
+      return true;
     } else if (model.getTargetRemainingHealth() <= 0) {
       StringBuilder prompt = new StringBuilder();
       prompt.append("Target killed!\n")
@@ -327,7 +322,10 @@ public class GameController implements Controller {
     }
   }
 
-  public void playGameUnderCMD() {
+  /**
+   * Play game under command line.
+   */
+  public void playGameUnderCmd() {
 
     Readable input = new InputStreamReader(System.in);
     Appendable output = System.out;
@@ -342,12 +340,12 @@ public class GameController implements Controller {
 
     try {
       fileReader = new FileReader(pathToFile);
-      WorldModel worldModel = new World();
+      model.initializeWorld(pathToFile);
 
       System.out.println("Successfully read in the file!\n\n"
           + "Here are detailed information:");
 
-      output.append(worldModel.toString());
+      output.append(model.toString());
 
       // read in max turn
       int maxTurn = 0;
@@ -375,8 +373,6 @@ public class GameController implements Controller {
         }
       }
       setMaxTurn(maxTurn);
-//      GameController gameController = new GameController(, );
-//      gameController.playGame();
 
     } catch (IOException e) {
       System.out.println("There are problems with path to file, exit now.");
@@ -400,7 +396,7 @@ public class GameController implements Controller {
         }
         if ("y".equalsIgnoreCase(inputLine) || "yes".equalsIgnoreCase(inputLine)) {
           out.append("\nLet's add players.\n");
-          if (addPlayerCMD()) {
+          if (addPlayerCmd()) {
             return;
           }
         } else {
@@ -420,7 +416,7 @@ public class GameController implements Controller {
             return;
           }
           if ("y".equalsIgnoreCase(inputLine) || "yes".equalsIgnoreCase(inputLine)) {
-            if (addPlayerCMD()) {
+            if (addPlayerCmd()) {
               return;
             }
           } else {
@@ -483,9 +479,12 @@ public class GameController implements Controller {
     }
   }
 
+  /**
+   * Play game under command line.
+   */
   public void playGame() {
-    if (isCMD) {
-      playGameUnderCMD();
+    if (isCmd) {
+      playGameUnderCmd();
     }
   }
 
@@ -641,21 +640,6 @@ public class GameController implements Controller {
         break;
       default:
     }
-
-//    Command command;
-//    Function<Scanner, Command> cmd = knownCommands.getOrDefault(input, null);
-//    if (cmd == null) {
-//      try {
-//        out.append("Invalid input. Commands like l [look around], m [move], p 1[pick item] expected.\n");
-//        out.append(reEnterPrompt);
-//      } catch (IOException e) {
-//        System.out.println(e);
-//      }
-//    } else {
-//      command = cmd.apply(scan);
-//      command.act(model);
-//    }
-
   }
 
   @Override
@@ -666,7 +650,7 @@ public class GameController implements Controller {
 
 
   @Override
-  public void playGameUnderGUI() {
+  public void playGameUnderGui() {
     model.startGame();
 
     // as the system.out is redirected to the console
@@ -691,11 +675,11 @@ public class GameController implements Controller {
     Map<String, int[]> positions = model.getPositions();
     for (Map.Entry<String, int[]> entry : positions.entrySet()) {
       String name = entry.getKey();
-      if (name.equals("target") || name.equals("pet")) {
+      if ("target".equals(name) || "pet".equals(name)) {
         continue;
       }
       int[] position = entry.getValue();
-      if (x > position[0] && x <position[0] + 40) {
+      if (x > position[0] && x < position[0] + 40) {
         if (y > position[1] && y < position[1] + 60) {
           System.out.println(model.getPlayerDescription(name));
         }

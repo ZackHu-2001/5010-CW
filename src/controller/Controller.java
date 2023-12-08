@@ -17,11 +17,17 @@ public interface Controller {
 
   /**
    * Handle right click on map.
+   *
+   * @param x x coordinate
+   * @param y y coordinate
    */
   void handleRightClick(int x, int y);
 
   /**
    * Handle left click on map.
+   *
+   * @param x x coordinate
+   * @param y y coordinate
    */
   void handleLeftClick(int x, int y);
 
@@ -48,12 +54,12 @@ public interface Controller {
    * @param isHuman   whether is human player
    * @return          whether player successfully added
    */
-   boolean addPlayerGUI(String name, int position, int capacity, boolean isHuman);
+  boolean addPlayerGui(String name, int position, int capacity, boolean isHuman);
 
   /**
    * Start GUI game.
    */
-   void playGameUnderGUI();
+  void playGameUnderGui();
 
   /**
    * Set max turn for the game.
@@ -63,10 +69,9 @@ public interface Controller {
   void setMaxTurn(int maxTurn);
 
   /**
-   * Return the available command of current turn.
+   * * Return the available command of current turn.
    *
-   * @return
+   * @return the available command of current turn.
    */
   Map<String, Function<Scanner, Command>> getAvailableCommand();
-
-  }
+}

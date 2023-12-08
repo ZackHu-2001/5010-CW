@@ -2,6 +2,9 @@ package view;
 
 import controller.Controller;
 
+/**
+ * The View interface represents the view.
+ */
 public interface View {
 
   /**
@@ -23,6 +26,7 @@ public interface View {
 
   /**
    * Give hint when game overs.
+   * @param hint  the hint to be displayed
    */
   void gameOverHint(String hint);
 

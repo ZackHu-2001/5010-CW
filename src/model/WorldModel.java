@@ -10,6 +10,8 @@ public interface WorldModel extends ReadOnlyModel {
 
   /**
    * Initialize the world based on the input world configuration.
+   *
+   * @param pathToFile The path to the file that contains the world configuration.
    */
   public void initializeWorld(String pathToFile);
 
@@ -125,8 +127,8 @@ public interface WorldModel extends ReadOnlyModel {
   /**
    * Get the item with the highest damage.
    *
-   * @return the String, Integer pair that represents the name and
-   * index of the item with the highest damage.
+   * @return the String, Integer pair that represents the name
+   *          and index of the item with the highest damage.
    */
   Map<String, Integer> getHighestDamageItem();
 

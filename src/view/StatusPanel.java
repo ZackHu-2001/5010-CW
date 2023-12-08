@@ -2,16 +2,22 @@ package view;
 
 import controller.Command;
 import controller.Controller;
-import java.awt.*;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -19,19 +25,26 @@ import model.Item;
 import model.Player;
 import model.ReadOnlyModel;
 
+/**
+ * The StatusPanel class represents the status panel.
+ */
 public class StatusPanel extends JPanel {
   public static int WIDTH = 400;
   public static int HEIGHT = 900;
+  private static final int BASE_OPTION = 240;
+  private static final int INTERVAL_OPTION = 35;
+  private static final int BASE_CONSOLE = 460;
   private ReadOnlyModel readOnlyModel;
   private Controller controller;
   private JTextArea consoleTextArea;
   private JScrollPane consoleTextAreaScrollPane;
   private float cnt;
 
-  private final int BASE_OPTION = 240;
-  private final int INTERVAL_OPTION = 35;
-  private final int BASE_CONSOLE = 460;
-
+  /**
+   * Constructor for StatusPanel.
+   *
+   * @param readOnlyModel   the read only model
+   */
   public StatusPanel(ReadOnlyModel readOnlyModel) {
     this.readOnlyModel = readOnlyModel;
 
@@ -61,6 +74,9 @@ public class StatusPanel extends JPanel {
     add(consoleTextAreaScrollPane, BorderLayout.SOUTH);
   }
 
+  /**
+   * Redirect System.out to the custom PrintStream.
+   */
   public class TextAreaOutputStream extends OutputStream {
     private final Document document;
 
@@ -81,6 +97,11 @@ public class StatusPanel extends JPanel {
     }
   }
 
+  /**
+   * Connect the controller to the status panel.
+   *
+   * @param controller  the controller
+   */
   public void connect(Controller controller) {
     this.controller = controller;
   }
@@ -100,7 +121,7 @@ public class StatusPanel extends JPanel {
 
     // draw borders
     g2d.setStroke(new BasicStroke(3.0f));
-    g2d.drawLine(0,0,0,900);
+    g2d.drawLine(0, 0, 0, 900);
     g2d.setStroke(new BasicStroke(1.5f));
     g2d.drawLine(0, 150, 400, 150);
     g2d.drawLine(0, 420, 400, 420);
@@ -122,11 +143,12 @@ public class StatusPanel extends JPanel {
 
   private void drawOptions(Graphics g) {
     Graphics2D g2d = (Graphics2D) g;
-    Map<String, Function<Scanner, Command>> knownCommands = controller.getAvailableCommand();
     g2d.setFont(new Font("Arial", Font.ITALIC, 24));
     g2d.drawString("Move:", 30, BASE_OPTION);
     g2d.drawString("Move Pet:", 30, BASE_OPTION + INTERVAL_OPTION);
     g2d.drawString("Look Around:", 30, BASE_OPTION + 2 * INTERVAL_OPTION);
+
+    Map<String, Function<Scanner, Command>> knownCommands = controller.getAvailableCommand();
     if (knownCommands.get("pick item") != null) {
       g2d.drawString("Pick Item:", 30, BASE_OPTION + 3 * INTERVAL_OPTION);
     }
@@ -167,8 +189,9 @@ public class StatusPanel extends JPanel {
       holdItems.append("[Empty]");
       modifiedFontSize = 24;
     } else {
-      for (Item item: itemList) {
-        holdItems.append(" ").append(item.getName()).append("(").append(item.getDamage()).append("),");
+      for (Item item : itemList) {
+        holdItems.append(" ").append(item.getName())
+            .append("(").append(item.getDamage()).append("),");
       }
       holdItems = holdItems.deleteCharAt(0);
       holdItems = holdItems.deleteCharAt(holdItems.length() - 1);
@@ -179,16 +202,4 @@ public class StatusPanel extends JPanel {
     g2d.setFont(new Font("Arial", Font.PLAIN, modifiedFontSize));
     g2d.drawString(holdItems.toString(), 150 - 10 * itemList.size(), 120);
   }
-
-//  private void drawConsoleInfo() {
-//    // Clear the console text area before updating
-////    consoleTextArea.setText("");
-//
-//    consoleTextArea.append("hello world");
-//
-//    // Ensure the console is scrolled to the bottom to show the latest output
-//    JScrollBar verticalScrollBar = consoleTextAreaScrollPane.getVerticalScrollBar();
-//    verticalScrollBar.setValue(verticalScrollBar.getMaximum());
-//  }
-
 }

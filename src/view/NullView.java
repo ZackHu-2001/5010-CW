@@ -2,6 +2,9 @@ package view;
 
 import controller.Controller;
 
+/**
+ * The NullView class represents a null view.
+ */
 public class NullView implements View {
   public NullView() {}
 
