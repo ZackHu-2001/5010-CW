@@ -1,8 +1,6 @@
 package model;
 
-import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.Map;
 
 /**
  * The model in MVC pattern. Model provides a series of method
@@ -103,5 +101,38 @@ public interface WorldModel extends ReadOnlyModel {
    * @return The command of computer player.
    */
   Readable computerPlayerAction(Player player);
+
+  /**
+   * Start the game.
+   */
+  void startGame();
+
+  /**
+   * Find the player using name, and return the description of that player.
+   *
+   * @param name  name of the player
+   * @return      description of the player
+   */
+  String getPlayerDescription(String name);
+
+  /**
+   * Return the mansion that contains rooms.
+   *
+   * @return the mansion
+   */
+  Mansion getMansion();
+
+  /**
+   * Get the item with the highest damage.
+   *
+   * @return the String, Integer pair that represents the name and
+   * index of the item with the highest damage.
+   */
+  Map<String, Integer> getHighestDamageItem();
+
+  /**
+   * Ends the game, set isGameOver flag to false.
+   */
+  void gameOver();
 
 }

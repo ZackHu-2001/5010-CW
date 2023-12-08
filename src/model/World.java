@@ -6,14 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Queue;
-import java.util.Random;
-import java.util.Set;
-import java.util.Stack;
+import java.sql.Array;
+import java.util.*;
 
 /**
  * The {@code World} class represents a virtual game world containing a mansion, 
@@ -27,10 +21,11 @@ public class World implements WorldModel {
   private Queue<Player> playerQueue;
   private RandomNumGenerator randomNumGenerator;
   private String pathToFile;
-  private int currentTurn;
+  private int currentTurn = -1;
   private int maxTurn;
   private final int SIZE = 25;
   private boolean initialized = false;
+  private boolean isGameOver;
 
 
   /**
@@ -91,6 +86,7 @@ public class World implements WorldModel {
 
       parseString(new String(stringBuffer));
       initialized = true;
+      isGameOver = false;
     } catch (IOException ioException) {
       ioException.printStackTrace();
     }
@@ -132,7 +128,10 @@ public class World implements WorldModel {
       int[] location = room.getLocation();
 //      int height = (location[2] - location[0] + 1) * SIZE;
 //      int width = (location[3] - location[1] + 1) * SIZE;
-      if (x > location[0] && x < location[2] && y > location[1] && y < location[3]) {
+      if (y > (location[0] + 1) * 25
+          && y < (location[2] + 1) * 25
+          && x > (location[1] + 1) * 25
+          && x < (location[3] + 1) * 25) {
         return room;
       }
 //      graphics2D.drawRect((location[1] + 1) * SIZE, (location[0] + 1) * SIZE, width, height);
@@ -144,7 +143,7 @@ public class World implements WorldModel {
 
   @Override
   public boolean checkTurnUsedUp() {
-    return currentTurn + 1 >= maxTurn;
+    return currentTurn + 1 > maxTurn;
   }
 
   /**
@@ -262,6 +261,11 @@ public class World implements WorldModel {
       computerCommand.append("1");
     }
     return new StringReader(computerCommand.toString());
+  }
+
+  @Override
+  public void startGame() {
+    currentTurn = 0;
   }
 
   /**
@@ -464,9 +468,9 @@ public class World implements WorldModel {
       return false;
     }
 
-    boolean isGameOver = target.takeAnAttack(1);
+    boolean died = target.takeAnAttack(1);
 
-    if (! isGameOver) {
+    if (! died) {
       // turn + 1
       target.move();
       pet.move();
@@ -494,9 +498,9 @@ public class World implements WorldModel {
     Item item = itemList.get(index);
     itemList.remove(index);
 
-    boolean isGameOver = target.takeAnAttack(item.getDamage());
+    boolean died = target.takeAnAttack(item.getDamage());
 
-    if (! isGameOver) {
+    if (! died) {
       // turn + 1
       target.move();
       pet.move();
@@ -534,11 +538,7 @@ public class World implements WorldModel {
     return pet.getName();
   }
 
-  /**
-   * Gets the mansion included in the world.
-   *
-   * @return The mansion object.
-   */
+  @Override
   public Mansion getMansion() {
     return mansion;
   }
@@ -745,6 +745,99 @@ public class World implements WorldModel {
   public boolean isInitialized() {
     return initialized;
   }
+
+  public Map<String, int[]> getPositions() {
+    int targetRoom = getTargetPosition();
+    int petRoom = getPetPosition();
+
+    Map<String, int[]> positions = new HashMap<>();
+    Map<Integer, Integer> occupied = new HashMap<>();
+    occupied.put(targetRoom, 1);
+    occupied.put(petRoom, 1);
+
+    List<Room> roomList = mansion.getRoomList();
+    int[] targetLocation = roomList.get(targetRoom).getLocation();
+    int[] targetPosition = {(targetLocation[1] + 1) * SIZE, (targetLocation[0] + 1) * SIZE + 20};
+
+    int[] petLocation = roomList.get(targetRoom).getLocation();
+    int[] petPosition = {(petLocation[1] + 1) * SIZE, (petLocation[0] + 1) * SIZE + 30};
+
+    if (targetRoom == petRoom) {
+      occupied.put(targetRoom, 2);
+      petPosition[0] += 50;
+    }
+
+    positions.put("target", targetPosition);
+    positions.put("pet", petPosition);
+
+    int offset = 50;
+    for (Player player: playerQueue) {
+      int roomId = player.getCurrentRoom();
+      Room currentRoom = roomList.get(roomId);
+
+      Integer cnt = occupied.get(roomId);
+      int[] location = currentRoom.getLocation().clone();
+
+      int[] position = {0, 0};
+
+      position[0] = (location[1] + 1) * SIZE + 10;
+      position[1] = (location[0] + 1) * SIZE + 20;
+
+      if (cnt != null) {
+        occupied.put(roomId, cnt + 1);
+        position[0] += cnt * offset;
+      }
+      positions.put(player.getName(), position);
+    }
+    return positions;
+  }
+
+  @Override
+  public boolean isGameOver() {
+    return isGameOver;
+  }
+
+  @Override
+  public String getPlayerDescription(String name) {
+    for (Player player : playerQueue) {
+      if (name.equals(player.getName())) {
+        return player.toString();
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public Map<String, Integer> getHighestDamageItem() {
+
+    Player player = getCurrentTurnPlayer();
+    Map<String, Integer> highestDamageItem = new HashMap<>();
+
+    List<Room> roomList = mansion.getRoomList();
+    for (Room room : roomList) {
+      if (room.getId() == player.getCurrentRoom()) {
+        List<Item> itemList = room.getItemList();
+        int maxDamage = itemList.get(0).getDamage();
+        int maxIdx = 0;
+        for (int i=1; i<itemList.size(); i++) {
+          if (itemList.get(i).getDamage() > maxDamage) {
+            maxDamage = itemList.get(i).getDamage();
+            maxIdx = i;
+          }
+        }
+        String pickedItemName = itemList.get(maxIdx).getName();
+        highestDamageItem.put(pickedItemName, maxIdx);
+        return highestDamageItem;
+      }
+    }
+    return highestDamageItem;
+  }
+
+  @Override
+  public void gameOver() {
+    isGameOver = true;
+  }
+
 }
 
 

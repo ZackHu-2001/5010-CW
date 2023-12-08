@@ -9,11 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Random;
+import java.util.*;
 
 /**
  * The {@code World} class represents a virtual game world containing a mansion,
@@ -170,6 +166,14 @@ public class MockWorld implements WorldModel {
     log.append("addPlayer called\n").append(computerCommand.toString());
 
     return new StringReader(computerCommand.toString());
+  }
+
+  @Override
+  public void startGame() {}
+
+  @Override
+  public String getPlayerDescription(String name) {
+    return null;
   }
 
   /**
@@ -346,6 +350,17 @@ public class MockWorld implements WorldModel {
     return mansion;
   }
 
+  @Override
+  public Map<String, Integer> getHighestDamageItem() {
+    return null;
+  }
+
+  @Override
+  public void gameOver() {
+
+  }
+
+
   /**
    * Gets the target of the world.
    *
@@ -509,6 +524,16 @@ public class MockWorld implements WorldModel {
 
   @Override
   public boolean isInitialized() {
+    return false;
+  }
+
+  @Override
+  public Map<String, int[]> getPositions() {
+    return null;
+  }
+
+  @Override
+  public boolean isGameOver() {
     return false;
   }
 }

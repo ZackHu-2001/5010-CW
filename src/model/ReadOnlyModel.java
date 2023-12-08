@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.image.BufferedImage;
+import java.util.Map;
 
 /**
  * Read only model for view to pull content.
@@ -114,4 +115,17 @@ public interface ReadOnlyModel {
    * @return whether the model is initialized
    */
   boolean isInitialized();
+
+  /**
+   * Return the name position pair of object.
+   */
+  public Map<String, int[]> getPositions();
+
+  /**
+   * Return if the game is over.
+   *
+   * @return if the game is over
+   */
+  boolean isGameOver();
+
 }
