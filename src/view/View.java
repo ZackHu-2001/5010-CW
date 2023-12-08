@@ -21,4 +21,9 @@ public interface View {
    */
   void makeVisible();
 
+  /**
+   * Give hint when game overs.
+   */
+  void gameOverHint(String hint);
+
 }

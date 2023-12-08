@@ -19,4 +19,9 @@ public class NullView implements View {
   public void makeVisible() {
 
   }
+
+  @Override
+  public void gameOverHint(String hint) {
+
+  }
 }

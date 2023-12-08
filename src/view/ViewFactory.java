@@ -11,7 +11,7 @@ public class ViewFactory {
     if ("CMD".equalsIgnoreCase(viewType)) {
       return new NullView();
     } else {
-        return new GUIView(model);
+        return new GuiView(model);
       }
     }
 }

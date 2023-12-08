@@ -1,21 +1,32 @@
 package view;
 
 import controller.Controller;
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 import model.ReadOnlyModel;
 
-public class GUIView extends JFrame implements View {
+/**
+ * The GUIView class represents the GUI view.
+ */
+public class GuiView extends JFrame implements View {
   private CardLayout cardLayout;
   private WelcomePanel welcomePanel;
   private GamePanel gamePanel;
   private JPanel cardPanel;
   private Controller controller;
 
-  public GUIView(ReadOnlyModel model) {
+  /**
+   * Constructs a GUIView with the specified model.
+   *
+   * @param model the model to be read from.
+   */
+  public GuiView(ReadOnlyModel model) {
     super("Kill Doctor Lucky");
     setLocation(300, 300);
     setMinimumSize(new Dimension(300, 300));
@@ -38,7 +49,7 @@ public class GUIView extends JFrame implements View {
       @Override
       public void actionPerformed(ActionEvent e) {
         cardLayout.show(cardPanel, "game");
-        setLocation(0,0);
+        setLocation(0, 0);
         setSize(GamePanel.WIDTH, GamePanel.HEIGHT);
         repaint();
       }
@@ -63,6 +74,12 @@ public class GUIView extends JFrame implements View {
   @Override
   public void makeVisible() {
     setVisible(true);
+  }
+
+  @Override
+  public void gameOverHint(String hint) {
+    JOptionPane.showMessageDialog(this,
+        hint, "Game Over", JOptionPane.INFORMATION_MESSAGE);
   }
 
 }
