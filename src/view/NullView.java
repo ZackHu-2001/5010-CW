@@ -6,8 +6,10 @@ import controller.Controller;
  * The NullView class represents a null view.
  */
 public class NullView implements View {
+  /**
+   * Constructs a NullView.
+   */
   public NullView() {}
-
 
   @Override
   public void connect(Controller listener) {

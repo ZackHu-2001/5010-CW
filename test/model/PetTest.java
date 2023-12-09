@@ -1,12 +1,15 @@
 package model;
 
+import static org.junit.Assert.assertTrue;
+
 import controller.Controller;
 import java.io.StringReader;
 import org.junit.Test;
 import view.View;
 
-import static org.junit.Assert.assertTrue;
-
+/**
+ * The PetTest class tests the pet's movement.
+ */
 public class PetTest {
   StringBuilder log = new StringBuilder();
   private Appendable output = new StringBuffer();

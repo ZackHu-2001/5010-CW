@@ -12,6 +12,11 @@ import javax.swing.SwingUtilities;
 public class MapClickListener extends MouseAdapter {
   Controller listener;
 
+  /**
+   * Constructs a MapClickListener with the specified controller.
+   *
+   * @param listener the controller to be listened to.
+   */
   public MapClickListener(Controller listener) {
     this.listener = listener;
   }

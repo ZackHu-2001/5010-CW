@@ -54,13 +54,6 @@ public class MapPanel extends JPanel {
       System.out.println("failed to find the file for Dr.lucky");
     }
 
-//    try {
-//      g2d.drawImage(ImageIO.read(new File("res/img/cat.jpeg")),
-//          positions.get("pet")[0], positions.get("target")[1], 30, 30, this);
-//    } catch (IOException e) {
-//      System.out.println("failed to find the file for cat");
-//    }
-
     g2d.setFont(new Font("Arial", Font.BOLD, 22));
     for (Map.Entry<String, int[]> entry : positions.entrySet()) {
       String name = entry.getKey();

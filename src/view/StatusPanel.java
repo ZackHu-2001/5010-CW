@@ -80,6 +80,11 @@ public class StatusPanel extends JPanel {
   public class TextAreaOutputStream extends OutputStream {
     private final Document document;
 
+    /**
+     * Constructor for TextAreaOutputStream.
+     *
+     * @param textArea   the text area
+     */
     public TextAreaOutputStream(JTextArea textArea) {
       this.document = textArea.getDocument();
     }
