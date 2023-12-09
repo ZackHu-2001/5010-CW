@@ -8,11 +8,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.function.Function;
 import model.MockWorld;
 import model.World;
 import model.WorldModel;
 import org.junit.Before;
 import org.junit.Test;
+import view.MockView;
 import view.View;
 import view.ViewFactory;
 
@@ -43,19 +47,6 @@ public class GameControllerTest {
 
     // initialize controller
     controller = new GameController(model, view);
-
-    
-//    Reader fileReader;
-//    String pathToFile = "res/mansion.txt";
-//
-//    try {
-//      fileReader = new FileReader(pathToFile);
-//      this.model = new World();
-//    } catch (IOException e) {
-//      System.out.println("There are problems with path to file, exit now.");
-//      exit(1);
-//    }
-
   }
 
   /**
@@ -1268,7 +1259,7 @@ public class GameControllerTest {
     MockWorld mockWorld = null;
     try {
       fileReader = new FileReader(pathToFile);
-      mockWorld = new MockWorld(fileReader, log);
+      mockWorld = new MockWorld();
     } catch (IOException e) {
       System.out.println("There are problems with path to file, exit now.");
       exit(1);
@@ -2822,8 +2813,6 @@ public class GameControllerTest {
     assertTrue(output.toString().contains(expectedOutput));
   }
 
-
-
   /**
    * Test when computer controlled player holds multiple items, whether it would use the
    * item with maximum damage to attack.
@@ -2856,5 +2845,100 @@ public class GameControllerTest {
         + "Player bob win the game!";
     assertTrue(output.toString().contains(expectedOutput));
   }
+
+  @Test
+  public void testAddPlayerUnderGui() {
+
+    // initialize world model
+    model = new MockWorld();
+
+    // initialize view factory to create view
+    View view = new MockView(model);
+    model.initializeWorld("res/map/mansion.txt");
+
+    // initialize controller
+    Controller controller = new GameController(model, view);
+
+    controller.addPlayerGui("bob", 1, 2, true);
+    assertTrue(model.getPlayerDescription("bob").contains("Name: bob    Holds: [Empty]"));
+  }
+
+  @Test
+  public void testSetMaxTurn() {
+
+    // initialize world model
+    model = new MockWorld();
+
+    // initialize view factory to create view
+    View view = new MockView(model);
+    model.initializeWorld("res/map/mansion.txt");
+
+    // initialize controller
+    Controller controller = new GameController(model, view);
+
+    controller.addPlayerGui("bob", 1, 2, true);
+    controller.setMaxTurn(10);
+    assertTrue(model.getMaxTurn() == 10);
+  }
+
+  @Test
+  public void testGetAvailableCommand() {
+
+    // initialize world model
+    model = new MockWorld();
+
+    // initialize view factory to create view
+    View view = new MockView(model);
+    model.initializeWorld("res/map/mansion.txt");
+
+    // initialize controller
+    Controller controller = new GameController(model, view);
+
+    controller.addPlayerGui("bob", 1, 2, true);
+    Map<String, Function<Scanner, Command>> commands = controller.getAvailableCommand();
+    assertTrue(commands.get("look around") != null);
+    assertTrue(commands.get("move pet") != null);
+    assertTrue(commands.get("move") != null);
+    assertTrue(commands.get("attack") != null);
+    assertTrue(commands.get("pick item") != null);
+  }
+
+  @Test
+  public void testLeftClick() {
+
+    // initialize world model
+    model = new MockWorld();
+
+    // initialize view factory to create view
+    View view = new MockView(model);
+    model.initializeWorld("res/map/mansion.txt");
+
+    // initialize controller
+    Controller controller = new GameController(model, view);
+
+    controller.addPlayerGui("bob", 1, 2, true);
+    controller.handleLeftClick(100, 100);
+
+    assertTrue(model.getPlayerDescription("bob").contains("Name: bob    Holds: [Empty]"));
+  }
+
+  @Test
+  public void testRightClick() {
+
+    // initialize world model
+    model = new MockWorld();
+
+    // initialize view factory to create view
+    View view = new MockView(model);
+    model.initializeWorld("res/map/mansion.txt");
+
+    // initialize controller
+    Controller controller = new GameController(model, view);
+
+    controller.addPlayerGui("bob", 1, 2, true);
+    controller.handleRightClick(100, 100);
+    assertTrue(model.getPlayerDescription("bob").contains("Name: bob    Holds: [Empty]"));
+  }
+
 
 }

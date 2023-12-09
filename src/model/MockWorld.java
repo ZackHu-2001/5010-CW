@@ -6,15 +6,19 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
+import java.util.Set;
+import java.util.Stack;
 
 /**
  * The {@code World} class represents a virtual game world containing a mansion,
@@ -22,35 +26,92 @@ import java.util.Random;
  * from input data, calculate neighbors between rooms, and draw a map of the world.
  */
 public class MockWorld implements WorldModel {
+  private static final int SIZE = 25;
   private Target target;
   private Pet pet;
   private Mansion mansion;
-  private int currentTurn;
   private Queue<Player> playerQueue;
-  private StringBuilder log;
+  private RandomNumGenerator randomNumGenerator;
+  private String pathToFile;
+  private int currentTurn = -1;
+  private int maxTurn;
+  private boolean initialized = false;
+  private boolean isGameOver;
+
+
+  /**
+   * Inner class to help generate random number.
+   */
+  private class RandomNumGenerator {
+    private ArrayList<Integer> numbers;
+    private int currentIndex;
+    private Random random;
+
+    public RandomNumGenerator(int... numbers) {
+      if (numbers.length == 0) {
+        random = new Random(10);
+        this.currentIndex = -1;
+        this.numbers = null;
+      } else {
+        this.numbers = new ArrayList<>();
+        for (int number : numbers) {
+          this.numbers.add(number);
+        }
+        this.currentIndex = 0;
+        this.random = null;
+      }
+    }
+
+    public int getNextNumber(int range) {
+      if (random == null) {
+        return numbers.get(currentIndex++ % numbers.size()) % range;
+      } else {
+        return random.nextInt(range);
+      }
+    }
+  }
 
   /**
    * Sets up the world based on input data from a Readable source.
-   *
-   * @param input The Readable input source containing world configuration data.
-   * @param log The log used to keep record of what controller called.
-   * @throws IOException if an I/O error occurs while reading the input.
    */
-  public MockWorld(Readable input, StringBuilder log) throws IOException {
-    BufferedReader bufferedReader = new BufferedReader((Reader) input);
-    StringBuffer stringBuffer = new StringBuffer();
-    String line;
-
-    while ((line = bufferedReader.readLine()) != null) {
-      stringBuffer.append(line);
-      stringBuffer.append('\n');
-    }
-
-    parseString(new String(stringBuffer));
-    this.currentTurn = 0;
+  public MockWorld() {
     this.playerQueue = new ArrayDeque<>();
-    this.log = log;
+    this.randomNumGenerator = new RandomNumGenerator();
+    this.pathToFile = "res/map/mansion.txt";
   }
+
+  @Override
+  public void initializeWorld(String pathToFile) {
+    if (pathToFile != null) {
+      this.pathToFile = pathToFile;
+    }
+    try {
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(this.pathToFile));
+      StringBuffer stringBuffer = new StringBuffer();
+      String line;
+
+      while ((line = bufferedReader.readLine()) != null) {
+        stringBuffer.append(line);
+        stringBuffer.append('\n');
+      }
+
+      parseString(new String(stringBuffer));
+      initialized = true;
+      isGameOver = false;
+    } catch (IOException ioException) {
+      ioException.printStackTrace();
+    }
+  }
+
+  /**
+   * Set the operation for the computer.
+   *
+   * @param numbers   the operation that the computer would follow.
+   */
+  public void setComputerOption(int... numbers) {
+    this.randomNumGenerator = new RandomNumGenerator(numbers);
+  }
+
 
   /**
    * Get the player for this turn.
@@ -59,28 +120,36 @@ public class MockWorld implements WorldModel {
    */
   @Override
   public Player getCurrentTurnPlayer() {
-    log.append("getTurn called\n");
     return playerQueue.peek();
   }
 
   @Override
   public int getTurn() {
-    return 0;
+    return currentTurn;
   }
 
   @Override
   public int getMaxTurn() {
-    return 0;
+    return maxTurn;
   }
 
   @Override
   public Room getRoom(int x, int y) {
+    for (Room room : mansion.getRoomList()) {
+      int[] location = room.getLocation();
+      if (y > (location[0] + 1) * 25
+          && y < (location[2] + 1) * 25
+          && x > (location[1] + 1) * 25
+          && x < (location[3] + 1) * 25) {
+        return room;
+      }
+    }
     return null;
   }
 
   @Override
   public boolean checkTurnUsedUp() {
-    return false;
+    return currentTurn + 1 > maxTurn;
   }
 
   /**
@@ -90,7 +159,6 @@ public class MockWorld implements WorldModel {
    * @return The information of the room.
    */
   public String getRoomInfo(int roomId) {
-    log.append("getRoomInfo called\n");
     return getMansion().getRoomList().get(roomId).toString();
   }
 
@@ -101,18 +169,16 @@ public class MockWorld implements WorldModel {
    * @return The total room count.
    */
   public int getRoomCnt() {
-    log.append("getRoomCnt called\n");
     return getMansion().getRoomList().size();
   }
 
-  @Override
+  /**
+   * Return the remaining health of target.
+   *
+   * @return the remaining health of target.
+   */
   public int getTargetRemainingHealth() {
-    return 0;
-  }
-
-  @Override
-  public void initializeWorld(String pathToFile) {
-
+    return target.getHealth();
   }
 
   /**
@@ -120,14 +186,14 @@ public class MockWorld implements WorldModel {
    */
   @Override
   public void updateTurn() {
-    log.append("updateTurn called\n");
+    currentTurn += 1;
     Player player = playerQueue.poll();
     playerQueue.offer(player);
   }
 
   @Override
   public void setMaxTurn(int maxTurn) {
-
+    this.maxTurn = maxTurn;
   }
 
   /**
@@ -139,8 +205,6 @@ public class MockWorld implements WorldModel {
    */
   @Override
   public Player addPlayer(String name, int currentRoom, boolean isHuman) {
-    log.append("addPlayer called\n").append("name: ").append(name).append(" room: ")
-        .append(currentRoom).append(" is human: ").append(isHuman).append("\n");
     Player player = new Player(name, currentRoom, isHuman);
     playerQueue.add(player);
     mansion.getRoomList().get(currentRoom).addPlayer(player);
@@ -150,35 +214,64 @@ public class MockWorld implements WorldModel {
   /**
    * Return the command of computer player.
    *
-   * @param player The current computer player.
+   * @param player The current turn's player.
    * @return The command of computer player.
    */
   public Readable computerPlayerAction(Player player) {
     StringBuilder computerCommand = new StringBuilder();
-    // use fixed random seed, to help test, or everytime the value differs.
-    Random random = new Random(10);
-    if (random.nextBoolean()) {
-      computerCommand.append("look around\n");
-    } else {
-      computerCommand.append("move\n");
-      List<Room> neighborList = mansion.getRoomList()
-          .get(player.getCurrentRoom()).getNeightborList();
-      int max = neighborList.size();
-      Room selected = neighborList.get(random.nextInt(max));
 
-      computerCommand.append(selected.getId()).append("\n");
+    if (player.getCurrentRoom() == getTargetPosition()) {
+      computerCommand.append("attack\n");
+      List<Item> itemList = player.getItemList();
+      if (!itemList.isEmpty()) {
+        int maxIdx = -1;
+        int max = 0;
+        int cnt = 0;
+        for (Item item : itemList) {
+          if (item.getDamage() > max) {
+            max = item.getDamage();
+            maxIdx = cnt;
+          }
+          cnt++;
+        }
+        computerCommand.append(String.valueOf(maxIdx + 1)).append("\n");
+      } else {
+        return new StringReader(computerCommand.toString());
+      }
     }
-    log.append("addPlayer called\n").append(computerCommand.toString());
 
+    int option = 3;
+    if (!mansion.getRoomList().get(player.getCurrentRoom()).getItemList().isEmpty()) {
+      option += 1;
+    }
+
+
+    int command = randomNumGenerator.getNextNumber(option);
+
+    if (command == 0) {
+      computerCommand.append("look around\n");
+    } else if (command == 1) {
+      computerCommand.append("move\n");
+      List<Room> neighborList = mansion.getRoomList().get(player
+          .getCurrentRoom()).getNeightborList();
+      int max = neighborList.size();
+      Room selected = neighborList.get(randomNumGenerator.getNextNumber(max));
+
+      computerCommand.append(selected.getId() + 1).append("\n");
+    } else if (command == 2) {
+      computerCommand.append("move pet\n");
+      int maxMoveOption = mansion.getRoomList().size() - 1;
+      computerCommand.append(randomNumGenerator.getNextNumber(maxMoveOption) + 1);
+    } else {
+      computerCommand.append("pick item\n");
+      computerCommand.append("1");
+    }
     return new StringReader(computerCommand.toString());
   }
 
   @Override
-  public void startGame() {}
-
-  @Override
-  public String getPlayerDescription(String name) {
-    return null;
+  public void startGame() {
+    currentTurn = 0;
   }
 
   /**
@@ -189,7 +282,6 @@ public class MockWorld implements WorldModel {
    */
   @Override
   public boolean movePlayer(Player player, int targetRoomId) {
-    log.append("movePlayer called, move to ").append(targetRoomId).append("\n");
     if (targetRoomId < 0 || targetRoomId >= mansion.getRoomList().size()) {
       return false;
     }
@@ -211,6 +303,7 @@ public class MockWorld implements WorldModel {
 
       // turn + 1
       target.move();
+      pet.move();
       updateTurn();
 
       return true;
@@ -219,6 +312,11 @@ public class MockWorld implements WorldModel {
     }
   }
 
+  /**
+   * Moves the pet to the target room.
+   *
+   * @param targetRoomId The target room's id.
+   */
   @Override
   public boolean movePet(int targetRoomId) {
     if (targetRoomId < 0 || targetRoomId >= mansion.getRoomList().size()) {
@@ -240,7 +338,6 @@ public class MockWorld implements WorldModel {
    * @return The string shows the detailed information of those items.
    */
   public String showItemsInRoom(Player player) {
-    log.append("showItems called\n");
     List<Item> itemList = mansion.getRoomList().get(player.getCurrentRoom()).getItemList();
     StringBuilder stringBuilder = new StringBuilder();
     if (itemList.isEmpty()) {
@@ -266,7 +363,6 @@ public class MockWorld implements WorldModel {
    * @return Whether this command successfully executed.
    */
   public boolean pickUpItem(Player player, int index) {
-    log.append("pickUpItem called, pick item ").append(index).append("\n");
     List<Item> itemList = mansion.getRoomList().get(player.getCurrentRoom()).getItemList();
     if (index < 0 || index >= itemList.size()) {
       return false;
@@ -288,36 +384,138 @@ public class MockWorld implements WorldModel {
    * @return The information to display.
    */
   public String lookAround(Player player) {
-    log.append("lookAround called\n");
-    // turn + 1
-    target.move();
-    updateTurn();
 
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("Neighbor rooms' information: \n");
     List<Room> neightborList = getMansion().getRoomList()
         .get(player.getCurrentRoom()).getNeightborList();
+
+    int petLocation = pet.getCurrentRoom();
     for (Room neighborRoom : neightborList) {
-      stringBuilder.append(neighborRoom.toString());
+      if (petLocation == neighborRoom.getId()) {
+        stringBuilder.append(neighborRoom.toStringHideVersion());
+      } else {
+        stringBuilder.append(neighborRoom.toString());
+      }
+    }
+
+    // turn + 1
+    target.move();
+    pet.move();
+    updateTurn();
+
+    return stringBuilder.toString();
+  }
+
+  /**
+   * Show a list of item that player holds.
+   *
+   * @param player The player whose turn it is at the moment.
+   * @return The string shows the detailed information of items holds.
+   */
+  public String showItemsHold(Player player) {
+    List<Item> itemList = player.getItemList();
+    StringBuilder stringBuilder = new StringBuilder();
+    if (itemList.isEmpty()) {
+      stringBuilder.append("[Empty]");
+    } else {
+      int cnt = 1;
+      for (Item item : itemList) {
+        stringBuilder.append(cnt)
+            .append(". ")
+            .append(item.toString());
+        cnt += 1;
+      }
     }
 
     return stringBuilder.toString();
   }
 
-  @Override
-  public String showItemsHold(Player player) {
-    return null;
+  /**
+   * Check if the attack can seen bt others.
+   *
+   * @param currentPlayer the player that initiates an attack.
+   * @return if the attack can seen bt others
+   */
+  public boolean attackCheck(Player currentPlayer) {
+    int currentRoomId = currentPlayer.getCurrentRoom();
+
+    // if the pet stay in the exact same room as player
+    if (pet.getCurrentRoom() == currentRoomId) {
+      Room currentRoom = mansion.getRoomList().get(currentRoomId);
+      if (currentRoom.getPlayerList().size() > 1) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      // if the pet does not stay in the same room as player
+      List<Room> roomList = mansion.getRoomList().get(currentRoomId).getNeightborList();
+
+      Set<Integer> neighborSet = new HashSet<>();
+      for (Room room : roomList) {
+        neighborSet.add(room.getId());
+      }
+
+      if (playerQueue.stream().anyMatch(p -> neighborSet.contains(p.getCurrentRoom()))) {
+        return true;
+      }
+      return false;
+    }
   }
 
-  @Override
+  /**
+   * Attack the target with bare hand.
+   *
+   * @return whether the attack attempt success.
+   */
   public boolean attackWithHand() {
-    return false;
+    if (attackCheck(getCurrentTurnPlayer())) {
+      return false;
+    }
+
+    boolean died = target.takeAnAttack(1);
+
+    if (! died) {
+      // turn + 1
+      target.move();
+      pet.move();
+      updateTurn();
+    }
+    return true;
   }
 
-  @Override
+  /**
+   * Attack the target with chosen item.
+   *
+   * @param player    The player that choose to attack.
+   * @param index     Index of the item to use.
+   * @return          Whether index out of bound and whether seen by others.
+   */
   public boolean[] attackWithItem(Player player, int index) {
-    return new boolean[]{false, false};
+    List<Item> itemList = player.getItemList();
+    if (index < 0 || index >= itemList.size()) {
+      return new boolean[]{false, false};
+    }
+    if (attackCheck(getCurrentTurnPlayer())) {
+      return new boolean[]{true, true};
+    }
+
+    Item item = itemList.get(index);
+    itemList.remove(index);
+
+    boolean died = target.takeAnAttack(item.getDamage());
+
+    if (! died) {
+      // turn + 1
+      target.move();
+      pet.move();
+      updateTurn();
+    }
+
+    return new boolean[]{true, false};
   }
+
 
   /**
    * Get doctor lucky's current position.
@@ -346,25 +544,10 @@ public class MockWorld implements WorldModel {
     return pet.getName();
   }
 
-  /**
-   * Gets the mansion included in the world.
-   *
-   * @return The mansion object.
-   */
+  @Override
   public Mansion getMansion() {
     return mansion;
   }
-
-  @Override
-  public Map<String, Integer> getHighestDamageItem() {
-    return null;
-  }
-
-  @Override
-  public void gameOver() {
-
-  }
-
 
   /**
    * Gets the target of the world.
@@ -395,7 +578,7 @@ public class MockWorld implements WorldModel {
 
     String[] tmp;
 
-    int roomNum = Integer.parseInt(parts[2]);
+    int roomNum = Integer.parseInt(parts[3]);
 
     tmp = (parts[1]).split(" ");
     target = new Target(Integer.parseInt(tmp[0]),
@@ -412,7 +595,7 @@ public class MockWorld implements WorldModel {
         roomList);
 
     for (int i = 0; i < roomNum; i++) {
-      tmp = parts[3 + i].trim().split("\\s+");
+      tmp = parts[4 + i].trim().split("\\s+");
       int[] location = new int[4];
 
       location[0] = Integer.parseInt(tmp[0]);
@@ -420,26 +603,63 @@ public class MockWorld implements WorldModel {
       location[2] = Integer.parseInt(tmp[2]);
       location[3] = Integer.parseInt(tmp[3]);
       roomList.add(new Room(
-          parts[3 + i].substring(11),
+          parts[4 + i].substring(11),
           location, i));
     }
 
     calculateNeighbor(roomList);
 
-    int itemNum = Integer.parseInt(parts[3 + roomNum]);
+    int itemNum = Integer.parseInt(parts[4 + roomNum]);
     int roomNumber;
 
     for (int i = 0; i < itemNum; i++) {
-      tmp = parts[4 + roomNum + i].split("\\s+");
+      tmp = parts[5 + roomNum + i].split("\\s+");
 
       roomNumber = Integer.parseInt(tmp[0]);
 
       Room tmpRoom = roomList.get(roomNumber);
       tmpRoom.addItem(new Item(
-          parts[4 + roomNum + i].substring(parts[4 + roomNum + i].lastIndexOf(tmp[2])),
+          parts[5 + roomNum + i].substring(parts[5 + roomNum + i].lastIndexOf(tmp[2])),
           Integer.parseInt(tmp[1]),
           roomNum));
     }
+
+    pet = new Pet(parts[2], 0, depthFirstTraversal(mansion));
+
+  }
+
+  /**
+   * Calculate the path for pet to move around.
+   */
+  private int[] depthFirstTraversal(Mansion mansion) {
+    Set<Room> visitedRoom = new HashSet<>();
+    Stack<Room> roomStack = new Stack<>();
+    int roomCnt = mansion.getRoomList().size();
+    int[] routine = new int[roomCnt];
+
+    Room currentRoom = mansion.getRoomList().get(0);
+    roomStack.push(currentRoom);
+    visitedRoom.add(currentRoom);
+    routine[0] = 0;
+
+    while (visitedRoom.size() != roomCnt && roomStack.size() != 0) {
+      currentRoom = roomStack.peek();
+      boolean isFound = false;
+      for (Room room : currentRoom.getNeightborList()) {
+        if (!visitedRoom.contains(room)) {
+          routine[visitedRoom.size()] = room.getId();
+          visitedRoom.add(room);
+          roomStack.push(room);
+          isFound = true;
+          break;
+        }
+      }
+
+      if (!isFound) {
+        roomStack.pop();
+      }
+    }
+    return routine;
   }
 
   /**
@@ -496,31 +716,31 @@ public class MockWorld implements WorldModel {
    */
   public BufferedImage drawMap() {
     BufferedImage bufferedImage = new BufferedImage(
-        (mansion.getColumn() + 2) * 30, (mansion.getRow() + 2) * 30,
+        (mansion.getColumn() + 2) * SIZE, (mansion.getRow() + 2) * SIZE,
         BufferedImage.TYPE_INT_RGB);
 
     Graphics2D graphics2D = bufferedImage.createGraphics();
 
     graphics2D.setColor(Color.white);
-    graphics2D.fillRect(0, 0, (mansion.getColumn() + 2) * 30, (mansion.getRow() + 2) * 30);
+    graphics2D.fillRect(0, 0, (mansion.getColumn() + 2) * SIZE, (mansion.getRow() + 2) * SIZE);
 
     BasicStroke stroke = new BasicStroke(3.0f);
-    Font font = new Font("Arial", Font.BOLD, 15);
+    Font font = new Font("Arial", Font.BOLD, 12);
 
     graphics2D.setColor(Color.black);
     graphics2D.setStroke(stroke);
     graphics2D.setFont(font);
 
-    graphics2D.drawRect(30, 30, mansion.getColumn() * 30, mansion.getRow() * 30);
+    graphics2D.drawRect(SIZE, SIZE, mansion.getColumn() * SIZE, mansion.getRow() * SIZE);
 
     for (Room room : mansion.getRoomList()) {
       int[] location = room.getLocation();
-      int height = (location[2] - location[0] + 1) * 30;
-      int width = (location[3] - location[1] + 1) * 30;
+      int height = (location[2] - location[0] + 1) * SIZE;
+      int width = (location[3] - location[1] + 1) * SIZE;
 
-      graphics2D.drawRect((location[1] + 1) * 30, (location[0] + 1) * 30, width, height);
-      graphics2D.drawString(room.getName(), (location[1] + 1) * 30 + 15,
-          (location[0] + 1) * 30 + 20);
+      graphics2D.drawRect((location[1] + 1) * SIZE, (location[0] + 1) * SIZE, width, height);
+      graphics2D.drawString(room.getName(), (location[1] + 1) * SIZE + 15,
+          (location[0] + 1) * SIZE + 20);
     }
     graphics2D.dispose();
 
@@ -529,18 +749,94 @@ public class MockWorld implements WorldModel {
 
   @Override
   public boolean isInitialized() {
-    return false;
+    return initialized;
   }
 
-  @Override
+  /**
+   * Get the positions of all the players and items in the world.
+   * @return  A map of all the positions.
+   */
   public Map<String, int[]> getPositions() {
-    return null;
+    int targetRoom = getTargetPosition();
+
+    Map<String, int[]> positions = new HashMap<>();
+    Map<Integer, Integer> occupied = new HashMap<>();
+    occupied.put(targetRoom, 1);
+
+    List<Room> roomList = mansion.getRoomList();
+    int[] targetLocation = roomList.get(targetRoom).getLocation();
+    int[] targetPosition = {(targetLocation[1] + 1) * SIZE, (targetLocation[0] + 1) * SIZE + 20};
+
+    positions.put("target", targetPosition);
+
+    int offset = 50;
+    for (Player player : playerQueue) {
+      int roomId = player.getCurrentRoom();
+      Room currentRoom = roomList.get(roomId);
+
+      Integer cnt = occupied.get(roomId);
+      int[] location = currentRoom.getLocation().clone();
+
+      int[] position = {0, 0};
+
+      position[0] = (location[1] + 1) * SIZE + 10;
+      position[1] = (location[0] + 1) * SIZE + 20;
+
+      if (cnt != null) {
+        occupied.put(roomId, cnt + 1);
+        position[0] += cnt * offset;
+      }
+      positions.put(player.getName(), position);
+    }
+    return positions;
   }
 
   @Override
   public boolean isGameOver() {
-    return false;
+    return isGameOver;
   }
+
+  @Override
+  public String getPlayerDescription(String name) {
+    for (Player player : playerQueue) {
+      if (name.equals(player.getName())) {
+        return player.toString();
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public Map<String, Integer> getHighestDamageItem() {
+
+    Player player = getCurrentTurnPlayer();
+    Map<String, Integer> highestDamageItem = new HashMap<>();
+
+    List<Room> roomList = mansion.getRoomList();
+    for (Room room : roomList) {
+      if (room.getId() == player.getCurrentRoom()) {
+        List<Item> itemList = room.getItemList();
+        int maxDamage = itemList.get(0).getDamage();
+        int maxIdx = 0;
+        for (int i = 1; i < itemList.size(); i++) {
+          if (itemList.get(i).getDamage() > maxDamage) {
+            maxDamage = itemList.get(i).getDamage();
+            maxIdx = i;
+          }
+        }
+        String pickedItemName = itemList.get(maxIdx).getName();
+        highestDamageItem.put(pickedItemName, maxIdx);
+        return highestDamageItem;
+      }
+    }
+    return highestDamageItem;
+  }
+
+  @Override
+  public void gameOver() {
+    isGameOver = true;
+  }
+
 }
 
 
